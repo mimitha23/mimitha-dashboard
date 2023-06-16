@@ -11,12 +11,12 @@ export default function TextureField() {
       <div className="texture-field--box">
         <div className="texture-field">
           <label>ka:</label>
-          <input type="text" name="texture" placeholder="cotton" />
+          <input type="text" name="texture" placeholder="ბამბა" />
         </div>
 
         <div className="texture-field">
           <label>en:</label>
-          <input type="text" name="texture" placeholder="ბამბა" />
+          <input type="text" name="texture" placeholder="cotton" />
         </div>
 
         <div className="percentage-field">

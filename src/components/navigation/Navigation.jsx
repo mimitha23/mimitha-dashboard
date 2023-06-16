@@ -1,11 +1,10 @@
 import { NavLink } from "react-router-dom";
 import * as Styled from "./Navigation.styled";
 import { MAIN_NAV_ROUTES } from "config/routes";
-import { useThemeContext } from "providers/ThemeProvider";
+
+import SwithTheme from "./SwithTheme";
 
 export default function Navigation() {
-  const { changeTheme, currentThemeMode } = useThemeContext();
-
   return (
     <Styled.Navigation>
       <ul className="main-nav__list">
@@ -23,15 +22,7 @@ export default function Navigation() {
         ))}
       </ul>
 
-      <div>
-        <button
-          onClick={() =>
-            changeTheme(currentThemeMode === "DARK" ? "LIGHT" : "DARK")
-          }
-        >
-          toggle theme
-        </button>
-      </div>
+      <SwithTheme />
     </Styled.Navigation>
   );
 }

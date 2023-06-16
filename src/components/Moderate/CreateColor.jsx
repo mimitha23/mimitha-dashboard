@@ -3,13 +3,13 @@ import { useState } from "react";
 import { isValidHexColor } from "functions";
 
 import { Form, InputText, Button } from "components/layouts";
-import * as Styled from "./styles/ModerateColor.styled";
+import * as Styled from "./styles/CreateColor.styled";
 
-export default function ModerateColor() {
+export default function CreateColor() {
   const [colorInHex, setColorInHex] = useState("");
 
   return (
-    <Styled.ModerateColor colorinhex={colorInHex}>
+    <Styled.CreateColor colorinhex={colorInHex}>
       <h4 className="moderator-title">შექმენი ფერი</h4>
       <Form>
         <InputText
@@ -34,6 +34,6 @@ export default function ModerateColor() {
 
         <Button caption="შექმნა" />
       </Form>
-    </Styled.ModerateColor>
+    </Styled.CreateColor>
   );
 }

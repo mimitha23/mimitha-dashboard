@@ -1,9 +1,9 @@
-import * as Styled from "./styles/ModerateProductType.styled";
+import * as Styled from "./styles/CreateProductType.styled";
 import { Form, InputText, Button } from "components/layouts";
 
-export default function ModerateProductType() {
+export default function CreateProductType() {
   return (
-    <Styled.ModerateProductType>
+    <Styled.CreateProductType>
       <h4 className="moderator-title">შექმენი პროდუქტის ტიპი</h4>
       <Form>
         <InputText
@@ -33,6 +33,6 @@ export default function ModerateProductType() {
 
         <Button caption="შექმნა" />
       </Form>
-    </Styled.ModerateProductType>
+    </Styled.CreateProductType>
   );
 }

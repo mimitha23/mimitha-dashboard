@@ -6,6 +6,8 @@ export const ModerateNavigation = styled.aside`
   border-right: 1px solid ${({ theme }) => theme.colors.text};
   width: 35rem;
   height: calc(100vh - ${({ theme }) => theme.app.nav_h});
+  position: sticky;
+  top: ${({ theme }) => theme.app.nav_h};
 
   .moderate-nav__list {
     display: flex;

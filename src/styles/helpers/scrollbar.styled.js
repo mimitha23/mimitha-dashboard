@@ -17,7 +17,8 @@ const scrollbar = ({
   }
 
   &::-webkit-scrollbar-thumb {
-    background: ${({ theme }) => theme.colors.text};
+    background: ${({ theme }) =>
+      theme.mode === "DARK" ? theme.colors.dark_gray : theme.colors.text};
     border-radius: 1rem;
   }
 `;

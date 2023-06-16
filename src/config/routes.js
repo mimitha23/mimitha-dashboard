@@ -8,11 +8,12 @@ export const PATHS = {
     login: "/auth/login",
   },
   moderate_sidebar: {
-    moderateColorPage: "color",
-    moderateProductTypePage: "product-type",
-    moderateVariantPage: "variant",
-    moderateProductPage: "moderate-product",
-    moderateDevelopedProductPage: "develope-product",
+    createColorPage: "create-color",
+    createProductTypePage: "create-product-type",
+    createVariantPage: "create-variant",
+    registerProductPage: "register-product",
+    registeredProductsListPage: "registered-products",
+    developeProductPage: "develope-product",
   },
 };
 
@@ -38,26 +39,38 @@ export const MODERATE_SIDEBAR_ROUTES = [
   {
     _id: nanoid(),
     caption: "შექმენი ფერი",
-    path: PATHS.moderate_sidebar.moderateColorPage,
+    path: PATHS.moderate_sidebar.createColorPage,
   },
   {
     _id: nanoid(),
     caption: "შექმენი ვარიანტი",
-    path: PATHS.moderate_sidebar.moderateVariantPage,
+    path: PATHS.moderate_sidebar.createVariantPage,
   },
   {
     _id: nanoid(),
     caption: "შექმენი პროდუქტის ტიპი",
-    path: PATHS.moderate_sidebar.moderateProductTypePage,
+    path: PATHS.moderate_sidebar.createProductTypePage,
   },
   {
     _id: nanoid(),
     caption: "დაარეგისტრირე პროდუქტი",
-    path: PATHS.moderate_sidebar.moderateProductPage,
+    path: PATHS.moderate_sidebar.registerProductPage,
   },
   {
     _id: nanoid(),
     caption: "განავითარე პროდუქტი",
-    path: PATHS.moderate_sidebar.moderateDevelopedProductPage,
+    path: PATHS.moderate_sidebar.registeredProductsListPage,
   },
 ];
+
+export const MODERATE_HIDDEN_ROUTES = {
+  developedProductsListPage: {
+    path: ":productId",
+    fullPath:
+      PATHS.main_navigation.moderate +
+      "/" +
+      PATHS.moderate_sidebar.registeredProductsListPage +
+      "/:productId",
+    productParam: ":productId",
+  },
+};

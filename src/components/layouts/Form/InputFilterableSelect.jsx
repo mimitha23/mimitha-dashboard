@@ -1,5 +1,6 @@
 import { useState } from "react";
 import * as Styled from "./Form.styled";
+import { useBlurOnBody } from "hooks/utils";
 
 export default function InputFilterableSelect({
   id,
@@ -10,19 +11,21 @@ export default function InputFilterableSelect({
   error,
   message,
   readOnly = false,
+  list = [],
 }) {
   const [userValue, setUserValue] = useState("");
   const [isTyping, setIsTyping] = useState(false);
 
-  const variants = [
-    "pocket",
-    "zipper",
-    "cuff",
-    "bootstrap",
-    "button",
-    "collar",
-    "wrist",
-  ];
+  const { onFocus, removeListener } = useBlurOnBody(
+    () => {
+      setIsTyping(true);
+    },
+    () => {
+      setUserValue(list.includes(userValue) ? userValue : "");
+      setIsTyping(false);
+    },
+    ["form__input-field", "filterable_dropdown"]
+  );
 
   function handleInput(e) {
     setUserValue(e.target.value);
@@ -31,6 +34,7 @@ export default function InputFilterableSelect({
   function handleDropdownItem(item) {
     setUserValue(item);
     setIsTyping(false);
+    removeListener();
   }
 
   return (
@@ -45,14 +49,14 @@ export default function InputFilterableSelect({
         placeholder={placeholder}
         onChange={handleInput}
         value={userValue}
-        onFocus={() => setIsTyping(true)}
+        onFocus={onFocus}
         readOnly={readOnly}
       />
 
       {isTyping && (
         <div className="filterable_dropdown">
           <ul className="filterable_dropdown-list">
-            {variants
+            {list
               .filter((item) =>
                 userValue === "" || readOnly ? item : item.includes(userValue)
               )

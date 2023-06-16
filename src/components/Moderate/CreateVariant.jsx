@@ -7,14 +7,24 @@ import {
   InputFilterableSelect,
   InputTextarea,
 } from "components/layouts";
-import * as Styled from "./styles/ModerateVariant.styled";
+import * as Styled from "./styles/CreateVariant.styled";
 
-export default function ModerateVariant() {
+export default function CreateVariant() {
   const fileRef = useRef();
   const [file, setFile] = useState(null);
 
+  const variants = [
+    "pocket",
+    "zipper",
+    "cuff",
+    "bootstrap",
+    "button",
+    "collar",
+    "wrist",
+  ];
+
   return (
-    <Styled.ModerateVariant>
+    <Styled.CreateVariant>
       <h4 className="moderator-title">შექმენი ვარიანტი</h4>
       <Form>
         <InputFilterableSelect
@@ -24,6 +34,7 @@ export default function ModerateVariant() {
           name="variantType"
           placeholder="pocket"
           anotation="აირჩიე არსებული ვარიანტის ტიპი ან შექმენი ახალი"
+          list={variants}
         />
 
         <InputText
@@ -60,6 +71,6 @@ export default function ModerateVariant() {
 
         <Button caption="შექმნა" />
       </Form>
-    </Styled.ModerateVariant>
+    </Styled.CreateVariant>
   );
 }

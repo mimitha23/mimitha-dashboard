@@ -1,4 +1,5 @@
 import { createGlobalStyle } from "styled-components";
+import { scrollbar } from "./helpers";
 
 export const AppStyles = createGlobalStyle`
   *,
@@ -18,6 +19,7 @@ export const AppStyles = createGlobalStyle`
     font-family: 'Roboto', sans-serif;
     color: ${({ theme }) => theme.colors.text};
     background: ${({ theme }) => theme.colors.bg};
+    ${scrollbar};
   }
 
   a {

@@ -3,6 +3,10 @@ import { navLIstItemHover } from "styles/helpers";
 
 export const Navigation = styled.nav`
   padding: 0 3rem;
+  position: sticky;
+  z-index: 99;
+  top: 0;
+  background: ${({ theme }) => theme.colors.bg};
   display: flex;
   align-items: center;
   justify-content: space-between;

@@ -1,0 +1,116 @@
+{
+  "season": [
+    {
+      "label": "გაზაფხული",
+      "query": "spring"
+    },
+    {
+      "label": "ზაფხული",
+      "query": "summer"
+    },
+    {
+      "label": "შემოდგომა",
+      "query": "autumn"
+    },
+    {
+      "label": "ზამთარი",
+      "query": "winter"
+    }
+  ],
+  "productType": [
+    {
+      "label": "ჟილეტი",
+      "query": "gilet"
+    },
+    {
+      "label": "ჟაკეტი",
+      "query": "jacket"
+    },
+    {
+      "label": "მაისური",
+      "query": "t-shirt"
+    },
+    {
+      "label": "პოლო",
+      "query": "polo"
+    },
+    {
+      "label": "მაისური",
+      "query": "shirt"
+    },
+    {
+      "label": "კაპიუშონი",
+      "query": "hood"
+    },
+    {
+      "label": "ჯინსი",
+      "query": "jeans"
+    },
+    {
+      "label": "ჩანთა",
+      "query": "bag"
+    },
+    {
+      "label": "ქამარი",
+      "query": "belt"
+    },
+    {
+      "label": "წინდები",
+      "query": "socks"
+    }
+  ],
+  "texture": [
+    {
+      "label": "ბამბა",
+      "query": "cotton"
+    },
+    {
+      "label": "ვილვეტი",
+      "query": "velveteen"
+    },
+    {
+      "label": "ტილო",
+      "query": "linen"
+    },
+    {
+      "label": "ტყავი",
+      "query": "leather"
+    },
+    {
+      "label": "ატლასი",
+      "query": "atlas"
+    }
+  ],
+  "style": [
+    {
+      "label": "ყოველდღიური",
+      "query": "everyday"
+    },
+    {
+      "label": "სპორტული",
+      "query": "sports"
+    },
+    {
+      "label": "მსუბუქი",
+      "query": "air"
+    }
+  ],
+  "sort": [
+    {
+      "label": "უახლესი",
+      "query": "new-in"
+    },
+    {
+      "label": "ყველაზე პოპულარული",
+      "query": "popular"
+    },
+    {
+      "label": "ფასი ზრდადი",
+      "query": "price-asc"
+    },
+    {
+      "label": "ფასი კლებადი",
+      "query": "price-desc"
+    }
+  ]
+}
