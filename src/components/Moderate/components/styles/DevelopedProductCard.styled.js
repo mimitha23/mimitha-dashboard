@@ -1,13 +1,11 @@
 import styled from "styled-components";
 
-export const RegisteredProductCard = styled.div`
-  width: 100%;
-  height: 100%;
+export const DevelopedProductCard = styled.li`
   border-radius: 0.5rem;
   overflow: hidden;
   box-shadow: ${({ theme }) => theme.shadow.radial_sm_dark};
 
-  .registered-product--card__fig {
+  .developed-product--card__fig {
     width: 100%;
     height: 45%;
     background: ${({ theme }) => theme.colors.white};
@@ -19,7 +17,7 @@ export const RegisteredProductCard = styled.div`
     }
   }
 
-  .registered-product--card__details {
+  .developed-product--card__details {
     height: 55%;
     padding: 1rem;
     display: flex;
@@ -28,7 +26,7 @@ export const RegisteredProductCard = styled.div`
     background: ${({ theme }) => theme.colors.blue};
     color: ${({ theme }) => theme.colors.white};
 
-    .registered-product--card__details-box {
+    .developed-product--card__details-box {
       display: flex;
       justify-content: space-between;
     }

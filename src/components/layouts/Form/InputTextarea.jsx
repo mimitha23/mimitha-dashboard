@@ -13,7 +13,7 @@ export default function InputTextarea({
   anotation,
 }) {
   return (
-    <Styled.InputTextarea className="form__input-text">
+    <Styled.InputTextarea className="form__input-text form__input--textarea">
       <label htmlFor={id}>{label}</label>
       <textarea
         id={id}

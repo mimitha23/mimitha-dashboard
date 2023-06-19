@@ -11,7 +11,7 @@ export default function InputFile({
   anotation,
 }) {
   return (
-    <Styled.Input className="form__input-text">
+    <Styled.Input className="form__input-text form__input-file">
       {file && (
         <div className="form__file-icon--review">
           <figure className="form__file-icon--review__fig">

@@ -8,10 +8,12 @@ import CreateVariantPage from "pages/Moderate/CreateVariantPage";
 import RegisterProductPage from "pages/Moderate/RegisterProductPage";
 import DevelopeProductPage from "pages/Moderate/DevelopeProductPage";
 import CreateProductTypePage from "pages/Moderate/CreateProductTypePage";
-import RegisteredProductsListPage from "pages/Moderate/RegisteredProductsListPage";
-import DevelopedProductsListPage from "pages/Moderate/DevelopedProductsListPage";
+import RegisteredProductsPage from "pages/Moderate/RegisteredProductsPage";
+import DevelopedProductsPage from "pages/Moderate/DevelopedProductsPage";
+import DevelopedProductPage from "pages/Moderate/DevelopedProductPage";
+import AddDevelopedProductPage from "pages/Moderate/AddDevelopedProductPage";
 
-import { PATHS, MODERATE_HIDDEN_ROUTES } from "config/routes";
+import { PATHS } from "config/routes";
 
 function App() {
   return (
@@ -27,37 +29,53 @@ function App() {
 
         <Route path={PATHS.main_navigation.moderate} element={<ModeratePage />}>
           <Route
-            path={PATHS.moderate_sidebar.createProductTypePage}
-            element={<CreateProductTypePage />}
-          />
-
-          <Route
-            path={PATHS.moderate_sidebar.createVariantPage}
-            element={<CreateVariantPage />}
-          />
-
-          <Route
-            path={PATHS.moderate_sidebar.createColorPage}
+            path={PATHS.moderate_sidebar.createColorPage.relativePath}
             element={<CreateColorPage />}
           />
 
           <Route
-            path={PATHS.moderate_sidebar.registerProductPage}
+            path={PATHS.moderate_sidebar.createVariantPage.relativePath}
+            element={<CreateVariantPage />}
+          />
+
+          <Route
+            path={PATHS.moderate_sidebar.createProductTypePage.relativePath}
+            element={<CreateProductTypePage />}
+          />
+
+          <Route
+            path={PATHS.moderate_sidebar.registerProductPage.relativePath}
             element={<RegisterProductPage />}
           />
 
           <Route
-            path={PATHS.moderate_sidebar.registeredProductsListPage}
-            element={<RegisteredProductsListPage />}
+            path={PATHS.moderate_sidebar.registeredProductsPage.relativePath}
+            element={<RegisteredProductsPage />}
           />
 
           <Route
-            path={MODERATE_HIDDEN_ROUTES.developedProductsListPage.fullPath}
-            element={<DevelopedProductsListPage />}
+            path={PATHS.moderate_nested_routes.developedProductsPage.absolutePath(
+              {}
+            )}
+            element={<DevelopedProductsPage />}
+          >
+            <Route
+              path={PATHS.moderate_nested_routes.developedProductPage.relativePath(
+                {}
+              )}
+              element={<DevelopedProductPage />}
+            />
+          </Route>
+
+          <Route
+            path={PATHS.moderate_nested_routes.addDevelopedProductPage.absolutePath(
+              {}
+            )}
+            element={<AddDevelopedProductPage />}
           />
 
           <Route
-            path={PATHS.moderate_sidebar.developeProductPage}
+            path={PATHS.moderate_sidebar.developeProductPage.relativePath}
             element={<DevelopeProductPage />}
           />
         </Route>

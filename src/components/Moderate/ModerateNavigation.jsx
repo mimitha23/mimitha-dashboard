@@ -13,7 +13,7 @@ export default function ModerateNavigation() {
                 className={({ isActive }) =>
                   isActive ? "nav--link__active" : ""
                 }
-                to={route.path}
+                to={route.path.relativePath}
               >
                 {route.caption}
               </NavLink>
