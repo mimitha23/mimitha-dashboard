@@ -7,6 +7,7 @@ import {
   InputTextarea,
 } from "components/layouts";
 import AddDevelopedProductBlueprint from "./components/AddDevelopedProductBlueprint";
+import AddVariantField from "./components/AddVariantField";
 import * as Styled from "./styles/AddDevelopedProduct.styled";
 
 export default function AddDevelopedProduct() {
@@ -89,7 +90,7 @@ export default function AddDevelopedProduct() {
               type="number"
             />
 
-            <div className="variants">variants</div>
+            <AddVariantField />
 
             <InputTextarea
               id="product-description--ka"

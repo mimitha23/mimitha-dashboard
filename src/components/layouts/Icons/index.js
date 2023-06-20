@@ -17,7 +17,7 @@ import {
   MdOutlineWbSunny,
   MdOutlineFilterListOff,
   MdOutlineFilterList,
-  // MdOpenWith,
+  MdOpenWith,
   // MdOpenInNew,
   MdModeEditOutline,
 } from "react-icons/md";
@@ -47,7 +47,7 @@ const FilterOffIcon = MdOutlineFilterListOff;
 const LockIcon = HiOutlineLockClosed;
 const MoonIcon = FaMoon;
 const MinusIcon = AiOutlineMinus;
-// const OpenIcon = MdOpenWith;
+const OpenIcon = MdOpenWith;
 // const OpenInNewIcon = MdOpenInNew;
 const PlusIcon = AiOutlinePlus;
 const SearchIcon = BiSearchAlt;
@@ -75,7 +75,7 @@ export {
   MoonIcon,
   MinusIcon,
   // MuteIcon,
-  // OpenIcon,
+  OpenIcon,
   // OpenInNewIcon,
   PlusIcon,
   SearchIcon,

@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { scrollbar, Form as FormStyles } from "styles/helpers";
+import { Form as FormStyles } from "styles/helpers";
 
 export const Form = styled.form``;
 
@@ -50,26 +50,7 @@ export const InputFilterableSelect = styled.div`
   }
 
   .filterable_dropdown-list {
-    max-height: 20rem;
-    padding: 1rem 1rem 1rem 0;
-    overflow: auto;
-    ${scrollbar({ marginBlockTop: "1rem", marginBlockBottom: "1rem" })};
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-
-    &--item {
-      padding: 0.5rem;
-      border-radius: 0.5rem;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      text-transform: capitalize;
-
-      &:hover {
-        background: ${({ theme }) => theme.colors.blue};
-        color: ${({ theme }) => theme.colors.white};
-      }
-    }
+    ${FormStyles.selectDropdownList}
   }
 `;
 

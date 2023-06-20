@@ -1,12 +1,7 @@
 import { css } from "styled-components";
+import scrollbar from "./scrollbar.styled";
 
 export const input = css`
-  input,
-  textarea {
-    border-radius: 0.5rem;
-    outline: none;
-  }
-
   textarea {
     padding: 1rem;
   }
@@ -18,6 +13,9 @@ export const input = css`
 
   input,
   textarea {
+    border-radius: 0.5rem;
+    outline: none;
+
     ${({ theme }) =>
       theme.mode === "DARK"
         ? ""
@@ -36,6 +34,11 @@ export const input = css`
       font-size: ${({ theme }) => theme.fontSize.md};
       opacity: 0.7;
     }
+  }
+
+  input.error,
+  textarea.error {
+    border: 1px solid ${({ theme }) => theme.colors.red};
   }
 `;
 
@@ -67,6 +70,8 @@ export const inputFiled = css`
 
   p {
     color: ${({ theme }) => theme.colors.red};
+    text-wrap: balance;
+    text-align: center;
   }
 
   blockquote,
@@ -76,6 +81,29 @@ export const inputFiled = css`
 
     &::first-letter {
       text-transform: capitalize;
+    }
+  }
+`;
+
+export const selectDropdownList = css`
+  max-height: 20rem;
+  padding: 1rem 1rem 1rem 0;
+  overflow: auto;
+  ${scrollbar({ marginBlockTop: "1rem", marginBlockBottom: "1rem" })};
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+
+  &--item {
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-transform: capitalize;
+
+    &:hover {
+      background: ${({ theme }) => theme.colors.blue};
+      color: ${({ theme }) => theme.colors.white};
     }
   }
 `;

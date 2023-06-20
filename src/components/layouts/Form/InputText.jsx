@@ -19,7 +19,7 @@ export default function InputText({
         id={id}
         type={type}
         name={name}
-        className="form__input-field"
+        className={`form__input-field ${error ? "error" : ""}`}
         placeholder={placeholder}
         onChange={onChange}
         value={value}
