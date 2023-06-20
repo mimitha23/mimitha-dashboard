@@ -1,18 +1,30 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { setColor } from "store/reducers/moderate/createColorReducer";
+import {
+  setColor,
+  resetState,
+} from "store/reducers/moderate/createColorReducer";
 import { selectCreateColor } from "store/selectors/moderateSelectors";
 import { useCreateColorQuery } from "hooks/api/moderate";
 
 import { isValidHexColor } from "functions";
 
-import { Form, InputText, Button } from "components/layouts";
+import { Form, InputText, Button, Loading } from "components/layouts";
 import * as Styled from "./styles/CreateColor.styled";
 
 export default function CreateColor() {
   const dispatch = useDispatch();
   const { createColorQuery, error } = useCreateColorQuery();
-  const { color_ka, color_en, color_hex } = useSelector(selectCreateColor);
+  const { color_ka, color_en, color_hex, status } =
+    useSelector(selectCreateColor);
+
+  useEffect(() => {
+    return () => {
+      dispatch(resetState());
+    };
+  }, []);
 
   return (
     <Styled.CreateColor colorinhex={color_hex}>
@@ -60,12 +72,15 @@ export default function CreateColor() {
         {isValidHexColor(color_hex) && <div className="picked-color"></div>}
 
         <Button
+          disabled={status.loading}
           caption="შექმნა"
           onClick={(e) => {
             e.preventDefault();
             createColorQuery();
           }}
         />
+
+        {status.loading && <Loading />}
       </Form>
     </Styled.CreateColor>
   );

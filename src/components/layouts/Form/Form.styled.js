@@ -32,7 +32,7 @@ export const InputFilterableSelect = styled.div`
   position: relative;
 
   .form__input-field {
-    text-transform: capitalize;
+    /* text-transform: capitalize; */
   }
 
   .filterable_dropdown {
@@ -63,7 +63,12 @@ export const Button = styled.button`
   text-align: center;
   transition: all 0.2s ease;
 
-  &:hover {
+  &:not(:disabled):hover {
     background: ${({ theme }) => theme.colors.green_shade};
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: none;
   }
 `;

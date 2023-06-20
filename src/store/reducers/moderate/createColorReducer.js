@@ -2,9 +2,9 @@ import { createSlice } from "@reduxjs/toolkit";
 import { controllStatus as status } from "../helpers";
 
 const initialState = {
-  color_ka: "მწვანე",
-  color_en: "green",
-  color_hex: "#26e066",
+  color_ka: "",
+  color_en: "",
+  color_hex: "",
 
   status: {
     loading: false,
@@ -47,12 +47,18 @@ const createColorSlice = createSlice({
     },
 
     setError(state, { payload }) {
-      console.log(payload);
       state.status = status.error();
+    },
+
+    resetState(state) {
+      state.status = status.reset();
+      state.color_en = "";
+      state.color_ka = "";
+      state.color_hex = "";
     },
   },
 });
 
 export default createColorSlice.reducer;
-export const { setColor, createColor, setSuccess, setError } =
+export const { setColor, createColor, setSuccess, setError, resetState } =
   createColorSlice.actions;

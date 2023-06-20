@@ -1,4 +1,15 @@
-import { useRef, useState } from "react";
+/* eslint-disable react-hooks/exhaustive-deps */
+import { useRef, useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { nanoid } from "@reduxjs/toolkit";
+
+import {
+  setVariant,
+  resetState,
+} from "store/reducers/moderate/createVariantReducer";
+import { selectCreateVariant } from "store/selectors/moderateSelectors";
+import { useCreateVariantQuery } from "hooks/api/moderate";
+
 import {
   Form,
   InputText,
@@ -6,22 +17,35 @@ import {
   InputFile,
   InputFilterableSelect,
   InputTextarea,
+  Loading,
 } from "components/layouts";
 import * as Styled from "./styles/CreateVariant.styled";
 
+const variants = [
+  { variantType: "pocket", _id: nanoid() },
+  { variantType: "zipper", _id: nanoid() },
+  { variantType: "cuff", _id: nanoid() },
+  { variantType: "bootstrap", _id: nanoid() },
+  { variantType: "button", _id: nanoid() },
+  { variantType: "collar", _id: nanoid() },
+  { variantType: "wrist", _id: nanoid() },
+];
+
 export default function CreateVariant() {
+  const dispatch = useDispatch();
+  const { createVariantQuery } = useCreateVariantQuery();
+
+  const { variantType, label_ka, label_en, description, status } =
+    useSelector(selectCreateVariant);
+
   const fileRef = useRef();
   const [file, setFile] = useState(null);
 
-  const variants = [
-    "pocket",
-    "zipper",
-    "cuff",
-    "bootstrap",
-    "button",
-    "collar",
-    "wrist",
-  ];
+  useEffect(() => {
+    return () => {
+      dispatch(resetState());
+    };
+  }, []);
 
   return (
     <Styled.CreateVariant>
@@ -30,9 +54,12 @@ export default function CreateVariant() {
         <InputFilterableSelect
           id="variant-type"
           label="ვარიანტის ტიპი"
-          message="მესიჯი"
           name="variantType"
           placeholder="pocket"
+          value={variantType}
+          setValue={({ key, value }) => dispatch(setVariant({ key, value }))}
+          message="მესიჯი"
+          error={false}
           anotation="აირჩიე არსებული ვარიანტის ტიპი ან შექმენი ახალი"
           list={variants}
         />
@@ -40,25 +67,40 @@ export default function CreateVariant() {
         <InputText
           id="variant-label"
           label="ვარიანტის იარლიყი (ka)"
-          message="მესიჯი"
           name="label_ka"
           placeholder="ჯიბის გარეშე"
+          value={label_ka}
+          onChange={(e) =>
+            dispatch(setVariant({ key: e.target.name, value: e.target.value }))
+          }
+          message="მესიჯი"
+          error={false}
         />
 
         <InputText
           id="variant-label"
           label="ვარიანტის იარლიყი (en)"
-          message="მესიჯი"
           name="label_en"
           placeholder="without pocket"
+          value={label_en}
+          onChange={(e) =>
+            dispatch(setVariant({ key: e.target.name, value: e.target.value }))
+          }
+          message="მესიჯი"
+          error={false}
         />
 
         <InputTextarea
           id="variant-description"
           label="ვარიანტის აღწერა"
-          message="მესიჯი"
           name="description"
           placeholder="აღწერე ვარიანტი..."
+          value={description}
+          onChange={(e) =>
+            dispatch(setVariant({ key: e.target.name, value: e.target.value }))
+          }
+          message="მესიჯი"
+          error={false}
         />
 
         <InputFile
@@ -69,7 +111,16 @@ export default function CreateVariant() {
           label="აირჩიეთ ნიშნულის ფაილი"
         />
 
-        <Button caption="შექმნა" />
+        <Button
+          caption="შექმნა"
+          disabled={status.loading}
+          onClick={(e) => {
+            e.preventDefault();
+            createVariantQuery();
+          }}
+        />
+
+        {status.loading && <Loading />}
       </Form>
     </Styled.CreateVariant>
   );

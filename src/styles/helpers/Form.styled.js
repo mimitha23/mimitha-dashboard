@@ -99,7 +99,7 @@ export const selectDropdownList = css`
     border-radius: 0.5rem;
     cursor: pointer;
     transition: all 0.2s ease;
-    text-transform: capitalize;
+    /* text-transform: capitalize; */
 
     &:hover {
       background: ${({ theme }) => theme.colors.blue};

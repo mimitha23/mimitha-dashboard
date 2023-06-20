@@ -8,12 +8,14 @@ export default function InputFilterableSelect({
   name,
   placeholder,
   anotation,
+  value,
+  setValue,
   error,
   message,
   readOnly = false,
   list = [],
 }) {
-  const [userValue, setUserValue] = useState("");
+  // const [userValue, setUserValue] = useState("");
   const [isTyping, setIsTyping] = useState(false);
 
   const { onFocus, removeListener } = useBlurOnBody(
@@ -21,18 +23,23 @@ export default function InputFilterableSelect({
       setIsTyping(true);
     },
     () => {
-      setUserValue(list.includes(userValue) ? userValue : "");
+      setValue({
+        key: name,
+        value: list.some((item) => item.variantType.includes(value))
+          ? value
+          : "",
+      });
       setIsTyping(false);
     },
     ["form__input-field", "filterable_dropdown"]
   );
 
   function handleInput(e) {
-    setUserValue(e.target.value);
+    setValue({ key: name, value: e.target.value });
   }
 
   function handleDropdownItem(item) {
-    setUserValue(item);
+    setValue({ key: name, value: item });
     setIsTyping(false);
     removeListener();
   }
@@ -48,7 +55,7 @@ export default function InputFilterableSelect({
         className="form__input-field"
         placeholder={placeholder}
         onChange={handleInput}
-        value={userValue}
+        value={value}
         onFocus={onFocus}
         readOnly={readOnly}
       />
@@ -58,15 +65,17 @@ export default function InputFilterableSelect({
           <ul className="filterable_dropdown-list">
             {list
               .filter((item) =>
-                userValue === "" || readOnly ? item : item.includes(userValue)
+                value === "" || readOnly
+                  ? item
+                  : item.variantType.includes(value)
               )
               .map((item) => (
                 <li
                   className="filterable_dropdown-list--item"
-                  key={item}
-                  onClick={() => handleDropdownItem(item)}
+                  key={item._id}
+                  onClick={() => handleDropdownItem(item.variantType)}
                 >
-                  {item}
+                  {item.variantType}
                 </li>
               ))}
           </ul>
