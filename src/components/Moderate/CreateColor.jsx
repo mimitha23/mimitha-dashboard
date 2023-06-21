@@ -72,8 +72,8 @@ export default function CreateColor() {
         {isValidHexColor(color_hex) && <div className="picked-color"></div>}
 
         <Button
-          disabled={status.loading}
           caption="შექმნა"
+          disabled={status.loading}
           onClick={(e) => {
             e.preventDefault();
             createColorQuery();

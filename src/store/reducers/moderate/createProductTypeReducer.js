@@ -2,9 +2,9 @@ import { createSlice } from "@reduxjs/toolkit";
 import { controllStatus as status } from "../helpers";
 
 const initialState = {
-  label_ka: "კარგო შარვალი",
-  label_en: "cargo trousers",
-  query: "cargo trousers",
+  label_ka: "",
+  label_en: "",
+  query: "",
 
   status: {
     loading: false,
@@ -24,7 +24,13 @@ const createProductTypeSlice = createSlice({
     createProductType: {
       prepare(payload) {
         return {
-          payload: {},
+          payload: {
+            query: payload.query.split(" ").join("_"),
+            label: {
+              ka: payload.label_ka,
+              en: payload.label_en,
+            },
+          },
         };
       },
 

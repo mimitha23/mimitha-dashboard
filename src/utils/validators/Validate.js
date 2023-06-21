@@ -2,7 +2,7 @@ export default class Validate {
   // regexes
   regs = {
     has_white_space: /\s/g,
-    has_two_or_more_white_space_in_sequence: /.*\s+.*/,
+    has_two_or_more_white_space_in_sequence: /.*\s\s+.*/,
     is_word: /\w/g,
     is_email:
       /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,

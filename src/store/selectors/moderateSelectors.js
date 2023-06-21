@@ -9,7 +9,7 @@ const selectedCreateColor = ({ createColor }) => ({
   color_hex: createColor.color_hex,
 });
 
-export const selectedCreateColorStatus = ({ createColor }) => ({
+const selectedCreateColorStatus = ({ createColor }) => ({
   loading: createColor.status.loading,
   error: createColor.status.error,
   message: createColor.status.message,
@@ -36,7 +36,7 @@ const selectedCreateVariant = ({ createVariant }) => ({
   icon: createVariant.icon,
 });
 
-export const selectedCreateVariantStatus = ({ createVariant }) => ({
+const selectedCreateVariantStatus = ({ createVariant }) => ({
   loading: createVariant.status.loading,
   error: createVariant.status.error,
   message: createVariant.status.message,
@@ -49,5 +49,30 @@ export const selectCreateVariant = createSelector(
 
 export const selectCreateVariantStatus = createSelector(
   selectedCreateVariantStatus,
+  (memorised) => memorised
+);
+
+/////////////////////////////////////////
+////////// Create ProductType //////////
+///////////////////////////////////////
+const selectedCreateProductType = ({ createProductType }) => ({
+  label_ka: createProductType.label_ka,
+  label_en: createProductType.label_en,
+  query: createProductType.query,
+});
+
+const selectedCreateProductTypeStatus = ({ createProductType }) => ({
+  loading: createProductType.status.loading,
+  error: createProductType.status.error,
+  message: createProductType.status.message,
+});
+
+export const selectCreateProductType = createSelector(
+  selectedCreateProductType,
+  (memorised) => memorised
+);
+
+export const selectCreateProductTypeStatus = createSelector(
+  selectedCreateProductTypeStatus,
   (memorised) => memorised
 );

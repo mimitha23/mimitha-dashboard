@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { selectCreateColor } from "store/selectors/moderateSelectors";
 import { createColorActions } from "store/reducers/moderate/createColorReducer";
 import { CreateColorValidation } from "utils/validators/moderate";
+import { generateLowerCaseData } from "utils";
 
 export default function useCreateColorQuery() {
   const dispatch = useDispatch();
@@ -18,8 +19,11 @@ export default function useCreateColorQuery() {
 
     setError(validation);
 
-    if (!validation.hasError)
-      dispatch(createColorActions.createColor(credentials));
+    if (validation.hasError) return;
+
+    const checkedData = generateLowerCaseData(credentials);
+
+    dispatch(createColorActions.createColor(checkedData));
   }
 
   return { createColorQuery, error };

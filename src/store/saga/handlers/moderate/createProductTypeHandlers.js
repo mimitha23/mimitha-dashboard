@@ -6,7 +6,7 @@ import { createProductTypeAPI } from "store/saga/api/moderate";
 export function* createProductType({ payload }) {
   try {
     yield pretendLoading();
-    yield call(createProductTypeAPI.createProductTypeQuery);
+    yield call(createProductTypeAPI.createProductTypeQuery, payload);
     yield put(createProductTypeActions.setSuccess(payload));
   } catch (error) {
     yield errorController({

@@ -1,28 +1,42 @@
 import Validate from "../Validate";
+import { availableValidationRules as Rules } from "utils/validators/Validate";
 
 export default class CreateVariantValidation extends Validate {
   constructor() {
     super();
+
     this.validationToExecute = [
       {
         key: "variantType",
-        rules: ["notIsEmpty", "isLatinLetters", "hasWhiteSpaceInSequence"],
+        rules: [
+          Rules.notIsEmpty,
+          Rules.isLatinLetters,
+          Rules.hasWhiteSpaceInSequence,
+        ],
       },
       {
         key: "label_ka",
-        rules: ["notIsEmpty", "isGeorgianLetters", "hasWhiteSpaceInSequence"],
+        rules: [
+          Rules.notIsEmpty,
+          Rules.isGeorgianLetters,
+          Rules.hasWhiteSpaceInSequence,
+        ],
       },
       {
         key: "label_en",
-        rules: ["notIsEmpty", "isLatinLetters", "hasWhiteSpaceInSequence"],
+        rules: [
+          Rules.notIsEmpty,
+          Rules.isLatinLetters,
+          Rules.hasWhiteSpaceInSequence,
+        ],
       },
       {
         key: "description",
-        rules: ["notIsEmpty"],
+        rules: [Rules.notIsEmpty],
       },
       {
         key: "icon",
-        rules: ["isFileObject"],
+        rules: [Rules.isFileObject],
       },
     ];
 
