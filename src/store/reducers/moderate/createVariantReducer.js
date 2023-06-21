@@ -6,6 +6,7 @@ const initialState = {
   label_ka: "",
   label_en: "",
   description: "",
+  icon: null,
 
   status: {
     loading: false,
@@ -28,6 +29,7 @@ const createVariantSlice = createSlice({
           payload: {
             variantType: payload.variantType,
             description: payload.description,
+            icon: payload.icon,
             label: {
               ka: payload.label_ka,
               en: payload.label_en,
@@ -41,15 +43,18 @@ const createVariantSlice = createSlice({
       },
     },
 
-    setSuccess(state) {
-      state.status = status.success();
+    setSuccess(state, { payload }) {
       state.variantType = "";
       state.description = "";
       state.label_ka = "";
       state.label_en = "";
+      state.icon = null;
+      state.status = status.success();
+      alert(JSON.stringify(payload));
     },
 
     setError(state, { payload }) {
+      alert(JSON.stringify(payload));
       state.status = status.error();
     },
 
@@ -59,10 +64,10 @@ const createVariantSlice = createSlice({
       state.description = "";
       state.label_ka = "";
       state.label_en = "";
+      state.icon = null;
     },
   },
 });
 
 export default createVariantSlice.reducer;
-export const { setVariant, createVariant, setSuccess, setError, resetState } =
-  createVariantSlice.actions;
+export const createVariantActions = createVariantSlice.actions;

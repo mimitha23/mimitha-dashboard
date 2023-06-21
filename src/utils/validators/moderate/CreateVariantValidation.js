@@ -6,19 +6,23 @@ export default class CreateVariantValidation extends Validate {
     this.validationToExecute = [
       {
         key: "variantType",
-        rules: ["notIsEmpty", "isValidHexColor"],
+        rules: ["notIsEmpty", "isLatinLetters", "hasWhiteSpaceInSequence"],
       },
       {
         key: "label_ka",
-        rules: ["notIsEmpty", "isOnlyGeorgianLetters"],
+        rules: ["notIsEmpty", "isGeorgianLetters", "hasWhiteSpaceInSequence"],
       },
       {
         key: "label_en",
-        rules: ["notIsEmpty", "isOnlyLatinLetters"],
+        rules: ["notIsEmpty", "isLatinLetters", "hasWhiteSpaceInSequence"],
       },
       {
         key: "description",
-        rules: ["notIsEmpty", "isValidHexColor"],
+        rules: ["notIsEmpty"],
+      },
+      {
+        key: "icon",
+        rules: ["isFileObject"],
       },
     ];
 
@@ -28,6 +32,7 @@ export default class CreateVariantValidation extends Validate {
       label_ka: { hasError: false, message: "" },
       label_en: { hasError: false, message: "" },
       description: { hasError: false, message: "" },
+      icon: { hasError: false, message: "" },
     };
   }
 

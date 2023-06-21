@@ -1,10 +1,11 @@
 const BaseTheme = {
   colors: {
+    white: "#fff",
+    black: "#000",
     gray_shade: "rgba(215, 215, 215, 1)",
     gray_tint: "rgba(240, 240, 240, 1)",
     dark_gray: "#2D2D2D",
-    white: "#fff",
-    black: "#000",
+    black_tr_08: "rgba(0,0,0,0.8)",
     black_tr_05: "rgba(0,0,0,0.5)",
     black_tr_02: "rgba(0,0,0,0.2)",
     green: "#26E066",

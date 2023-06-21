@@ -10,7 +10,7 @@ const controllStatus = {
     message: "",
   }),
   error: (message) => ({
-    loading: true,
+    loading: false,
     error: true,
     message,
   }),

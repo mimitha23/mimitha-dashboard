@@ -1,6 +1,7 @@
+import { memo } from "react";
 import * as Styled from "./Form.styled";
 
-export default function InputFile({
+export default memo(function InputFile({
   name,
   label,
   onChange = () => {},
@@ -15,7 +16,10 @@ export default function InputFile({
       {file && (
         <div className="form__file-icon--review">
           <figure className="form__file-icon--review__fig">
-            <img src={URL.createObjectURL(file)} alt="" />
+            <img
+              src={file instanceof Object ? URL.createObjectURL(file) : file}
+              alt=""
+            />
           </figure>
         </div>
       )}
@@ -29,7 +33,9 @@ export default function InputFile({
         id="form-file--upload"
         type="file"
         name={name}
-        onChange={onChange}
+        onChange={(e) =>
+          onChange({ key: e.target.name, value: e.target.files[0] })
+        }
         accept="image/*"
         multiple={false}
         hidden
@@ -39,4 +45,4 @@ export default function InputFile({
       {error && <p>{message}</p>}
     </Styled.Input>
   );
-}
+});

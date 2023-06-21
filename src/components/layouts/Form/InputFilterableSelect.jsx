@@ -1,8 +1,8 @@
-import { useState } from "react";
+import { useState, memo } from "react";
 import * as Styled from "./Form.styled";
 import { useBlurOnBody } from "hooks/utils";
 
-export default function InputFilterableSelect({
+export default memo(function InputFilterableSelect({
   id,
   label,
   name,
@@ -15,7 +15,6 @@ export default function InputFilterableSelect({
   readOnly = false,
   list = [],
 }) {
-  // const [userValue, setUserValue] = useState("");
   const [isTyping, setIsTyping] = useState(false);
 
   const { onFocus, removeListener } = useBlurOnBody(
@@ -86,4 +85,4 @@ export default function InputFilterableSelect({
       {error && <p>{message}</p>}
     </Styled.InputFilterableSelect>
   );
-}
+});

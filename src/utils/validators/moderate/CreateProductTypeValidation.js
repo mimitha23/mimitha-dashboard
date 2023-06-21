@@ -1,38 +1,28 @@
 import Validate from "../Validate";
-import { availableValidationRules as Rules } from "utils/validators/Validate";
 
-export default class CreateColorValidation extends Validate {
+export default class CreateProductTypeValidation extends Validate {
   constructor() {
     super();
-
     this.validationToExecute = [
       {
-        key: "color_ka",
-        rules: [
-          Rules.notIsEmpty,
-          Rules.isGeorgianLetters,
-          Rules.hasWhiteSpaceInSequence,
-        ],
+        key: "label_ka",
+        rules: ["notIsEmpty", "isGeorgianLetters", "hasWhiteSpaceInSequence"],
       },
       {
-        key: "color_en",
-        rules: [
-          Rules.notIsEmpty,
-          Rules.isLatinLetters,
-          Rules.hasWhiteSpaceInSequence,
-        ],
+        key: "label_en",
+        rules: ["notIsEmpty", "isLatinLetters", "hasWhiteSpaceInSequence"],
       },
       {
-        key: "color_hex",
-        rules: [Rules.notIsEmpty, Rules.isValidHexColor],
+        key: "query",
+        rules: ["notIsEmpty", "isLatinLetters", "hasWhiteSpaceInSequence"],
       },
     ];
 
     this.error = {
       hasError: false,
-      color_ka: { hasError: false, message: "" },
-      color_en: { hasError: false, message: "" },
-      color_hex: { hasError: false, message: "" },
+      label_ka: { hasError: false, message: "" },
+      label_en: { hasError: false, message: "" },
+      query: { hasError: false, message: "" },
     };
   }
 

@@ -1,7 +1,10 @@
 import { takeLatest } from "redux-saga/effects";
-import { createVariant } from "store/reducers/moderate/createVariantReducer";
-import { handleCreateVariant } from "store/saga/handlers/moderate/createVariantHandlers";
+import { createVariantActions } from "store/reducers/moderate/createVariantReducer";
+import { createVariantHandlers } from "store/saga/handlers/moderate";
 
 export default function* createVariantSaga() {
-  yield takeLatest(createVariant, handleCreateVariant);
+  yield takeLatest(
+    createVariantActions.createVariant,
+    createVariantHandlers.createVariant
+  );
 }

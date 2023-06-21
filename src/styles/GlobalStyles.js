@@ -20,6 +20,14 @@ export const AppStyles = createGlobalStyle`
     color: ${({ theme }) => theme.colors.text};
     background: ${({ theme }) => theme.colors.bg};
     ${scrollbar};
+
+    &:has(.restrict-overflow){
+      overflow: hidden;
+    }
+
+    &:not(:has(.restrict-overflow)){
+      overflow: auto;
+    }
   }
 
   a {

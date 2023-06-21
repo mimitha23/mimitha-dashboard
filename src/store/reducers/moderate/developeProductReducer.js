@@ -9,15 +9,15 @@ const initialState = {
   },
 };
 
-const registerProductSlice = createSlice({
-  name: "registered-products",
+const developeProductSlice = createSlice({
+  name: "developed-products",
   initialState,
   reducers: {
-    setRegisteredProduct(state, { payload: { key, value } }) {
+    setDevelopedProduct(state, { payload: { key, value } }) {
       state[key] = value;
     },
 
-    registerProduct: {
+    createDevelopedProduct: {
       prepare(payload) {
         return {
           payload: {},
@@ -45,5 +45,5 @@ const registerProductSlice = createSlice({
   },
 });
 
-export default registerProductSlice.reducer;
-export const registerProductActions = registerProductSlice.actions;
+export default developeProductSlice.reducer;
+export const developeProductActions = developeProductSlice.actions;

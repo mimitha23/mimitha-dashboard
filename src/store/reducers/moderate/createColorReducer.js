@@ -39,14 +39,16 @@ const createColorSlice = createSlice({
       },
     },
 
-    setSuccess(state) {
-      state.status = status.success();
+    setSuccess(state, { payload }) {
       state.color_en = "";
       state.color_ka = "";
       state.color_hex = "";
+      state.status = status.success();
+      alert(JSON.stringify(payload));
     },
 
     setError(state, { payload }) {
+      alert(JSON.stringify(payload));
       state.status = status.error();
     },
 
@@ -60,5 +62,4 @@ const createColorSlice = createSlice({
 });
 
 export default createColorSlice.reducer;
-export const { setColor, createColor, setSuccess, setError, resetState } =
-  createColorSlice.actions;
+export const createColorActions = createColorSlice.actions;

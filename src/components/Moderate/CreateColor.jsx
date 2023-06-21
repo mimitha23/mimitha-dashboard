@@ -1,28 +1,34 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useEffect } from "react";
+import { useEffect, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import {
-  setColor,
-  resetState,
-} from "store/reducers/moderate/createColorReducer";
-import { selectCreateColor } from "store/selectors/moderateSelectors";
+  selectCreateColor,
+  selectCreateColorStatus,
+} from "store/selectors/moderateSelectors";
 import { useCreateColorQuery } from "hooks/api/moderate";
+import { createColorActions } from "store/reducers/moderate/createColorReducer";
 
 import { isValidHexColor } from "functions";
 
-import { Form, InputText, Button, Loading } from "components/layouts";
+import { Form, InputText, Button, LoadingSpinner } from "components/layouts";
 import * as Styled from "./styles/CreateColor.styled";
 
 export default function CreateColor() {
   const dispatch = useDispatch();
   const { createColorQuery, error } = useCreateColorQuery();
-  const { color_ka, color_en, color_hex, status } =
-    useSelector(selectCreateColor);
+  const { color_ka, color_en, color_hex } = useSelector(selectCreateColor);
+  const status = useSelector(selectCreateColorStatus);
+
+  const handleSetColor = useCallback((e) => {
+    dispatch(
+      createColorActions.setColor({ key: e.target.name, value: e.target.value })
+    );
+  }, []);
 
   useEffect(() => {
     return () => {
-      dispatch(resetState());
+      dispatch(createColorActions.resetState());
     };
   }, []);
 
@@ -38,9 +44,7 @@ export default function CreateColor() {
           error={error.color_ka.hasError}
           message={error.color_ka.message}
           value={color_ka}
-          onChange={(e) =>
-            dispatch(setColor({ key: e.target.name, value: e.target.value }))
-          }
+          onChange={handleSetColor}
         />
 
         <InputText
@@ -51,9 +55,7 @@ export default function CreateColor() {
           error={error.color_en.hasError}
           message={error.color_en.message}
           value={color_en}
-          onChange={(e) =>
-            dispatch(setColor({ key: e.target.name, value: e.target.value }))
-          }
+          onChange={handleSetColor}
         />
 
         <InputText
@@ -64,9 +66,7 @@ export default function CreateColor() {
           error={error.color_hex.hasError}
           message={error.color_hex.message}
           value={color_hex}
-          onChange={(e) =>
-            dispatch(setColor({ key: e.target.name, value: e.target.value }))
-          }
+          onChange={handleSetColor}
         />
 
         {isValidHexColor(color_hex) && <div className="picked-color"></div>}
@@ -80,7 +80,7 @@ export default function CreateColor() {
           }}
         />
 
-        {status.loading && <Loading />}
+        {status.loading && <LoadingSpinner />}
       </Form>
     </Styled.CreateColor>
   );

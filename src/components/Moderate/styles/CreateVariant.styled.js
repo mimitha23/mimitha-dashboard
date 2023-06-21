@@ -4,6 +4,7 @@ import { moderateContentBox } from "styles/helpers";
 export const CreateVariant = styled.div`
   ${moderateContentBox};
   min-height: calc(100vh - ${({ theme }) => theme.app.nav_h});
+  position: relative;
 
   .form {
     height: 100%;

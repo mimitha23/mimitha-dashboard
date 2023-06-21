@@ -1,14 +1,14 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useRef, useState, useEffect } from "react";
+import { useRef, useEffect, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { nanoid } from "@reduxjs/toolkit";
 
 import {
-  setVariant,
-  resetState,
-} from "store/reducers/moderate/createVariantReducer";
-import { selectCreateVariant } from "store/selectors/moderateSelectors";
+  selectCreateVariant,
+  selectCreateVariantStatus,
+} from "store/selectors/moderateSelectors";
 import { useCreateVariantQuery } from "hooks/api/moderate";
+import { createVariantActions } from "store/reducers/moderate/createVariantReducer";
 
 import {
   Form,
@@ -17,7 +17,7 @@ import {
   InputFile,
   InputFilterableSelect,
   InputTextarea,
-  Loading,
+  LoadingSpinner,
 } from "components/layouts";
 import * as Styled from "./styles/CreateVariant.styled";
 
@@ -33,17 +33,29 @@ const variants = [
 
 export default function CreateVariant() {
   const dispatch = useDispatch();
-  const { createVariantQuery } = useCreateVariantQuery();
-
-  const { variantType, label_ka, label_en, description, status } =
+  const { createVariantQuery, error } = useCreateVariantQuery();
+  const { variantType, label_ka, label_en, description, icon } =
     useSelector(selectCreateVariant);
+  const status = useSelector(selectCreateVariantStatus);
+
+  const handleSetVariant = useCallback((e) => {
+    dispatch(
+      createVariantActions.setVariant({
+        key: e.target.name,
+        value: e.target.value,
+      })
+    );
+  }, []);
+
+  const handleManualSetVariant = useCallback(({ key, value }) => {
+    dispatch(createVariantActions.setVariant({ key, value }));
+  }, []);
 
   const fileRef = useRef();
-  const [file, setFile] = useState(null);
 
   useEffect(() => {
     return () => {
-      dispatch(resetState());
+      dispatch(createVariantActions.resetState());
     };
   }, []);
 
@@ -56,11 +68,11 @@ export default function CreateVariant() {
           label="ვარიანტის ტიპი"
           name="variantType"
           placeholder="pocket"
-          value={variantType}
-          setValue={({ key, value }) => dispatch(setVariant({ key, value }))}
-          message="მესიჯი"
-          error={false}
           anotation="აირჩიე არსებული ვარიანტის ტიპი ან შექმენი ახალი"
+          value={variantType}
+          setValue={handleManualSetVariant}
+          message={error.variantType.message}
+          error={error.variantType.hasError}
           list={variants}
         />
 
@@ -70,11 +82,9 @@ export default function CreateVariant() {
           name="label_ka"
           placeholder="ჯიბის გარეშე"
           value={label_ka}
-          onChange={(e) =>
-            dispatch(setVariant({ key: e.target.name, value: e.target.value }))
-          }
-          message="მესიჯი"
-          error={false}
+          onChange={handleSetVariant}
+          message={error.label_ka.message}
+          error={error.label_ka.hasError}
         />
 
         <InputText
@@ -83,11 +93,9 @@ export default function CreateVariant() {
           name="label_en"
           placeholder="without pocket"
           value={label_en}
-          onChange={(e) =>
-            dispatch(setVariant({ key: e.target.name, value: e.target.value }))
-          }
-          message="მესიჯი"
-          error={false}
+          onChange={handleSetVariant}
+          message={error.label_en.message}
+          error={error.label_en.hasError}
         />
 
         <InputTextarea
@@ -96,19 +104,19 @@ export default function CreateVariant() {
           name="description"
           placeholder="აღწერე ვარიანტი..."
           value={description}
-          onChange={(e) =>
-            dispatch(setVariant({ key: e.target.name, value: e.target.value }))
-          }
-          message="მესიჯი"
-          error={false}
+          onChange={handleSetVariant}
+          message={error.description.message}
+          error={error.description.hasError}
         />
 
         <InputFile
           name="icon"
-          fileRef={fileRef}
-          file={file}
-          onChange={(e) => setFile(e.target.files[0])}
           label="აირჩიეთ ნიშნულის ფაილი"
+          fileRef={fileRef}
+          file={icon}
+          message={error.icon.message}
+          error={error.icon.hasError}
+          onChange={handleManualSetVariant}
         />
 
         <Button
@@ -119,9 +127,9 @@ export default function CreateVariant() {
             createVariantQuery();
           }}
         />
-
-        {status.loading && <Loading />}
       </Form>
+
+      {status.loading && <LoadingSpinner />}
     </Styled.CreateVariant>
   );
 }

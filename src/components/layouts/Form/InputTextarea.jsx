@@ -1,6 +1,7 @@
+import { memo } from "react";
 import * as Styled from "./Form.styled";
 
-export default function InputTextarea({
+export default memo(function InputTextarea({
   id,
   name,
   label,
@@ -31,4 +32,4 @@ export default function InputTextarea({
       {error && <p className="form__input-error--message">{message}</p>}
     </Styled.InputTextarea>
   );
-}
+});

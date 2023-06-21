@@ -1,21 +1,18 @@
 import { call, put } from "redux-saga/effects";
 import { errorController, pretendLoading } from "store/saga/handlers/helpers";
+import { createVariantAPI } from "store/saga/api/moderate";
+import { createVariantActions } from "store/reducers/moderate/createVariantReducer";
 
-import {
-  setSuccess,
-  setError,
-} from "store/reducers/moderate/createVariantReducer";
-
-export function* handleCreateVariant({ payload }) {
+export function* createVariant({ payload }) {
   try {
     yield pretendLoading();
-    yield put(setSuccess());
-    alert(JSON.stringify(payload));
+    yield call(createVariantAPI.createVariantQuery);
+    yield put(createVariantActions.setSuccess(payload));
   } catch (error) {
     yield errorController({
       error,
-      location: "handleCreateVariant",
-      errorSetter: setError,
+      location: "createVariantHandler",
+      errorSetter: createVariantActions.setError,
     });
   }
 }

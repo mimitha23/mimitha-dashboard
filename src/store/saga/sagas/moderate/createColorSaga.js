@@ -1,7 +1,10 @@
 import { takeLatest } from "redux-saga/effects";
-import { createColor } from "store/reducers/moderate/createColorReducer";
-import { handleCreateColor } from "store/saga/handlers/moderate/createColorHandlers";
+import { createColorActions } from "store/reducers/moderate/createColorReducer";
+import { createColorHandlers } from "store/saga/handlers/moderate";
 
 export default function* createColorSaga() {
-  yield takeLatest(createColor, handleCreateColor);
+  yield takeLatest(
+    createColorActions.createColor,
+    createColorHandlers.createColor
+  );
 }
