@@ -22,13 +22,13 @@ import {
 import * as Styled from "./styles/CreateVariant.styled";
 
 const variants = [
-  { variantType: "pocket", _id: nanoid() },
-  { variantType: "zipper", _id: nanoid() },
-  { variantType: "cuff", _id: nanoid() },
-  { variantType: "bootstrap", _id: nanoid() },
-  { variantType: "button", _id: nanoid() },
-  { variantType: "collar", _id: nanoid() },
-  { variantType: "wrist", _id: nanoid() },
+  { _id: nanoid(), caption: "pocket" },
+  { _id: nanoid(), caption: "zipper" },
+  { _id: nanoid(), caption: "cuff" },
+  { _id: nanoid(), caption: "bootstrap" },
+  { _id: nanoid(), caption: "button" },
+  { _id: nanoid(), caption: "collar" },
+  { _id: nanoid(), caption: "wrist" },
 ];
 
 export default function CreateVariant() {

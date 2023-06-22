@@ -76,3 +76,32 @@ export const selectCreateProductTypeStatus = createSelector(
   selectedCreateProductTypeStatus,
   (memorised) => memorised
 );
+
+/////////////////////////////////////////
+////////// Register Product //////////
+///////////////////////////////////////
+const selectedRegisterProduct = ({ registerProduct }) => ({
+  productType: registerProduct.productType,
+  seasons: registerProduct.seasons,
+  styles: registerProduct.styles,
+  tags: registerProduct.tags,
+  warnings: registerProduct.warnings,
+  texture: registerProduct.texture,
+  gender: registerProduct.gender,
+});
+
+const selectedRegisterProductStatus = ({ registerProduct }) => ({
+  loading: registerProduct.status.loading,
+  error: registerProduct.status.error,
+  message: registerProduct.status.message,
+});
+
+export const selectRegisterProduct = createSelector(
+  selectedRegisterProduct,
+  (memorised) => memorised
+);
+
+export const selectRegisterProductStatus = createSelector(
+  selectedRegisterProductStatus,
+  (memorised) => memorised
+);

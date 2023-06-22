@@ -1,57 +1,131 @@
-import * as Styled from "./styles/RegisterProduct.styled";
-import { Form, Button, InputFilterableSelect } from "components/layouts";
+/* eslint-disable react-hooks/exhaustive-deps */
+import { nanoid } from "@reduxjs/toolkit";
+import { useCallback } from "react";
+import { useDispatch, useSelector } from "react-redux";
+
+import {
+  selectRegisterProduct,
+  selectRegisterProductStatus,
+} from "store/selectors/moderateSelectors";
+import { registerProductActions } from "store/reducers/moderate/registerProductReducer";
+
+import {
+  Form,
+  Button,
+  InputFilterableSelect,
+  InputMultipleFilterableSelect,
+} from "components/layouts";
 import TextureField from "./components/TextureField";
+import * as Styled from "./styles/RegisterProduct.styled";
+
+const seasons = [
+  { _id: nanoid(), caption: "გაზაფხული" },
+  { _id: nanoid(), caption: "ზაფხული" },
+  { _id: nanoid(), caption: "შემოდგომა" },
+  { _id: nanoid(), caption: "ზამთარი" },
+];
+
+const productTypes = [
+  { _id: nanoid(), caption: "hoody" },
+  { _id: nanoid(), caption: "trousers" },
+  { _id: nanoid(), caption: "cargo trousers" },
+  { _id: nanoid(), caption: "jacket" },
+  { _id: nanoid(), caption: "coat" },
+  { _id: nanoid(), caption: "shirt" },
+  { _id: nanoid(), caption: "t-shirt" },
+];
+
+const styles = [
+  { _id: nanoid(), caption: "ყოველდღიური" },
+  { _id: nanoid(), caption: "სპორტული" },
+  { _id: nanoid(), caption: "მსუბუქი" },
+];
+
+const genders = [
+  { _id: nanoid(), caption: "მამაკაცი" },
+  { _id: nanoid(), caption: "ქალბატონი" },
+  { _id: nanoid(), caption: "ორივენიცა" },
+];
 
 export default function RegisterProduct() {
-  const productTypes = [
-    "hoody",
-    "trousers",
-    "cargo trousers",
-    "jacket",
-    "coat",
-    "shirt",
-    "t-shirt",
-  ];
+  const dispatch = useDispatch();
 
-  const seasons = ["გაზაფხული", "ზაფხული", "შემოდგომა", "ზამთარი"];
+  const {
+    gender,
+    productType,
+    seasons: selectedSeasons,
+    styles: selectedStyles,
+  } = useSelector(selectRegisterProduct);
+  const status = useSelector(selectRegisterProductStatus);
 
-  const styles = ["ყოველდღიური", "სპორტული", "მსუბუქი"];
+  const setRegisterProductValue = useCallback(({ key, value }) => {
+    dispatch(registerProductActions.setRegisterProductValue({ key, value }));
+  }, []);
+
+  const setStyle = useCallback((value) => {
+    dispatch(registerProductActions.setStyle(value));
+  }, []);
+
+  const setSeason = useCallback((value) => {
+    dispatch(registerProductActions.setSeason(value));
+  }, []);
 
   return (
     <Styled.RegisterProduct>
       <h4 className="moderator-title">დაარეგისტრირე პროდუქტი</h4>
       <Form>
         <InputFilterableSelect
-          readOnly={true}
           id="product-type"
           label="პროდუქტის ტიპი"
-          message="მესიჯი"
           name="productType"
           placeholder="აირჩიეთ პროდუქტის ტიპი"
+          message="მესიჯი"
+          error={false}
+          value={productType}
+          setValue={setRegisterProductValue}
           list={productTypes}
         />
 
-        <InputFilterableSelect
-          readOnly={true}
+        <InputMultipleFilterableSelect
+          id="style"
+          label="სტილი"
+          name="style"
+          placeholder="აირჩიეთ სტილი"
+          message="მესიჯი"
+          error={false}
+          selectedFields={selectedStyles}
+          selectField={setStyle}
+          list={styles}
+        />
+
+        <InputMultipleFilterableSelect
           id="season"
           label="სეზონი"
-          message="მესიჯი"
           name="season"
           placeholder="აირჩიეთ სეზონი"
+          message="მესიჯი"
+          error={false}
+          selectedFields={selectedSeasons}
+          selectField={setSeason}
           list={seasons}
         />
 
         <InputFilterableSelect
+          id="gender"
+          label="გენდერი"
+          name="gender"
+          placeholder="აირჩიეთ გენდერი"
           readOnly={true}
-          id="style"
-          label="სტილი"
           message="მესიჯი"
-          name="style"
-          placeholder="აირჩიეთ სტილი"
-          list={styles}
+          error={false}
+          value={gender}
+          setValue={setRegisterProductValue}
+          list={genders}
         />
 
         <TextureField />
+
+        <p>warnings</p>
 
         <Button caption="შექმნა" />
       </Form>

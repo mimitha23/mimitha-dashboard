@@ -8,12 +8,13 @@ export default memo(function InputFilterableSelect({
   name,
   placeholder,
   anotation,
+  readOnly = false,
   value,
   setValue,
   error,
   message,
-  readOnly = false,
   list = [],
+  strictSelection = false,
 }) {
   const [isTyping, setIsTyping] = useState(false);
 
@@ -24,9 +25,7 @@ export default memo(function InputFilterableSelect({
     () => {
       setValue({
         key: name,
-        value: list.some((item) => item.variantType.includes(value))
-          ? value
-          : "",
+        value: list.some((item) => item.caption.includes(value)) ? value : "",
       });
       setIsTyping(false);
     },
@@ -64,17 +63,15 @@ export default memo(function InputFilterableSelect({
           <ul className="filterable_dropdown-list">
             {list
               .filter((item) =>
-                value === "" || readOnly
-                  ? item
-                  : item.variantType.includes(value)
+                value === "" || readOnly ? item : item.caption.includes(value)
               )
               .map((item) => (
                 <li
                   className="filterable_dropdown-list--item"
                   key={item._id}
-                  onClick={() => handleDropdownItem(item.variantType)}
+                  onClick={() => handleDropdownItem(item.caption)}
                 >
-                  {item.variantType}
+                  {item.caption}
                 </li>
               ))}
           </ul>

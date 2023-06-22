@@ -54,6 +54,45 @@ export const InputFilterableSelect = styled.div`
   }
 `;
 
+export const InputMultipleFilterableSelect = styled(InputFilterableSelect)`
+  .filterable_dropdown {
+    top: 7rem;
+
+    .selected-field {
+      background: ${({ theme }) => theme.colors.blue};
+      color: ${({ theme }) => theme.colors.white};
+    }
+  }
+
+  .selected-fields {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(10rem, max-content));
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+
+    &--item {
+      max-width: max-content;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      background: ${({ theme }) => theme.colors.blue};
+      color: ${({ theme }) => theme.colors.white};
+      padding: 0.5rem;
+      border-radius: 0.5rem;
+      font-size: ${({ theme }) => theme.fontSize.sm};
+      span {
+        line-height: 1;
+      }
+
+      button {
+        display: flex;
+        align-items: center;
+      }
+    }
+  }
+`;
+
 export const Button = styled.button`
   background: ${({ theme }) => theme.colors.blue};
   color: ${({ theme }) => theme.colors.white};
