@@ -6,16 +6,15 @@ const initialState = {
   styles: [],
   seasons: [],
   gender: "",
+  warnings: [],
   texture: [
     {
       _id: nanoid(),
-      name__ka: "",
-      name__en: "",
+      texture_ka: "",
+      texture_en: "",
       percentage: "",
     },
   ],
-  warnings: [],
-  tags: [],
 
   status: {
     loading: false,
@@ -52,15 +51,63 @@ const registerProductSlice = createSlice({
         : [payload, ...state.styles];
     },
 
-    setTexture(state, { payload: { key, value, _id } }) {
-      console.log({ key, value, _id });
+    setTexture(state, { payload: { key, value, _id: textureId } }) {
+      const activeTextureIndex = state.texture.findIndex(
+        (texture) => texture._id === textureId
+      );
+
+      if (activeTextureIndex < 0) return;
+
+      state.texture[activeTextureIndex][key] = value;
+    },
+
+    addTextureField(state) {
+      const lastTexture = state.texture[state.texture.length - 1];
+      const lastTextureFieldIsFilled =
+        Object.values(lastTexture).filter(
+          (fieldValue) => fieldValue.trim() !== ""
+        ).length === Object.values(lastTexture).length;
+
+      lastTextureFieldIsFilled &&
+        state.texture.push({
+          _id: nanoid(),
+          texture_ka: "",
+          texture_en: "",
+          percentage: "",
+        });
+    },
+
+    addWarning(state, { payload }) {
+      state.warnings.push({
+        _id: nanoid(),
+        warning: payload,
+      });
+    },
+
+    removeWarning(state, { payload: warningId }) {
+      state.warnings = state.warnings.filter(
+        (warning) => warning._id !== warningId
+      );
+    },
+
+    updateWarning(state, { payload: { _id: warningId, value } }) {
+      const warningIndex = state.warnings.findIndex(
+        (warning) => warning._id === warningId
+      );
+
+      if (warningIndex < 0) return;
+
+      state.warnings[warningIndex].warning = value;
     },
 
     // API
     registerProduct: {
       prepare(payload) {
         return {
-          payload: {},
+          payload: {
+            productType: payload.productType,
+            styles: payload.styles,
+          },
         };
       },
 

@@ -17,7 +17,7 @@ export default function useCreateColorQuery() {
   function createColorQuery() {
     const validation = colorValidation.validate(credentials);
 
-    setError(validation);
+    setError((prev) => ({ ...prev, ...validation }));
 
     if (validation.hasError) return;
 

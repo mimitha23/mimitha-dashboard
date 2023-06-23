@@ -1,4 +1,6 @@
-export default class Validate {
+import ValidateHelpers from "./helpers/ValidateHelpers";
+
+export default class Validators extends ValidateHelpers {
   // regexes
   regs = {
     has_white_space: /\s/g,
@@ -146,9 +148,9 @@ export default class Validate {
 }
 
 const availableValidationRules = {};
-Object.getOwnPropertyNames(Validate.prototype)
+Object.getOwnPropertyNames(Validators.prototype)
   .filter((name) => {
-    const instance = new Validate();
+    const instance = new Validators();
     return typeof instance[name] === "function" && name !== "constructor";
   })
   .map((name) => (availableValidationRules[name] = name));

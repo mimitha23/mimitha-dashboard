@@ -32,7 +32,6 @@ export const InputFilterableSelect = styled.div`
   position: relative;
 
   .form__input-field {
-    /* text-transform: capitalize; */
   }
 
   .filterable_dropdown {
@@ -66,15 +65,15 @@ export const InputMultipleFilterableSelect = styled(InputFilterableSelect)`
 
   .selected-fields {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(10rem, max-content));
-    align-items: center;
+    grid-template-columns: repeat(2, 1fr);
+    /* align-items: center; */
     gap: 0.5rem;
     margin-top: 0.5rem;
 
     &--item {
-      max-width: max-content;
       display: flex;
       align-items: center;
+      justify-content: space-between;
       gap: 1rem;
       background: ${({ theme }) => theme.colors.blue};
       color: ${({ theme }) => theme.colors.white};

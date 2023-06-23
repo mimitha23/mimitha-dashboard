@@ -1,13 +1,14 @@
-import Validate from "../Validate";
-import { availableValidationRules as Rules } from "utils/validators/Validate";
+import Validators from "utils/validators/Validators";
+import { availableValidationRules as Rules } from "utils/validators/Validators";
 
-export default class CreateColorValidation extends Validate {
+export default class CreateColorValidation extends Validators {
   constructor() {
     super();
 
     this.validationToExecute = [
       {
         key: "color_ka",
+        isPrimitive: true,
         rules: [
           Rules.notIsEmpty,
           Rules.isGeorgianLetters,
@@ -16,6 +17,7 @@ export default class CreateColorValidation extends Validate {
       },
       {
         key: "color_en",
+        isPrimitive: true,
         rules: [
           Rules.notIsEmpty,
           Rules.isLatinLetters,
@@ -24,6 +26,7 @@ export default class CreateColorValidation extends Validate {
       },
       {
         key: "color_hex",
+        isPrimitive: true,
         rules: [Rules.notIsEmpty, Rules.isValidHexColor],
       },
     ];
@@ -34,44 +37,5 @@ export default class CreateColorValidation extends Validate {
       color_en: { hasError: false, message: "" },
       color_hex: { hasError: false, message: "" },
     };
-  }
-
-  validate(credentials) {
-    const allValidations = Object.keys(credentials).map((key) => {
-      const validation = this.validationToExecute.find(
-        (validation) => validation.key === key
-      );
-
-      const validations = validation.rules.map((rule) => {
-        const { hasError, message } = this[rule]({
-          value: credentials[key],
-          key,
-        });
-
-        return { rule, hasError, message };
-      });
-
-      return { [key]: validations };
-    });
-
-    Object.values(allValidations).forEach((validation) => {
-      Object.keys(validation).forEach((key) => {
-        const validations = validation[key];
-        const validationErrorIndex = validations.findIndex(
-          (v) => v.hasError === true
-        );
-
-        if (validationErrorIndex >= 0) {
-          this.error[key] = {
-            hasError: true,
-            message: validations[validationErrorIndex].message,
-          };
-
-          this.error.hasError = true;
-        }
-      });
-    });
-
-    return this.error;
   }
 }

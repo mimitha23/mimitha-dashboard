@@ -1,3 +1,7 @@
 const ENV = process.env.REACT_APP_ENV;
 
-export { ENV };
+const PROD_SERVER_BASE_URL = process.env.REACT_APP_PROD_SERVER_BASE_URL;
+const DEV_SERVER_BASE_URL = process.env.REACT_APP_DEV_SERVER_BASE_URL;
+const BASE_URL = ENV === "DEV" ? DEV_SERVER_BASE_URL : PROD_SERVER_BASE_URL;
+
+export { ENV, BASE_URL };

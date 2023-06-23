@@ -78,13 +78,37 @@ export const selectCreateProductTypeStatus = createSelector(
 );
 
 /////////////////////////////////////////
+////////// Create ProductStyle //////////
+///////////////////////////////////////
+const selectedCreateProductStyle = ({ createProductStyle }) => ({
+  label_ka: createProductStyle.label_ka,
+  label_en: createProductStyle.label_en,
+  query: createProductStyle.query,
+});
+
+const selectedCreateProductStyleStatus = ({ createProductStyle }) => ({
+  loading: createProductStyle.status.loading,
+  error: createProductStyle.status.error,
+  message: createProductStyle.status.message,
+});
+
+export const selectCreateProductStyle = createSelector(
+  selectedCreateProductStyle,
+  (memorised) => memorised
+);
+
+export const selectCreateProductStyleStatus = createSelector(
+  selectedCreateProductStyleStatus,
+  (memorised) => memorised
+);
+
+/////////////////////////////////////////
 ////////// Register Product //////////
 ///////////////////////////////////////
 const selectedRegisterProduct = ({ registerProduct }) => ({
   productType: registerProduct.productType,
   seasons: registerProduct.seasons,
   styles: registerProduct.styles,
-  tags: registerProduct.tags,
   warnings: registerProduct.warnings,
   texture: registerProduct.texture,
   gender: registerProduct.gender,

@@ -7,6 +7,7 @@ import {
   createColorReducer,
   createVariantReducer,
   createProductTypeReducer,
+  createProductStyleReducer,
   registerProductReducer,
 } from "./moderate";
 
@@ -17,6 +18,7 @@ const rootReducer = combineReducers({
   createColor: createColorReducer,
   createVariant: createVariantReducer,
   createProductType: createProductTypeReducer,
+  createProductStyle: createProductStyleReducer,
   registerProduct: registerProductReducer,
 });
 

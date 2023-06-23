@@ -4,16 +4,45 @@ import { Form } from "styles/helpers";
 export const TextureField = styled.div`
   width: 100%;
   overflow: hidden;
+  grid-column: span 2;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  column-gap: 2rem;
 
-  ${Form.label}
+  &.filled-texture {
+    .texture-field--box {
+      grid-column: span 1;
+    }
+  }
+
+  ${Form.label};
 
   .texture-head {
+    grid-column: span 2;
     display: flex;
     align-items: center;
     justify-content: space-between;
+
+    .add-texture--field__btn {
+      font-size: ${({ theme }) => theme.fontSize.md};
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+
+      span {
+        line-height: 1;
+      }
+
+      span:last-child {
+        display: flex;
+        align-items: center;
+        margin-top: 0.4rem;
+      }
+    }
   }
 
   .texture-field--box {
+    grid-column: span 2;
     width: 100%;
     display: flex;
     flex-direction: column;

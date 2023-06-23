@@ -17,7 +17,7 @@ export default function useCreateProductTypeQuery() {
   function createProductTypeQuery() {
     const validation = productTypeValidation.validate(credentials);
 
-    setError(validation);
+    setError((prev) => ({ ...prev, ...validation }));
 
     if (validation.hasError) return;
 

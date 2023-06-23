@@ -12,6 +12,7 @@ import RegisteredProductsPage from "pages/Moderate/RegisteredProductsPage";
 import DevelopedProductsPage from "pages/Moderate/DevelopedProductsPage";
 import DevelopedProductPage from "pages/Moderate/DevelopedProductPage";
 import AddDevelopedProductPage from "pages/Moderate/AddDevelopedProductPage";
+import CreateProductStylePage from "pages/Moderate/CreateProductStylePage";
 
 import { PATHS } from "config/routes";
 
@@ -41,6 +42,11 @@ function App() {
           <Route
             path={PATHS.moderate_sidebar.createProductTypePage.relativePath}
             element={<CreateProductTypePage />}
+          />
+
+          <Route
+            path={PATHS.moderate_sidebar.createProductStylePage.relativePath}
+            element={<CreateProductStylePage />}
           />
 
           <Route

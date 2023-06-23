@@ -1,8 +1,10 @@
-import * as Styled from "./styles/TextureField.styled";
 import { useSelector, useDispatch } from "react-redux";
 
 import { registerProductActions } from "store/reducers/moderate/registerProductReducer";
 import { selectRegisterProduct } from "store/selectors/moderateSelectors";
+
+import { PlusIcon } from "components/layouts/Icons";
+import * as Styled from "./styles/TextureField.styled";
 
 export default function TextureField() {
   const dispatch = useDispatch();
@@ -10,10 +12,23 @@ export default function TextureField() {
   const { texture: textures } = useSelector(selectRegisterProduct);
 
   return (
-    <Styled.TextureField>
+    <Styled.TextureField
+      className={textures.length > 1 ? "filled-texture" : ""}
+    >
       <div className="texture-head">
         <label>ტექსტურა</label>
-        <label>დაამატე ველი</label>
+        <button
+          className="add-texture--field__btn"
+          onClick={(e) => {
+            e.preventDefault();
+            dispatch(registerProductActions.addTextureField());
+          }}
+        >
+          <span>დაამატე ველი</span>
+          <span>
+            <PlusIcon />
+          </span>
+        </button>
       </div>
 
       {textures.map((texture) => (
@@ -22,9 +37,9 @@ export default function TextureField() {
             <label>ka:</label>
             <input
               type="text"
-              name="texture"
+              name="texture_ka"
               placeholder="ბამბა"
-              value={texture.name_ka}
+              value={texture.texture_ka}
               onChange={(e) =>
                 dispatch(
                   registerProductActions.setTexture({
@@ -41,9 +56,9 @@ export default function TextureField() {
             <label>en:</label>
             <input
               type="text"
-              name="texture"
+              name="texture_en"
               placeholder="cotton"
-              value={texture.name_en}
+              value={texture.texture_en}
               onChange={(e) =>
                 dispatch(
                   registerProductActions.setTexture({

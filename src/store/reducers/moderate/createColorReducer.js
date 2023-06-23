@@ -48,15 +48,15 @@ const createColorSlice = createSlice({
     },
 
     setError(state, { payload }) {
-      alert(JSON.stringify(payload));
       state.status = status.error();
+      alert(JSON.stringify(payload));
     },
 
     resetState(state) {
-      state.status = status.reset();
       state.color_en = "";
       state.color_ka = "";
       state.color_hex = "";
+      state.status = status.reset();
     },
   },
 });

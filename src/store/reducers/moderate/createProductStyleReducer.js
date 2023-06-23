@@ -2,11 +2,9 @@ import { createSlice } from "@reduxjs/toolkit";
 import { controllStatus as status } from "../helpers";
 
 const initialState = {
-  variantType: "",
   label_ka: "",
   label_en: "",
-  description: "",
-  icon: null,
+  query: "",
 
   status: {
     loading: false,
@@ -15,21 +13,19 @@ const initialState = {
   },
 };
 
-const createVariantSlice = createSlice({
-  name: "create-variant",
+const createProductStyleSlice = createSlice({
+  name: "create-product-style",
   initialState,
   reducers: {
-    setVariant(state, { payload: { key, value } }) {
+    setProductStyle(state, { payload: { key, value } }) {
       state[key] = value;
     },
 
-    createVariant: {
+    createProductStyle: {
       prepare(payload) {
         return {
           payload: {
-            variantType: payload.variantType,
-            description: payload.description,
-            icon: payload.icon,
+            query: payload.query.split(" ").join("_"),
             label: {
               ka: payload.label_ka,
               en: payload.label_en,
@@ -44,11 +40,9 @@ const createVariantSlice = createSlice({
     },
 
     setSuccess(state, { payload }) {
-      state.variantType = "";
-      state.description = "";
       state.label_ka = "";
       state.label_en = "";
-      state.icon = null;
+      state.query = "";
       state.status = status.success();
       alert(JSON.stringify(payload));
     },
@@ -59,15 +53,13 @@ const createVariantSlice = createSlice({
     },
 
     resetState(state) {
-      state.status = status.reset();
-      state.variantType = "";
-      state.description = "";
       state.label_ka = "";
       state.label_en = "";
-      state.icon = null;
+      state.query = "";
+      state.status = status.reset();
     },
   },
 });
 
-export default createVariantSlice.reducer;
-export const createVariantActions = createVariantSlice.actions;
+export default createProductStyleSlice.reducer;
+export const createProductStyleActions = createProductStyleSlice.actions;

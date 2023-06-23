@@ -16,6 +16,10 @@ const MODERATE_SIDEBAR = {
     relativePath: "create-product-type",
     absolutePath: `${MAIN_NAVIGATION.moderate}/create-product-type`,
   },
+  createProductStylePage: {
+    relativePath: "create-product-style",
+    absolutePath: `${MAIN_NAVIGATION.moderate}/create-product-style`,
+  },
   createVariantPage: {
     relativePath: "create-variant",
     absolutePath: `${MAIN_NAVIGATION.moderate}/create-variant`,
@@ -103,6 +107,11 @@ export const MODERATE_SIDEBAR_ROUTES = [
     _id: nanoid(),
     caption: "შექმენი პროდუქტის ტიპი",
     path: PATHS.moderate_sidebar.createProductTypePage,
+  },
+  {
+    _id: nanoid(),
+    caption: "შექმენი პროდუქტის სტილი",
+    path: PATHS.moderate_sidebar.createProductStylePage,
   },
   {
     _id: nanoid(),

@@ -1,20 +1,11 @@
 import Validators from "utils/validators/Validators";
 import { availableValidationRules as Rules } from "utils/validators/Validators";
 
-export default class CreateVariantValidation extends Validators {
+export default class CreateProductStyleValidation extends Validators {
   constructor() {
     super();
 
     this.validationToExecute = [
-      {
-        key: "variantType",
-        isPrimitive: true,
-        rules: [
-          Rules.notIsEmpty,
-          Rules.isLatinLetters,
-          Rules.hasWhiteSpaceInSequence,
-        ],
-      },
       {
         key: "label_ka",
         isPrimitive: true,
@@ -34,24 +25,21 @@ export default class CreateVariantValidation extends Validators {
         ],
       },
       {
-        key: "description",
+        key: "query",
         isPrimitive: true,
-        rules: [Rules.notIsEmpty],
-      },
-      {
-        key: "icon",
-        isPrimitive: true,
-        rules: [Rules.isFileObject],
+        rules: [
+          Rules.notIsEmpty,
+          Rules.isLatinLetters,
+          Rules.hasWhiteSpaceInSequence,
+        ],
       },
     ];
 
     this.error = {
       hasError: false,
-      variantType: { hasError: false, message: "" },
       label_ka: { hasError: false, message: "" },
       label_en: { hasError: false, message: "" },
-      description: { hasError: false, message: "" },
-      icon: { hasError: false, message: "" },
+      query: { hasError: false, message: "" },
     };
   }
 }

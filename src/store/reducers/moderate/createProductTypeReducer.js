@@ -48,8 +48,8 @@ const createProductTypeSlice = createSlice({
     },
 
     setError(state, { payload }) {
-      alert(JSON.stringify(payload));
       state.status = status.error();
+      alert(JSON.stringify(payload));
     },
 
     resetState(state) {

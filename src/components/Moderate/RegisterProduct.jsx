@@ -7,6 +7,7 @@ import {
   selectRegisterProduct,
   selectRegisterProductStatus,
 } from "store/selectors/moderateSelectors";
+import { useRegisterProductQuery } from "hooks/api/moderate";
 import { registerProductActions } from "store/reducers/moderate/registerProductReducer";
 
 import {
@@ -14,8 +15,10 @@ import {
   Button,
   InputFilterableSelect,
   InputMultipleFilterableSelect,
+  LoadingSpinner,
 } from "components/layouts";
 import TextureField from "./components/TextureField";
+import WarningField from "./components/WarningField";
 import * as Styled from "./styles/RegisterProduct.styled";
 
 const seasons = [
@@ -49,6 +52,7 @@ const genders = [
 
 export default function RegisterProduct() {
   const dispatch = useDispatch();
+  const { registerProductQuery, error } = useRegisterProductQuery();
 
   const {
     gender,
@@ -79,8 +83,8 @@ export default function RegisterProduct() {
           label="პროდუქტის ტიპი"
           name="productType"
           placeholder="აირჩიეთ პროდუქტის ტიპი"
-          message="მესიჯი"
-          error={false}
+          error={error.productType.hasError}
+          message={error.productType.message}
           value={productType}
           setValue={setRegisterProductValue}
           list={productTypes}
@@ -91,8 +95,8 @@ export default function RegisterProduct() {
           label="სტილი"
           name="style"
           placeholder="აირჩიეთ სტილი"
-          message="მესიჯი"
           error={false}
+          message="მესიჯი"
           selectedFields={selectedStyles}
           selectField={setStyle}
           list={styles}
@@ -116,8 +120,8 @@ export default function RegisterProduct() {
           name="gender"
           placeholder="აირჩიეთ გენდერი"
           readOnly={true}
-          message="მესიჯი"
-          error={false}
+          error={error.gender.hasError}
+          message={error.gender.message}
           value={gender}
           setValue={setRegisterProductValue}
           list={genders}
@@ -125,10 +129,19 @@ export default function RegisterProduct() {
 
         <TextureField />
 
-        <p>warnings</p>
+        <WarningField />
 
-        <Button caption="შექმნა" />
+        <Button
+          caption="შექმნა"
+          disabled={status.loading}
+          onClick={(e) => {
+            e.preventDefault();
+            registerProductQuery();
+          }}
+        />
       </Form>
+
+      {status.loading && <LoadingSpinner />}
     </Styled.RegisterProduct>
   );
 }
