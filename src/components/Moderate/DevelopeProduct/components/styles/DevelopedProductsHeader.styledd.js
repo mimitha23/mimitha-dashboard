@@ -5,6 +5,10 @@ export const DevelopedProductsHeader = styled.header`
   justify-content: space-between;
   align-items: center;
 
+  .developed-products--list__title {
+    font-size: ${({ theme }) => theme.fontSize.h3};
+  }
+
   .add-developed--product__btn {
     display: flex;
     align-items: center;

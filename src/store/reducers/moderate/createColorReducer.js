@@ -21,16 +21,11 @@ const createColorSlice = createSlice({
       state[key] = value;
     },
 
+    // API
     createColor: {
       prepare(payload) {
         return {
-          payload: {
-            color: payload.color_hex,
-            label: {
-              ka: payload.color_ka,
-              en: payload.color_en,
-            },
-          },
+          payload: generatePreparationObject(payload),
         };
       },
 
@@ -39,27 +34,68 @@ const createColorSlice = createSlice({
       },
     },
 
-    setSuccess(state, { payload }) {
-      state.color_en = "";
-      state.color_ka = "";
-      state.color_hex = "";
+    updateColor: {
+      prepare(payload) {
+        return {
+          payload: generatePreparationObject(payload),
+        };
+      },
+
+      reducer(state) {
+        state.status = status.loading();
+      },
+    },
+
+    deleteColor: {
+      prepare(payload) {
+        return {
+          payload: { _id: payload },
+        };
+      },
+
+      reducer(state) {
+        state.status = status.loading();
+      },
+    },
+
+    getAllColors: {
+      reducer(state) {
+        state.status = status.loading();
+      },
+    },
+
+    setSuccess(state) {
+      resetFormState(state);
       state.status = status.success();
-      alert(JSON.stringify(payload));
     },
 
     setError(state, { payload }) {
       state.status = status.error();
-      alert(JSON.stringify(payload));
     },
 
     resetState(state) {
-      state.color_en = "";
-      state.color_ka = "";
-      state.color_hex = "";
-      state.status = status.reset();
+      Object.keys(state).forEach((key) => {
+        state[key] = initialState[key];
+      });
     },
   },
 });
 
 export default createColorSlice.reducer;
 export const createColorActions = createColorSlice.actions;
+
+function resetFormState(state) {
+  state.color_en = "";
+  state.color_ka = "";
+  state.color_hex = "";
+}
+
+function generatePreparationObject(payload) {
+  return {
+    hex: payload.color_hex,
+    label: {
+      ka: payload.color_ka,
+      en: payload.color_en,
+    },
+  };
+}

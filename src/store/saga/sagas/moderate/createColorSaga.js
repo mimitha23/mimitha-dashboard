@@ -7,4 +7,16 @@ export default function* createColorSaga() {
     createColorActions.createColor,
     createColorHandlers.createColor
   );
+  yield takeLatest(
+    createColorActions.updateColor,
+    createColorHandlers.updateColor
+  );
+  yield takeLatest(
+    createColorActions.deleteColor,
+    createColorHandlers.deleteColor
+  );
+  yield takeLatest(
+    createColorActions.getAllColors,
+    createColorHandlers.getAllColors
+  );
 }

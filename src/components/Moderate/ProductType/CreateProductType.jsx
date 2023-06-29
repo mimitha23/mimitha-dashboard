@@ -9,7 +9,10 @@ import {
 import { useCreateProductTypeQuery } from "hooks/api/moderate";
 import { createProductTypeActions } from "store/reducers/moderate/createProductTypeReducer";
 
+import { PATHS } from "config/routes";
+
 import * as Styled from "./styles/CreateProductType.styled";
+import ModerateHeader from "../components/ModerateHeader";
 import { Form, InputText, Button, LoadingSpinner } from "components/layouts";
 
 export default function CreateProductType() {
@@ -36,7 +39,12 @@ export default function CreateProductType() {
 
   return (
     <Styled.CreateProductType>
-      <h4 className="moderator-title">შექმენი პროდუქტის ტიპი</h4>
+      <ModerateHeader
+        title="შექმენი პროდუქტის ტიპი"
+        linkCaption="ნახე პროდუქტის ყველა ტიპი"
+        redirectPath={PATHS.moderate_nested_routes.productTypesPage.relativePath()}
+      />
+
       <Form>
         <InputText
           id="product-label-ka"

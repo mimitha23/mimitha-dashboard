@@ -7,4 +7,16 @@ export default function* createProductStyleSaga() {
     createProductStyleActions.createProductStyle,
     createProductStyleHandlers.createProductStyle
   );
+  yield takeLatest(
+    createProductStyleActions.updateProductStyle,
+    createProductStyleHandlers.updateProductStyle
+  );
+  yield takeLatest(
+    createProductStyleActions.deleteProductStyle,
+    createProductStyleHandlers.deleteProductStyle
+  );
+  yield takeLatest(
+    createProductStyleActions.getAllProductStyles,
+    createProductStyleHandlers.getAllProductStyles
+  );
 }

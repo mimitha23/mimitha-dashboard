@@ -32,13 +32,29 @@ const MODERATE_SIDEBAR = {
     relativePath: "registered-products",
     absolutePath: `${MAIN_NAVIGATION.moderate}/registered-products`,
   },
-  developeProductPage: {
-    relativePath: "develope-product",
-    absolutePath: `${MAIN_NAVIGATION.moderate}/develope-product`,
-  },
 };
 
 const MODERATE_SIDEBAR_NESTED = {
+  colorsPage: {
+    relativePath: () => `all-colors`,
+    absolutePath: () =>
+      `${MODERATE_SIDEBAR.createColorPage.absolutePath}/all-colors`,
+  },
+  variantsPage: {
+    relativePath: () => `all-variants`,
+    absolutePath: () =>
+      `${MODERATE_SIDEBAR.createVariantPage.absolutePath}/all-variants`,
+  },
+  productTypesPage: {
+    relativePath: () => `all-types`,
+    absolutePath: () =>
+      `${MODERATE_SIDEBAR.createProductTypePage.absolutePath}/all-types`,
+  },
+  productStylePage: {
+    relativePath: () => `all-styles`,
+    absolutePath: () =>
+      `${MODERATE_SIDEBAR.createProductStylePage.absolutePath}/all-styles`,
+  },
   developedProductsPage: {
     relativePath: ({ registeredProductId }) =>
       `${registeredProductId ? registeredProductId : ":registeredProductId"}`,

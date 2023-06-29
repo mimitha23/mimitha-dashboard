@@ -4,12 +4,12 @@ import { moderateContentBox } from "styles/helpers";
 export const AddDevelopedProduct = styled.div`
   ${moderateContentBox};
   min-height: calc(100vh - ${({ theme }) => theme.app.nav_h});
+  padding: 2rem;
 
   .add-developed--product__content {
     width: 100%;
     display: flex;
     margin-top: 2rem;
-    padding: 2rem 0;
   }
 
   .add-developed--product__form-wrapper {
@@ -18,8 +18,9 @@ export const AddDevelopedProduct = styled.div`
     justify-content: center;
 
     .form {
-      width: auto;
+      width: 100%;
       display: grid;
+      margin-right: 2rem;
       grid-template-columns: repeat(2, 1fr);
     }
 

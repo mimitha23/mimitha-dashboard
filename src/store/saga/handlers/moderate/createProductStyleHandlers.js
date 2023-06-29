@@ -5,13 +5,51 @@ import { createProductStyleAPI } from "store/saga/api/moderate";
 
 export function* createProductStyle({ payload }) {
   try {
-    yield pretendLoading();
     yield call(createProductStyleAPI.createProductStyleQuery, payload);
-    yield put(createProductStyleActions.setSuccess(payload));
+    yield put(createProductStyleActions.setSuccess());
   } catch (error) {
     yield errorController({
       error,
-      location: "createProductTypeHandler",
+      location: "createProductStyleHandler",
+      errorSetter: createProductStyleActions.setError,
+    });
+  }
+}
+
+export function* getAllProductStyles() {
+  try {
+    yield call(createProductStyleAPI.getAllProductStyleQuery);
+    yield put(createProductStyleActions.setSuccess());
+  } catch (error) {
+    yield errorController({
+      error,
+      location: "getAllProductStylesHandler",
+      errorSetter: createProductStyleActions.setError,
+    });
+  }
+}
+
+export function* updateProductStyle({ payload }) {
+  try {
+    yield call(createProductStyleAPI.updateProductStyleQuery, payload);
+    yield put(createProductStyleActions.setSuccess());
+  } catch (error) {
+    yield errorController({
+      error,
+      location: "updateProductStyleHandler",
+      errorSetter: createProductStyleActions.setError,
+    });
+  }
+}
+
+export function* deleteProductStyle({ payload }) {
+  try {
+    yield call(createProductStyleAPI.deleteProductStyleQuery, payload);
+    yield put(createProductStyleActions.setSuccess());
+  } catch (error) {
+    yield errorController({
+      error,
+      location: "deleteProductStyleHandler",
       errorSetter: createProductStyleActions.setError,
     });
   }

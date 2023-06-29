@@ -1,5 +1,5 @@
 import axios from "axios";
-// import decode from "jwt-decode";
+import decode from "jwt-decode";
 import { BASE_URL } from "config/env";
 import { JWT_MIMITHA_KEY } from "config/consts";
 
@@ -14,7 +14,7 @@ export const axiosPrivateQuery = axios.create({
 });
 
 const refresher = axios.create({
-  baseURL: `${BASE_URL}/authentication/refresh`,
+  baseURL: `${BASE_URL}/auth/refresh`,
   withCredentials: true,
   method: "GET",
 });
@@ -28,8 +28,7 @@ axiosPrivateQuery.interceptors.request.use(async (config) =>
 function tokenExchange({ config }) {
   const token = getJWT();
 
-  const decodedUser = null;
-  // const decodedUser = token ? decode(token) : null;
+  const decodedUser = token ? decode(token) : null;
 
   if (!decodedUser) return config;
 

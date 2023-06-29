@@ -1,1 +1,1 @@
-export { default as generateLowerCaseData } from "./generateLowerCaseData";
+export { default as generateLowerCaseData } from "../functions/generateLowerCaseData";

@@ -7,4 +7,16 @@ export default function* createProductTypeSaga() {
     createProductTypeActions.createProductType,
     createProductTypeHandlers.createProductType
   );
+  yield takeLatest(
+    createProductTypeActions.updateProductType,
+    createProductTypeHandlers.updateProductType
+  );
+  yield takeLatest(
+    createProductTypeActions.deleteProductType,
+    createProductTypeHandlers.deleteProductType
+  );
+  yield takeLatest(
+    createProductTypeActions.getAllProductTypes,
+    createProductTypeHandlers.getAllProductTypes
+  );
 }

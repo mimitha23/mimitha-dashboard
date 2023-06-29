@@ -1,3 +1,5 @@
+import { PATHS } from "config/routes";
+
 import {
   Form,
   InputText,
@@ -8,12 +10,20 @@ import {
 } from "components/layouts";
 import AddDevelopedProductBlueprint from "./components/AddDevelopedProductBlueprint";
 import AddVariantField from "./components/AddVariantField";
+import ModerateHeader from "../components/ModerateHeader";
 import * as Styled from "./styles/AddDevelopedProduct.styled";
 
 export default function AddDevelopedProduct() {
   return (
     <Styled.AddDevelopedProduct>
-      <h4 className="moderator-title">შექმენი ვარიანტი</h4>
+      <ModerateHeader
+        title="განავითარე პროდუქტი"
+        linkCaption="ნახე ყველა მიმაგრებული პროდუქტი"
+        redirectPath={PATHS.moderate_nested_routes.developedProductsPage.absolutePath(
+          { registeredProductId: "registered-product-id" }
+        )}
+      />
+
       <div className="add-developed--product__content">
         <div className="add-developed--product__form-wrapper">
           <Form>

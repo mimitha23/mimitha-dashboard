@@ -21,16 +21,11 @@ const createProductTypeSlice = createSlice({
       state[key] = value;
     },
 
+    // API
     createProductType: {
       prepare(payload) {
         return {
-          payload: {
-            query: payload.query.split(" ").join("_"),
-            label: {
-              ka: payload.label_ka,
-              en: payload.label_en,
-            },
-          },
+          payload: generatePreparationObject(payload),
         };
       },
 
@@ -39,27 +34,68 @@ const createProductTypeSlice = createSlice({
       },
     },
 
-    setSuccess(state, { payload }) {
-      state.label_ka = "";
-      state.label_en = "";
-      state.query = "";
+    updateProductType: {
+      prepare(payload) {
+        return {
+          payload: generatePreparationObject(payload),
+        };
+      },
+
+      reducer(state) {
+        state.status = status.loading();
+      },
+    },
+
+    deleteProductType: {
+      prepare(payload) {
+        return {
+          payload: { _id: payload },
+        };
+      },
+
+      reducer(state) {
+        state.status = status.loading();
+      },
+    },
+
+    getAllProductTypes: {
+      reducer(state) {
+        state.status = status.loading();
+      },
+    },
+
+    setSuccess(state) {
+      resetFormState(state);
       state.status = status.success();
-      alert(JSON.stringify(payload));
     },
 
     setError(state, { payload }) {
       state.status = status.error();
-      alert(JSON.stringify(payload));
     },
 
     resetState(state) {
-      state.label_ka = "";
-      state.label_en = "";
-      state.query = "";
-      state.status = status.reset();
+      Object.keys(state).forEach((key) => {
+        state[key] = initialState[key];
+      });
     },
   },
 });
 
 export default createProductTypeSlice.reducer;
 export const createProductTypeActions = createProductTypeSlice.actions;
+
+function resetFormState(state) {
+  state.label_ka = "";
+  state.label_en = "";
+  state.query = "";
+}
+
+function generatePreparationObject(payload) {
+  return {
+    query: payload.query.split(" ").join("_"),
+    label: {
+      ka: payload.label_ka,
+      en: payload.label_en,
+    },
+  };
+}

@@ -4,14 +4,8 @@ const moderateContentBox = () => css`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 2rem 3rem 1rem 3rem;
+  padding: 2rem;
   height: 100%;
-
-  .moderator-title {
-    font-size: ${({ theme }) => theme.fontSize.h3};
-    width: 100%;
-    display: flex;
-  }
 
   .form {
     display: flex;

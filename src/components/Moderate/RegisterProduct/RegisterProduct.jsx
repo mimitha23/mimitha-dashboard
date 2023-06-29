@@ -10,6 +10,8 @@ import {
 import { useRegisterProductQuery } from "hooks/api/moderate";
 import { registerProductActions } from "store/reducers/moderate/registerProductReducer";
 
+import { PATHS } from "config/routes";
+
 import {
   Form,
   Button,
@@ -19,6 +21,7 @@ import {
 } from "components/layouts";
 import TextureField from "./components/TextureField";
 import WarningField from "./components/WarningField";
+import ModerateHeader from "../components/ModerateHeader";
 import * as Styled from "./styles/RegisterProduct.styled";
 
 const seasons = [
@@ -76,7 +79,14 @@ export default function RegisterProduct() {
 
   return (
     <Styled.RegisterProduct>
-      <h4 className="moderator-title">დაარეგისტრირე პროდუქტი</h4>
+      <ModerateHeader
+        title="დაარეგისტრირე პროდუქტი"
+        linkCaption="ნახე ყველა რეგისტრირებული პროდუქტი"
+        redirectPath={
+          PATHS.moderate_sidebar.registeredProductsPage.absolutePath
+        }
+      />
+
       <Form>
         <InputFilterableSelect
           id="product-type"

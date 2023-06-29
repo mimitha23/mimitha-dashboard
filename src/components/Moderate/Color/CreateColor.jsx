@@ -9,9 +9,11 @@ import {
 import { useCreateColorQuery } from "hooks/api/moderate";
 import { createColorActions } from "store/reducers/moderate/createColorReducer";
 
+import { PATHS } from "config/routes";
 import { isValidHexColor } from "functions";
 
 import { Form, InputText, Button, LoadingSpinner } from "components/layouts";
+import ModerateHeader from "../components/ModerateHeader";
 import * as Styled from "./styles/CreateColor.styled";
 
 export default function CreateColor() {
@@ -34,7 +36,12 @@ export default function CreateColor() {
 
   return (
     <Styled.CreateColor colorinhex={color_hex}>
-      <h4 className="moderator-title">შექმენი ფერი</h4>
+      <ModerateHeader
+        title="შექმენი ფერი"
+        linkCaption="ნახე ყველა ფერი"
+        redirectPath={PATHS.moderate_nested_routes.colorsPage.relativePath()}
+      />
+
       <Form>
         <InputText
           id="color-label--ka"

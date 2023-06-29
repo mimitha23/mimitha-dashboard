@@ -23,18 +23,11 @@ const createVariantSlice = createSlice({
       state[key] = value;
     },
 
+    // API
     createVariant: {
       prepare(payload) {
         return {
-          payload: {
-            variantType: payload.variantType,
-            description: payload.description,
-            icon: payload.icon,
-            label: {
-              ka: payload.label_ka,
-              en: payload.label_en,
-            },
-          },
+          payload: generatePreparationObject(payload),
         };
       },
 
@@ -43,31 +36,72 @@ const createVariantSlice = createSlice({
       },
     },
 
-    setSuccess(state, { payload }) {
-      state.variantType = "";
-      state.description = "";
-      state.label_ka = "";
-      state.label_en = "";
-      state.icon = null;
+    updateVariant: {
+      prepare(payload) {
+        return {
+          payload: generatePreparationObject(payload),
+        };
+      },
+
+      reducer(state) {
+        state.status = status.loading();
+      },
+    },
+
+    deleteVariant: {
+      prepare(payload) {
+        return {
+          payload: { _id: payload },
+        };
+      },
+
+      reducer(state) {
+        state.status = status.loading();
+      },
+    },
+
+    getAllVariants: {
+      reducer(state) {
+        state.status = status.loading();
+      },
+    },
+
+    setSuccess(state) {
+      resetFormState();
       state.status = status.success();
-      alert(JSON.stringify(payload));
     },
 
     setError(state, { payload }) {
       state.status = status.error();
-      alert(JSON.stringify(payload));
     },
 
     resetState(state) {
-      state.status = status.reset();
-      state.variantType = "";
-      state.description = "";
-      state.label_ka = "";
-      state.label_en = "";
-      state.icon = null;
+      Object.keys(state).forEach((key) => {
+        state[key] = initialState[key];
+      });
     },
   },
 });
 
 export default createVariantSlice.reducer;
 export const createVariantActions = createVariantSlice.actions;
+
+function resetFormState(state) {
+  state.variantType = "";
+  state.description = "";
+  state.label_ka = "";
+  state.label_en = "";
+  state.icon = null;
+}
+
+function generatePreparationObject(payload) {
+  return {
+    variantType: payload.variantType,
+    description: payload.description,
+    icon: payload.icon,
+    label: {
+      ka: payload.label_ka,
+      en: payload.label_en,
+    },
+  };
+}

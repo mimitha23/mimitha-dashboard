@@ -10,6 +10,8 @@ import {
 import { useCreateVariantQuery } from "hooks/api/moderate";
 import { createVariantActions } from "store/reducers/moderate/createVariantReducer";
 
+import { PATHS } from "config/routes";
+
 import {
   Form,
   InputText,
@@ -19,6 +21,7 @@ import {
   InputTextarea,
   LoadingSpinner,
 } from "components/layouts";
+import ModerateHeader from "../components/ModerateHeader";
 import * as Styled from "./styles/CreateVariant.styled";
 
 const variants = [
@@ -61,7 +64,12 @@ export default function CreateVariant() {
 
   return (
     <Styled.CreateVariant>
-      <h4 className="moderator-title">შექმენი ვარიანტი</h4>
+      <ModerateHeader
+        title="შექმენი ვარიანტი"
+        linkCaption="ნახე ყველა ვარიანტი"
+        redirectPath={PATHS.moderate_nested_routes.variantsPage.relativePath()}
+      />
+
       <Form>
         <InputFilterableSelect
           id="variant-type"

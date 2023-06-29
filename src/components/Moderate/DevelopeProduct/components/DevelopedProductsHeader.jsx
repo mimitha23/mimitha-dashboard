@@ -6,7 +6,9 @@ import { PATHS } from "config/routes";
 export default function DevelopedProductsHeader() {
   return (
     <Styled.DevelopedProductsHeader>
-      <span>მიმაგრებული პროდუქტები</span>
+      <span className="developed-products--list__title">
+        მიმაგრებული პროდუქტები
+      </span>
       <Link
         to={PATHS.moderate_nested_routes.addDevelopedProductPage.relativePath}
         className="add-developed--product__btn"
