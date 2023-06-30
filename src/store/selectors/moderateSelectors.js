@@ -3,52 +3,56 @@ import { createSelector } from "@reduxjs/toolkit";
 ///////////////////////////////////
 ////////// Create Color //////////
 /////////////////////////////////
-const selectedCreateColor = ({ createColor }) => ({
-  color_ka: createColor.color_ka,
-  color_en: createColor.color_en,
-  color_hex: createColor.color_hex,
+const selectedColorForm = ({ color }) => ({
+  color_ka: color.color_ka,
+  color_en: color.color_en,
+  color_hex: color.color_hex,
+  isUpdating: color.isUpdating,
+  updatingColorId: color.updatingColorId,
 });
 
-const selectedCreateColorStatus = ({ createColor }) => ({
-  loading: createColor.status.loading,
-  error: createColor.status.error,
-  message: createColor.status.message,
+const selectedColorStatus = ({ color }) => ({
+  loading: color.status.loading,
+  error: color.status.error,
+  message: color.status.message,
 });
 
-export const selectCreateColor = createSelector(
-  selectedCreateColor,
+export const selectAllColors = ({ color }) => color.allColors;
+
+export const selectColorForm = createSelector(
+  selectedColorForm,
   (memorised) => memorised
 );
 
-export const selectCreateColorStatus = createSelector(
-  selectedCreateColorStatus,
+export const selectColorStatus = createSelector(
+  selectedColorStatus,
   (memorised) => memorised
 );
 
 /////////////////////////////////////
 ////////// Create Variant //////////
 ///////////////////////////////////
-const selectedCreateVariant = ({ createVariant }) => ({
-  variantType: createVariant.variantType,
-  label_ka: createVariant.label_ka,
-  label_en: createVariant.label_en,
-  description: createVariant.description,
-  icon: createVariant.icon,
+const selectedVariantForm = ({ variant }) => ({
+  variantType: variant.variantType,
+  label_ka: variant.label_ka,
+  label_en: variant.label_en,
+  description: variant.description,
+  icon: variant.icon,
 });
 
-const selectedCreateVariantStatus = ({ createVariant }) => ({
-  loading: createVariant.status.loading,
-  error: createVariant.status.error,
-  message: createVariant.status.message,
+const selectedVariantStatus = ({ variant }) => ({
+  loading: variant.status.loading,
+  error: variant.status.error,
+  message: variant.status.message,
 });
 
-export const selectCreateVariant = createSelector(
-  selectedCreateVariant,
+export const selectVariantForm = createSelector(
+  selectedVariantForm,
   (memorised) => memorised
 );
 
-export const selectCreateVariantStatus = createSelector(
-  selectedCreateVariantStatus,
+export const selectVariantStatus = createSelector(
+  selectedVariantStatus,
   (memorised) => memorised
 );
 

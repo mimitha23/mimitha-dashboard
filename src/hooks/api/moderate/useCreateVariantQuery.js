@@ -1,14 +1,14 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { selectCreateVariant } from "store/selectors/moderateSelectors";
-import { createVariantActions } from "store/reducers/moderate/createVariantReducer";
+import { selectVariantForm } from "store/selectors/moderateSelectors";
+import { variantActions } from "store/reducers/moderate/variantReducer";
 import { CreateVariantValidation } from "utils/validators/moderate";
 import { generateLowerCaseData } from "utils";
 
 export default function useCreateVariantQuery() {
   const dispatch = useDispatch();
-  const credentials = useSelector(selectCreateVariant);
+  const credentials = useSelector(selectVariantForm);
 
   const variantValidation = new CreateVariantValidation();
 
@@ -23,7 +23,7 @@ export default function useCreateVariantQuery() {
 
     const checkedData = generateLowerCaseData(credentials, ["icon"]);
 
-    dispatch(createVariantActions.createVariant(checkedData));
+    dispatch(variantActions.createVariant(checkedData));
   }
 
   return { createVariantQuery, error };

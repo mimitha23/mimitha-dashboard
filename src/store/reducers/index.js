@@ -4,8 +4,8 @@ import authReducer from "./authReducer";
 import filterReducer from "./filterSlice";
 
 import {
-  createColorReducer,
-  createVariantReducer,
+  colorReducer,
+  variantReducer,
   createProductTypeReducer,
   createProductStyleReducer,
   registerProductReducer,
@@ -15,8 +15,8 @@ const rootReducer = combineReducers({
   auth: authReducer,
   filter: filterReducer,
   // moderate
-  createColor: createColorReducer,
-  createVariant: createVariantReducer,
+  color: colorReducer,
+  variant: variantReducer,
   createProductType: createProductTypeReducer,
   createProductStyle: createProductStyleReducer,
   registerProduct: registerProductReducer,

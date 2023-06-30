@@ -9,3 +9,4 @@ export { default as Filter } from "./Filter/Filter";
 export { default as Loading } from "./Loading/Loading";
 export { default as Spinner } from "./Spinner/Spinner";
 export { default as LoadingSpinner } from "./Spinner/LoadingSpinner";
+export { default as DeletionPopup } from "./DeletionPopup/DeletionPopup";

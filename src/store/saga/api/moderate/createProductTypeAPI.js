@@ -5,16 +5,16 @@ export async function createProductTypeQuery(payload) {
 }
 
 export async function getAllProductTypeQuery() {
-  return await axiosPublicQuery.post("/moderate/product-type");
+  return await axiosPublicQuery.get("/moderate/product-type");
 }
 
 export async function updateProductTypeQuery(payload) {
-  return await axiosPublicQuery.post(
+  return await axiosPublicQuery.put(
     `/moderate/product-type/${payload._id}`,
     payload
   );
 }
 
 export async function deleteProductTypeQuery(payload) {
-  return await axiosPublicQuery.post(`/moderate/product-type/${payload._id}`);
+  return await axiosPublicQuery.delete(`/moderate/product-type/${payload._id}`);
 }

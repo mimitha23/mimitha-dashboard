@@ -3,11 +3,11 @@ import { useEffect, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import {
-  selectCreateColor,
-  selectCreateColorStatus,
+  selectColorForm,
+  selectColorStatus,
 } from "store/selectors/moderateSelectors";
 import { useCreateColorQuery } from "hooks/api/moderate";
-import { createColorActions } from "store/reducers/moderate/createColorReducer";
+import { colorActions } from "store/reducers/moderate/colorReducer";
 
 import { PATHS } from "config/routes";
 import { isValidHexColor } from "functions";
@@ -19,18 +19,19 @@ import * as Styled from "./styles/CreateColor.styled";
 export default function CreateColor() {
   const dispatch = useDispatch();
   const { createColorQuery, error } = useCreateColorQuery();
-  const { color_ka, color_en, color_hex } = useSelector(selectCreateColor);
-  const status = useSelector(selectCreateColorStatus);
+  const { color_ka, color_en, color_hex, isUpdating } =
+    useSelector(selectColorForm);
+  const status = useSelector(selectColorStatus);
 
   const handleSetColor = useCallback((e) => {
     dispatch(
-      createColorActions.setColor({ key: e.target.name, value: e.target.value })
+      colorActions.setColor({ key: e.target.name, value: e.target.value })
     );
   }, []);
 
   useEffect(() => {
     return () => {
-      dispatch(createColorActions.resetState());
+      dispatch(colorActions.resetState());
     };
   }, []);
 
@@ -79,7 +80,7 @@ export default function CreateColor() {
         {isValidHexColor(color_hex) && <div className="picked-color"></div>}
 
         <Button
-          caption="შექმნა"
+          caption={isUpdating ? "განახლება" : "შექმნა"}
           disabled={status.loading}
           onClick={(e) => {
             e.preventDefault();

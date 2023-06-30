@@ -1,4 +1,4 @@
-export default function generateLowerCaseData(data, excludeFields) {
+export default function generateLowerCaseData(data, excludeFields = []) {
   if (!data || typeof data !== "object" || Array.isArray(data)) return;
 
   const temp = loopData(data, excludeFields);

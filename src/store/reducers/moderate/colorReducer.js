@@ -6,6 +6,11 @@ const initialState = {
   color_en: "",
   color_hex: "",
 
+  allColors: [],
+
+  isUpdating: false,
+  updatingColorId: "",
+
   status: {
     loading: false,
     error: null,
@@ -13,12 +18,21 @@ const initialState = {
   },
 };
 
-const createColorSlice = createSlice({
+const colorSlice = createSlice({
   name: "create-color",
   initialState,
   reducers: {
     setColor(state, { payload: { key, value } }) {
       state[key] = value;
+    },
+
+    setColorDefaults(state, { payload }) {
+      state.color_ka = payload.label.ka;
+      state.color_en = payload.label.en;
+      state.color_hex = payload.hex;
+
+      state.isUpdating = true;
+      state.updatingColorId = payload._id;
     },
 
     // API
@@ -58,10 +72,20 @@ const createColorSlice = createSlice({
       },
     },
 
+    setDeletedColor(state, { payload }) {
+      state.allColors = state.allColors.filter(
+        (color) => color._id !== payload
+      );
+    },
+
     getAllColors: {
       reducer(state) {
         state.status = status.loading();
       },
+    },
+
+    setAllColors(state, { payload }) {
+      state.allColors = payload;
     },
 
     setSuccess(state) {
@@ -73,6 +97,7 @@ const createColorSlice = createSlice({
       state.status = status.error();
     },
 
+    // RESET
     resetState(state) {
       Object.keys(state).forEach((key) => {
         state[key] = initialState[key];
@@ -81,21 +106,30 @@ const createColorSlice = createSlice({
   },
 });
 
-export default createColorSlice.reducer;
-export const createColorActions = createColorSlice.actions;
+export default colorSlice.reducer;
+export const colorActions = colorSlice.actions;
 
 function resetFormState(state) {
   state.color_en = "";
   state.color_ka = "";
   state.color_hex = "";
+
+  if (state.isUpdating) {
+    state.isUpdating = false;
+    state.updatingColorId = "";
+  }
 }
 
 function generatePreparationObject(payload) {
-  return {
+  const credentials = {
     hex: payload.color_hex,
     label: {
       ka: payload.color_ka,
       en: payload.color_en,
     },
   };
+
+  if (payload.updatingColorId) credentials._id = payload.updatingColorId;
+
+  return credentials;
 }

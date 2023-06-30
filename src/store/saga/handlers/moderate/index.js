@@ -1,5 +1,5 @@
-export * as createColorHandlers from "./createColorHandlers";
-export * as createVariantHandlers from "./createVariantHandlers";
+export * as colorHandlers from "./colorHandlers";
+export * as variantHandlers from "./variantHandlers";
 export * as createProductTypeHandlers from "./createProductTypeHandlers";
 export * as createProductStyleHandlers from "./createProductStyleHandlers";
 export * as registerProductHandlers from "./registerProductHandlers";

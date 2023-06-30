@@ -13,6 +13,14 @@ export const axiosPrivateQuery = axios.create({
   baseURL: BASE_URL,
 });
 
+export const axiosFormDataQuery = axios.create({
+  withCredentials: true,
+  baseURL: BASE_URL,
+  headers: {
+    "content-type": "multipart/form-data",
+  },
+});
+
 const refresher = axios.create({
   baseURL: `${BASE_URL}/auth/refresh`,
   withCredentials: true,

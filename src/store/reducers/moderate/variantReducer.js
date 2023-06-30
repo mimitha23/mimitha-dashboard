@@ -15,7 +15,7 @@ const initialState = {
   },
 };
 
-const createVariantSlice = createSlice({
+const variantSlice = createSlice({
   name: "create-variant",
   initialState,
   reducers: {
@@ -67,7 +67,7 @@ const createVariantSlice = createSlice({
     },
 
     setSuccess(state) {
-      resetFormState();
+      resetFormState(state);
       state.status = status.success();
     },
 
@@ -83,8 +83,8 @@ const createVariantSlice = createSlice({
   },
 });
 
-export default createVariantSlice.reducer;
-export const createVariantActions = createVariantSlice.actions;
+export default variantSlice.reducer;
+export const variantActions = variantSlice.actions;
 
 function resetFormState(state) {
   state.variantType = "";

@@ -10,6 +10,7 @@ export default memo(function InputFile({
   fileRef,
   file,
   anotation,
+  accept = "image/*",
 }) {
   return (
     <Styled.Input className="form__input-text form__input-file">
@@ -36,7 +37,7 @@ export default memo(function InputFile({
         onChange={(e) =>
           onChange({ key: e.target.name, value: e.target.files[0] })
         }
-        accept="image/*"
+        accept={accept}
         multiple={false}
         hidden
       />

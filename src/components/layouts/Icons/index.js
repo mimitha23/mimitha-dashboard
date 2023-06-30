@@ -18,6 +18,7 @@ import {
   MdOutlineFilterListOff,
   MdOutlineFilterList,
   MdOpenWith,
+  MdDelete,
   // MdOpenInNew,
   MdModeEditOutline,
 } from "react-icons/md";
@@ -37,6 +38,7 @@ const ArrowBottomIcon = MdOutlineKeyboardArrowDown;
 // const BagIcon = BsFillHandbagFill;
 // const BurgerIcon = GiHamburgerMenu;
 const CloseXIcon = AiOutlineClose;
+const DeleteIcon = MdDelete;
 // const DollarIcon = FaDollarSign;
 const EditIcon = MdModeEditOutline;
 // const EuroIcon = FaEuroSign;
@@ -64,6 +66,7 @@ export {
   // BagIcon,
   // BurgerIcon,
   CloseXIcon,
+  DeleteIcon,
   // DollarIcon,
   EditIcon,
   // EuroIcon,

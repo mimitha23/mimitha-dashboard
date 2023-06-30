@@ -1,14 +1,14 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { selectCreateColor } from "store/selectors/moderateSelectors";
-import { createColorActions } from "store/reducers/moderate/createColorReducer";
+import { selectColorForm } from "store/selectors/moderateSelectors";
+import { colorActions } from "store/reducers/moderate/colorReducer";
 import { CreateColorValidation } from "utils/validators/moderate";
 import { generateLowerCaseData } from "utils";
 
 export default function useCreateColorQuery() {
   const dispatch = useDispatch();
-  const credentials = useSelector(selectCreateColor);
+  const credentials = useSelector(selectColorForm);
 
   const colorValidation = new CreateColorValidation();
 
@@ -21,9 +21,14 @@ export default function useCreateColorQuery() {
 
     if (validation.hasError) return;
 
-    const checkedData = generateLowerCaseData(credentials);
+    const checkedData = generateLowerCaseData(credentials, [
+      "isUpdating",
+      "updatingColorId",
+    ]);
 
-    dispatch(createColorActions.createColor(checkedData));
+    credentials.isUpdating
+      ? dispatch(colorActions.updateColor(checkedData))
+      : dispatch(colorActions.createColor(checkedData));
   }
 
   return { createColorQuery, error };

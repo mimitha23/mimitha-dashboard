@@ -4,11 +4,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { nanoid } from "@reduxjs/toolkit";
 
 import {
-  selectCreateVariant,
-  selectCreateVariantStatus,
+  selectVariantForm,
+  selectVariantStatus,
 } from "store/selectors/moderateSelectors";
 import { useCreateVariantQuery } from "hooks/api/moderate";
-import { createVariantActions } from "store/reducers/moderate/createVariantReducer";
+import { variantActions } from "store/reducers/moderate/variantReducer";
 
 import { PATHS } from "config/routes";
 
@@ -38,12 +38,12 @@ export default function CreateVariant() {
   const dispatch = useDispatch();
   const { createVariantQuery, error } = useCreateVariantQuery();
   const { variantType, label_ka, label_en, description, icon } =
-    useSelector(selectCreateVariant);
-  const status = useSelector(selectCreateVariantStatus);
+    useSelector(selectVariantForm);
+  const status = useSelector(selectVariantStatus);
 
   const handleSetVariant = useCallback((e) => {
     dispatch(
-      createVariantActions.setVariant({
+      variantActions.setVariant({
         key: e.target.name,
         value: e.target.value,
       })
@@ -51,14 +51,14 @@ export default function CreateVariant() {
   }, []);
 
   const handleManualSetVariant = useCallback(({ key, value }) => {
-    dispatch(createVariantActions.setVariant({ key, value }));
+    dispatch(variantActions.setVariant({ key, value }));
   }, []);
 
   const fileRef = useRef();
 
   useEffect(() => {
     return () => {
-      dispatch(createVariantActions.resetState());
+      dispatch(variantActions.resetState());
     };
   }, []);
 
@@ -120,6 +120,7 @@ export default function CreateVariant() {
         <InputFile
           name="icon"
           label="აირჩიეთ ნიშნულის ფაილი"
+          accept="image/svg+xml"
           fileRef={fileRef}
           file={icon}
           message={error.icon.message}
