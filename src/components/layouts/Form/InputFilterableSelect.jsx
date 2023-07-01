@@ -14,7 +14,7 @@ export default memo(function InputFilterableSelect({
   error,
   message,
   list = [],
-  strictSelection = false,
+  strictSelection = true,
 }) {
   const [isTyping, setIsTyping] = useState(false);
 
@@ -23,10 +23,11 @@ export default memo(function InputFilterableSelect({
       setIsTyping(true);
     },
     () => {
-      setValue({
-        key: name,
-        value: list.some((item) => item.caption.includes(value)) ? value : "",
-      });
+      strictSelection &&
+        setValue({
+          key: name,
+          value: list.some((item) => item.caption.includes(value)) ? value : "",
+        });
       setIsTyping(false);
     },
     ["form__input-field", "filterable_dropdown"]

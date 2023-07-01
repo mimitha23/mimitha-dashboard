@@ -1,11 +1,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useRef, useEffect, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { nanoid } from "@reduxjs/toolkit";
 
 import {
   selectVariantForm,
   selectVariantStatus,
+  selectExistingVariantTypes,
 } from "store/selectors/moderateSelectors";
 import { useCreateVariantQuery } from "hooks/api/moderate";
 import { variantActions } from "store/reducers/moderate/variantReducer";
@@ -24,22 +24,15 @@ import {
 import ModerateHeader from "../components/ModerateHeader";
 import * as Styled from "./styles/CreateVariant.styled";
 
-const variants = [
-  { _id: nanoid(), caption: "pocket" },
-  { _id: nanoid(), caption: "zipper" },
-  { _id: nanoid(), caption: "cuff" },
-  { _id: nanoid(), caption: "bootstrap" },
-  { _id: nanoid(), caption: "button" },
-  { _id: nanoid(), caption: "collar" },
-  { _id: nanoid(), caption: "wrist" },
-];
-
 export default function CreateVariant() {
   const dispatch = useDispatch();
+
   const { createVariantQuery, error } = useCreateVariantQuery();
+
+  const status = useSelector(selectVariantStatus);
+  const variants = useSelector(selectExistingVariantTypes);
   const { variantType, label_ka, label_en, description, icon } =
     useSelector(selectVariantForm);
-  const status = useSelector(selectVariantStatus);
 
   const handleSetVariant = useCallback((e) => {
     dispatch(
@@ -57,6 +50,8 @@ export default function CreateVariant() {
   const fileRef = useRef();
 
   useEffect(() => {
+    dispatch(variantActions.getExistingVariantTypes());
+
     return () => {
       dispatch(variantActions.resetState());
     };
@@ -77,6 +72,7 @@ export default function CreateVariant() {
           name="variantType"
           placeholder="pocket"
           anotation="აირჩიე არსებული ვარიანტის ტიპი ან შექმენი ახალი"
+          strictSelection={false}
           value={variantType}
           setValue={handleManualSetVariant}
           message={error.variantType.message}
@@ -134,6 +130,7 @@ export default function CreateVariant() {
           onClick={(e) => {
             e.preventDefault();
             createVariantQuery();
+            fileRef.current.value = "";
           }}
         />
       </Form>

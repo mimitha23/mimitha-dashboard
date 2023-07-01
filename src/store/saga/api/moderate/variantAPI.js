@@ -1,7 +1,10 @@
 import { axiosPublicQuery, axiosFormDataQuery } from "services/axios";
 
+export async function getExistingVariantTypesQuery() {
+  return await axiosPublicQuery.get("/moderate/variant/types");
+}
+
 export async function createVariantQuery(payload) {
-  console.log(payload);
   return await axiosFormDataQuery.post("/moderate/variant", payload);
 }
 

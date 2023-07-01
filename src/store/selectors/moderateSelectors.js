@@ -46,6 +46,11 @@ const selectedVariantStatus = ({ variant }) => ({
   message: variant.status.message,
 });
 
+export const selectExistingVariantTypes = ({ variant }) =>
+  variant.existingVariantTypes;
+
+export const selectAllVariants = ({ variant }) => variant.allVariants;
+
 export const selectVariantForm = createSelector(
   selectedVariantForm,
   (memorised) => memorised

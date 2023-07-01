@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, nanoid } from "@reduxjs/toolkit";
 import { controllStatus as status } from "../helpers";
 
 const initialState = {
@@ -7,6 +7,9 @@ const initialState = {
   label_en: "",
   description: "",
   icon: null,
+
+  existingVariantTypes: [],
+  allVariants: [],
 
   status: {
     loading: false,
@@ -24,6 +27,19 @@ const variantSlice = createSlice({
     },
 
     // API
+    getExistingVariantTypes: {
+      reducer(state) {
+        state.status = status.loading();
+      },
+    },
+
+    setExistingVariantTypes(state, { payload }) {
+      state.existingVariantTypes = payload.map((type) => ({
+        _id: nanoid(),
+        caption: type,
+      }));
+    },
+
     createVariant: {
       prepare(payload) {
         return {
@@ -66,6 +82,10 @@ const variantSlice = createSlice({
       },
     },
 
+    setAllVariants(state, { payload }) {
+      state.allVariants = payload;
+    },
+
     setSuccess(state) {
       resetFormState(state);
       state.status = status.success();
@@ -96,7 +116,7 @@ function resetFormState(state) {
 
 function generatePreparationObject(payload) {
   return {
-    variantType: payload.variantType,
+    type: payload.variantType,
     description: payload.description,
     icon: payload.icon,
     label: {

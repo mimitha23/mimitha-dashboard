@@ -10,4 +10,8 @@ export default function* createVariantSaga() {
     variantActions.getAllVariants,
     variantHandlers.getAllVariants
   );
+  yield takeLatest(
+    variantActions.getExistingVariantTypes,
+    variantHandlers.getExistingVariantTypes
+  );
 }

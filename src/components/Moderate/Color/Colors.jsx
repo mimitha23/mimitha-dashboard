@@ -7,8 +7,10 @@ import {
   selectAllColors,
   selectColorStatus,
 } from "store/selectors/moderateSelectors";
-import { PATHS } from "config/routes";
 import { colorActions } from "store/reducers/moderate/colorReducer";
+
+import { PATHS } from "config/routes";
+import useDebounceOnSearch from "../hooks/useDebounceOnSearch";
 
 import { EditIcon, DeleteIcon } from "components/layouts/Icons";
 import { LoadingSpinner, DeletionPopup } from "components/layouts";
@@ -22,22 +24,18 @@ export default function Colors() {
   const status = useSelector(selectColorStatus);
 
   const [search, setSearch] = useState("");
-  const [filteredColors, setFilteredColors] = useState([]);
 
-  const [activeDeletion, setActiveDeletion] = useState(false);
+  const [activeDeletion, setActiveDeletion] = useState("");
 
-  function onSearch(e) {
-    const searchKey = e.target.value;
-    setSearch(searchKey);
-    setFilteredColors(() => {
-      return allColors.filter(
-        (color) =>
-          color.label.ka.includes(searchKey) ||
-          color.label.en.includes(searchKey) ||
-          color.hex.includes(searchKey)
-      );
+  const { filteredArray: filteredColors, setDefaultArray } =
+    useDebounceOnSearch({
+      search,
+      array: allColors,
+      filterHandler: (color) =>
+        color.label.ka.includes(search) ||
+        color.label.en.includes(search) ||
+        color.hex.includes(search),
     });
-  }
 
   function onDelete() {
     dispatch(colorActions.deleteColor(activeDeletion));
@@ -51,16 +49,20 @@ export default function Colors() {
 
   useEffect(() => {
     dispatch(colorActions.getAllColors());
+
+    return () => {
+      dispatch(colorActions.resetState());
+    };
   }, []);
 
   useEffect(() => {
-    !status.loading && allColors[0] && setFilteredColors(allColors);
+    !status.loading && allColors[0] && setDefaultArray();
   }, [status.loading, allColors]);
 
   return (
     <Styled.Colors>
       <div className="all-colors__header">
-        <Search value={search} onSearch={onSearch} />
+        <Search value={search} onSearch={(e) => setSearch(e.target.value)} />
       </div>
 
       {!status.loading && (
