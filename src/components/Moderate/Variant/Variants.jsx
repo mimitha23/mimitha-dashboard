@@ -62,12 +62,12 @@ export default function Variants() {
   }, []);
 
   useEffect(() => {
-    !status.loading && allVariants[0] && setDefaultArray();
+    !status.loading && setDefaultArray();
   }, [status.loading, allVariants]);
 
   return (
     <Styled.Variants>
-      <div className="all-colors__header">
+      <div>
         <Search value={search} onSearch={(e) => setSearch(e.target.value)} />
       </div>
 
@@ -101,9 +101,6 @@ export default function Variants() {
                   </p>
                 </div>
 
-                {/* <p className="all-variants__list-item--description">
-                  {variant.description}
-                </p> */}
                 <LineClampedDescription clamp={2} text={variant.description} />
 
                 <div className="all-variants__list-item--actions">

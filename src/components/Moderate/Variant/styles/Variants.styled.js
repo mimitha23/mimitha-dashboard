@@ -8,7 +8,6 @@ export const Variants = styled.div`
     margin-top: 2rem;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(26rem, max-content));
-    grid-auto-rows: 20rem;
     gap: 3rem;
     justify-content: space-between;
     align-items: stretch;
@@ -17,6 +16,7 @@ export const Variants = styled.div`
       border-radius: 0.5rem;
       overflow: hidden;
       max-width: 30rem;
+      min-height: 20rem;
       background: red;
     }
 

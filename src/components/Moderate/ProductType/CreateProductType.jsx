@@ -3,11 +3,11 @@ import { useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import {
-  selectCreateProductType,
-  selectCreateProductTypeStatus,
+  selectProductTypeForm,
+  selectProductTypeStatus,
 } from "store/selectors/moderateSelectors";
 import { useCreateProductTypeQuery } from "hooks/api/moderate";
-import { createProductTypeActions } from "store/reducers/moderate/createProductTypeReducer";
+import { productTypeActions } from "store/reducers/moderate/productTypeReducer";
 
 import { PATHS } from "config/routes";
 
@@ -17,14 +17,16 @@ import { Form, InputText, Button, LoadingSpinner } from "components/layouts";
 
 export default function CreateProductType() {
   const dispatch = useDispatch();
-  const { label_ka, label_en, query } = useSelector(selectCreateProductType);
-  const status = useSelector(selectCreateProductTypeStatus);
+  const { label_ka, label_en, query, isUpdating } = useSelector(
+    selectProductTypeForm
+  );
+  const status = useSelector(selectProductTypeStatus);
 
   const { createProductTypeQuery, error } = useCreateProductTypeQuery();
 
   const handleSetProductType = useCallback((e) => {
     dispatch(
-      createProductTypeActions.setProductType({
+      productTypeActions.setProductType({
         key: e.target.name,
         value: e.target.value,
       })
@@ -33,7 +35,7 @@ export default function CreateProductType() {
 
   useEffect(() => {
     return () => {
-      dispatch(createProductTypeActions.resetState());
+      dispatch(productTypeActions.resetState());
     };
   }, []);
 
@@ -81,7 +83,7 @@ export default function CreateProductType() {
         />
 
         <Button
-          caption="შექმნა"
+          caption={isUpdating ? "განახლება" : "შექმნა"}
           disabled={status.loading}
           onClick={(e) => {
             e.preventDefault();

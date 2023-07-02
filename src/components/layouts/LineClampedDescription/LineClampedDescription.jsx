@@ -16,6 +16,7 @@ export default function LineClampedDescription({ clamp = 2, text }) {
   const clampedElRef = useRef(null);
 
   const [exceedsClamp, setExceedsClamp] = useState(false);
+  const [expand, setexpand] = useState(false);
 
   useEffect(() => {
     const clampedEl = clampedElRef.current;
@@ -37,12 +38,16 @@ export default function LineClampedDescription({ clamp = 2, text }) {
   return (
     <ClampedEl clamp={clamp}>
       <p
-        className={exceedsClamp ? "clamped-description" : ""}
+        className={exceedsClamp && !expand ? "clamped-description" : ""}
         ref={clampedElRef}
       >
         {text}
       </p>
-      {exceedsClamp && <button>show all</button>}
+      {exceedsClamp && (
+        <button onClick={() => setexpand((prev) => !prev)}>
+          {!expand ? "show all" : "show less"}
+        </button>
+      )}
     </ClampedEl>
   );
 }

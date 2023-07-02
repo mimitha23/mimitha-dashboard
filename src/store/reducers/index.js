@@ -6,7 +6,7 @@ import filterReducer from "./filterSlice";
 import {
   colorReducer,
   variantReducer,
-  createProductTypeReducer,
+  productTypeReducer,
   createProductStyleReducer,
   registerProductReducer,
 } from "./moderate";
@@ -17,7 +17,7 @@ const rootReducer = combineReducers({
   // moderate
   color: colorReducer,
   variant: variantReducer,
-  createProductType: createProductTypeReducer,
+  productType: productTypeReducer,
   createProductStyle: createProductStyleReducer,
   registerProduct: registerProductReducer,
 });

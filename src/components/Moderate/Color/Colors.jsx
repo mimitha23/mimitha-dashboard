@@ -56,7 +56,7 @@ export default function Colors() {
   }, []);
 
   useEffect(() => {
-    !status.loading && allColors[0] && setDefaultArray();
+    !status.loading && setDefaultArray();
   }, [status.loading, allColors]);
 
   return (

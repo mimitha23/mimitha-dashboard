@@ -2,9 +2,16 @@ import { createSlice } from "@reduxjs/toolkit";
 import { controllStatus as status } from "../helpers";
 
 const initialState = {
-  label_ka: "",
-  label_en: "",
-  query: "",
+  form: {
+    label_ka: "",
+    label_en: "",
+    query: "",
+  },
+
+  allProductTypes: [],
+
+  isUpdating: false,
+  updatingProductTypeId: "",
 
   status: {
     loading: false,
@@ -13,12 +20,21 @@ const initialState = {
   },
 };
 
-const createProductTypeSlice = createSlice({
+const productTypeSlice = createSlice({
   name: "create-product-type",
   initialState,
   reducers: {
     setProductType(state, { payload: { key, value } }) {
-      state[key] = value;
+      state.form[key] = value;
+    },
+
+    setProductTypeDefaults(state, { payload }) {
+      state.form.label_ka = payload.label.ka;
+      state.form.label_en = payload.label.en;
+      state.form.query = payload.query.replaceAll("_", " ");
+
+      state.isUpdating = true;
+      state.updatingProductTypeId = payload._id;
     },
 
     // API
@@ -58,14 +74,24 @@ const createProductTypeSlice = createSlice({
       },
     },
 
+    setDeletedProductType(state, { payload }) {
+      console.log(payload);
+      state.allProductTypes = state.allProductTypes.filter(
+        (type) => type._id !== payload
+      );
+    },
+
     getAllProductTypes: {
       reducer(state) {
         state.status = status.loading();
       },
     },
 
+    setAllProductTypes(state, { payload }) {
+      state.allProductTypes = payload;
+    },
+
     setSuccess(state) {
-      resetFormState(state);
       state.status = status.success();
     },
 
@@ -73,29 +99,42 @@ const createProductTypeSlice = createSlice({
       state.status = status.error();
     },
 
+    // RESET
     resetState(state) {
       Object.keys(state).forEach((key) => {
         state[key] = initialState[key];
       });
     },
+
+    resetAllProductTypes(state) {
+      state.allProductTypes = [];
+    },
+
+    resetFormState(state) {
+      state.form = initialState.form;
+
+      if (state.isUpdating) {
+        state.isUpdating = false;
+        state.updatingProductTypeId = "";
+      }
+    },
   },
 });
 
-export default createProductTypeSlice.reducer;
-export const createProductTypeActions = createProductTypeSlice.actions;
-
-function resetFormState(state) {
-  state.label_ka = "";
-  state.label_en = "";
-  state.query = "";
-}
+export default productTypeSlice.reducer;
+export const productTypeActions = productTypeSlice.actions;
 
 function generatePreparationObject(payload) {
-  return {
+  const credentials = {
     query: payload.query.split(" ").join("_"),
     label: {
       ka: payload.label_ka,
       en: payload.label_en,
     },
   };
+
+  if (payload.isUpdating && payload.updatingProductTypeId)
+    credentials._id = payload.updatingProductTypeId;
+
+  return credentials;
 }

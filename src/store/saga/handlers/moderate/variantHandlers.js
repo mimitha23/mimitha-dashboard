@@ -62,6 +62,7 @@ export function* updateVariant({ payload }) {
 export function* deleteVariant({ payload }) {
   try {
     yield call(variantAPI.deleteVariantQuery, payload);
+    yield put(variantActions.setDeletedVariant(payload._id));
     yield put(variantActions.setSuccess());
   } catch (error) {
     yield errorController({

@@ -95,6 +95,12 @@ const variantSlice = createSlice({
       },
     },
 
+    setDeletedVariant(state, { payload }) {
+      state.allVariants = state.allVariants.filter(
+        (variant) => variant._id !== payload
+      );
+    },
+
     getAllVariants: {
       reducer(state) {
         state.status = status.loading();

@@ -67,25 +67,30 @@ export const selectVariantStatus = createSelector(
 /////////////////////////////////////////
 ////////// Create ProductType //////////
 ///////////////////////////////////////
-const selectedCreateProductType = ({ createProductType }) => ({
-  label_ka: createProductType.label_ka,
-  label_en: createProductType.label_en,
-  query: createProductType.query,
+const selectedProductTypeForm = ({ productType }) => ({
+  label_ka: productType.form.label_ka,
+  label_en: productType.form.label_en,
+  query: productType.form.query,
+  isUpdating: productType.isUpdating,
+  updatingProductTypeId: productType.updatingProductTypeId,
 });
 
-const selectedCreateProductTypeStatus = ({ createProductType }) => ({
-  loading: createProductType.status.loading,
-  error: createProductType.status.error,
-  message: createProductType.status.message,
+const selectedProductTypeStatus = ({ productType }) => ({
+  loading: productType.status.loading,
+  error: productType.status.error,
+  message: productType.status.message,
 });
 
-export const selectCreateProductType = createSelector(
-  selectedCreateProductType,
+export const selectAllProductTypes = ({ productType }) =>
+  productType.allProductTypes;
+
+export const selectProductTypeForm = createSelector(
+  selectedProductTypeForm,
   (memorised) => memorised
 );
 
-export const selectCreateProductTypeStatus = createSelector(
-  selectedCreateProductTypeStatus,
+export const selectProductTypeStatus = createSelector(
+  selectedProductTypeStatus,
   (memorised) => memorised
 );
 

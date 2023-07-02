@@ -1,14 +1,14 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { selectCreateProductType } from "store/selectors/moderateSelectors";
-import { createProductTypeActions } from "store/reducers/moderate/createProductTypeReducer";
+import { selectProductTypeForm } from "store/selectors/moderateSelectors";
+import { productTypeActions } from "store/reducers/moderate/productTypeReducer";
 import { CreateProductTypeValidation } from "utils/validators/moderate";
 import { generateLowerCaseData } from "utils";
 
 export default function useCreateProductTypeQuery() {
   const dispatch = useDispatch();
-  const credentials = useSelector(selectCreateProductType);
+  const credentials = useSelector(selectProductTypeForm);
 
   const productTypeValidation = new CreateProductTypeValidation();
 
@@ -21,9 +21,14 @@ export default function useCreateProductTypeQuery() {
 
     if (validation.hasError) return;
 
-    const checkedData = generateLowerCaseData(credentials);
+    const checkedData = generateLowerCaseData(credentials, [
+      "isUpdating",
+      "updatingProductTypeId",
+    ]);
 
-    dispatch(createProductTypeActions.createProductType(checkedData));
+    credentials.isUpdating
+      ? dispatch(productTypeActions.updateProductType(checkedData))
+      : dispatch(productTypeActions.createProductType(checkedData));
   }
 
   return { createProductTypeQuery, error };
