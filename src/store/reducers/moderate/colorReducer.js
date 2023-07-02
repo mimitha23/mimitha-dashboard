@@ -2,9 +2,11 @@ import { createSlice } from "@reduxjs/toolkit";
 import { controllStatus as status } from "../helpers";
 
 const initialState = {
-  color_ka: "",
-  color_en: "",
-  color_hex: "",
+  form: {
+    color_ka: "",
+    color_en: "",
+    color_hex: "",
+  },
 
   allColors: [],
 
@@ -23,13 +25,13 @@ const colorSlice = createSlice({
   initialState,
   reducers: {
     setColor(state, { payload: { key, value } }) {
-      state[key] = value;
+      state.form[key] = value;
     },
 
     setColorDefaults(state, { payload }) {
-      state.color_ka = payload.label.ka;
-      state.color_en = payload.label.en;
-      state.color_hex = payload.hex;
+      state.form.color_ka = payload.label.ka;
+      state.form.color_en = payload.label.en;
+      state.form.color_hex = payload.hex;
 
       state.isUpdating = true;
       state.updatingColorId = payload._id;
@@ -89,7 +91,6 @@ const colorSlice = createSlice({
     },
 
     setSuccess(state) {
-      resetFormState(state);
       state.status = status.success();
     },
 
@@ -103,22 +104,24 @@ const colorSlice = createSlice({
         state[key] = initialState[key];
       });
     },
+
+    resetAllColors(state) {
+      state.allColors = [];
+    },
+
+    resetFormState(state) {
+      state.form = initialState.form;
+
+      if (state.isUpdating) {
+        state.isUpdating = false;
+        state.updatingColorId = "";
+      }
+    },
   },
 });
 
 export default colorSlice.reducer;
 export const colorActions = colorSlice.actions;
-
-function resetFormState(state) {
-  state.color_en = "";
-  state.color_ka = "";
-  state.color_hex = "";
-
-  if (state.isUpdating) {
-    state.isUpdating = false;
-    state.updatingColorId = "";
-  }
-}
 
 function generatePreparationObject(payload) {
   const credentials = {

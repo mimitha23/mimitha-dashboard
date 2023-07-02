@@ -31,8 +31,15 @@ export default function CreateVariant() {
 
   const status = useSelector(selectVariantStatus);
   const variants = useSelector(selectExistingVariantTypes);
-  const { variantType, label_ka, label_en, description, icon } =
-    useSelector(selectVariantForm);
+  const {
+    variantType,
+    label_ka,
+    label_en,
+    description,
+    icon,
+    newIcon,
+    isUpdating,
+  } = useSelector(selectVariantForm);
 
   const handleSetVariant = useCallback((e) => {
     dispatch(
@@ -118,14 +125,14 @@ export default function CreateVariant() {
           label="აირჩიეთ ნიშნულის ფაილი"
           accept="image/svg+xml"
           fileRef={fileRef}
-          file={icon}
+          file={newIcon || icon}
           message={error.icon.message}
           error={error.icon.hasError}
           onChange={handleManualSetVariant}
         />
 
         <Button
-          caption="შექმნა"
+          caption={isUpdating ? "განახლება" : "შექმნა"}
           disabled={status.loading}
           onClick={(e) => {
             e.preventDefault();

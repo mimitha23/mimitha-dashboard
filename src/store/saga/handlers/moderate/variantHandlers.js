@@ -20,6 +20,7 @@ export function* getExistingVariantTypes() {
 export function* createVariant({ payload }) {
   try {
     yield call(variantAPI.createVariantQuery, payload);
+    yield put(variantActions.resetFormState());
     yield put(variantActions.setSuccess());
   } catch (error) {
     yield errorController({
@@ -47,6 +48,7 @@ export function* getAllVariants() {
 export function* updateVariant({ payload }) {
   try {
     yield call(variantAPI.updateVariantQuery, payload);
+    yield put(variantActions.resetFormState());
     yield put(variantActions.setSuccess());
   } catch (error) {
     yield errorController({

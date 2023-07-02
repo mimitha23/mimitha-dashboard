@@ -4,9 +4,9 @@ import { createSelector } from "@reduxjs/toolkit";
 ////////// Create Color //////////
 /////////////////////////////////
 const selectedColorForm = ({ color }) => ({
-  color_ka: color.color_ka,
-  color_en: color.color_en,
-  color_hex: color.color_hex,
+  color_ka: color.form.color_ka,
+  color_en: color.form.color_en,
+  color_hex: color.form.color_hex,
   isUpdating: color.isUpdating,
   updatingColorId: color.updatingColorId,
 });
@@ -33,11 +33,14 @@ export const selectColorStatus = createSelector(
 ////////// Create Variant //////////
 ///////////////////////////////////
 const selectedVariantForm = ({ variant }) => ({
-  variantType: variant.variantType,
-  label_ka: variant.label_ka,
-  label_en: variant.label_en,
-  description: variant.description,
-  icon: variant.icon,
+  variantType: variant.form.variantType,
+  label_ka: variant.form.label_ka,
+  label_en: variant.form.label_en,
+  description: variant.form.description,
+  icon: variant.form.icon,
+  newIcon: variant.form.newIcon,
+  isUpdating: variant.isUpdating,
+  updatingVariantId: variant.updatingVariantId,
 });
 
 const selectedVariantStatus = ({ variant }) => ({

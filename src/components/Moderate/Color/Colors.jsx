@@ -51,7 +51,7 @@ export default function Colors() {
     dispatch(colorActions.getAllColors());
 
     return () => {
-      dispatch(colorActions.resetState());
+      dispatch(colorActions.resetAllColors());
     };
   }, []);
 

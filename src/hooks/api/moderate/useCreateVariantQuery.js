@@ -10,7 +10,7 @@ export default function useCreateVariantQuery() {
   const dispatch = useDispatch();
   const credentials = useSelector(selectVariantForm);
 
-  const variantValidation = new CreateVariantValidation();
+  const variantValidation = new CreateVariantValidation(credentials.isUpdating);
 
   const [error, setError] = useState(variantValidation.error);
 
@@ -21,9 +21,16 @@ export default function useCreateVariantQuery() {
 
     if (validation.hasError) return;
 
-    const checkedData = generateLowerCaseData(credentials, ["icon"]);
+    const checkedData = generateLowerCaseData(credentials, [
+      "icon",
+      "newIcon",
+      "isUpdating",
+      "updatingVariantId",
+    ]);
 
-    dispatch(variantActions.createVariant(checkedData));
+    credentials.isUpdating
+      ? dispatch(variantActions.updateVariant(checkedData))
+      : dispatch(variantActions.createVariant(checkedData));
   }
 
   return { createVariantQuery, error };

@@ -12,7 +12,11 @@ import { variantActions } from "store/reducers/moderate/variantReducer";
 import { PATHS } from "config/routes";
 import useDebounceOnSearch from "../hooks/useDebounceOnSearch";
 
-import { DeletionPopup, LoadingSpinner } from "components/layouts";
+import {
+  DeletionPopup,
+  LoadingSpinner,
+  LineClampedDescription,
+} from "components/layouts";
 import { EditIcon, DeleteIcon } from "components/layouts/Icons";
 import Search from "../components/Search";
 import * as Styled from "./styles/Variants.styled";
@@ -45,7 +49,7 @@ export default function Variants() {
   }
 
   function onEdit(variant) {
-    // dispatch(variantActions.setColorDefaults(color));
+    dispatch(variantActions.setVariantDefaults(variant));
     navigate(PATHS.moderate_sidebar.createVariantPage.absolutePath);
   }
 
@@ -53,7 +57,7 @@ export default function Variants() {
     dispatch(variantActions.getAllVariants());
 
     return () => {
-      dispatch(variantActions.resetState());
+      dispatch(variantActions.resetAllVariants());
     };
   }, []);
 
@@ -73,7 +77,7 @@ export default function Variants() {
             <li key={variant._id} className="all-variants__list-item">
               <figure className="all-variants__list-item--icon">
                 <svg>
-                  <image xlinkHref={variant.icon} src={variant.icon} />
+                  <image xlinkHref={variant.icon} />
                 </svg>
               </figure>
 
@@ -97,7 +101,10 @@ export default function Variants() {
                   </p>
                 </div>
 
-                <p>{variant.description}</p>
+                {/* <p className="all-variants__list-item--description">
+                  {variant.description}
+                </p> */}
+                <LineClampedDescription clamp={2} text={variant.description} />
 
                 <div className="all-variants__list-item--actions">
                   <button

@@ -2,8 +2,10 @@ import Validators from "utils/validators/Validators";
 import { availableValidationRules as Rules } from "utils/validators/Validators";
 
 export default class CreateVariantValidation extends Validators {
-  constructor() {
+  constructor(isUpdating) {
     super();
+
+    this.isUpdating = isUpdating;
 
     this.validationToExecute = [
       {
@@ -38,12 +40,9 @@ export default class CreateVariantValidation extends Validators {
         isPrimitive: true,
         rules: [Rules.notIsEmpty],
       },
-      {
-        key: "icon",
-        isPrimitive: true,
-        rules: [Rules.isFileObject],
-      },
     ];
+
+    this.controlValidationRulesOnUpdate();
 
     this.error = {
       hasError: false,
@@ -52,6 +51,33 @@ export default class CreateVariantValidation extends Validators {
       label_en: { hasError: false, message: "" },
       description: { hasError: false, message: "" },
       icon: { hasError: false, message: "" },
+      newIcon: { hasError: false, message: "" },
     };
+  }
+
+  controlValidationRulesOnUpdate() {
+    if (this.isUpdating)
+      this.validationToExecute = [
+        ...this.validationToExecute,
+        {
+          key: "icon",
+          isPrimitive: true,
+          rules: [Rules.notIsEmpty],
+        },
+        // {
+        //   key: "newIcon",
+        //   isPrimitive: true,
+        //   rules: [Rules.isFileObject],
+        // },
+      ];
+    else
+      this.validationToExecute = [
+        ...this.validationToExecute,
+        {
+          key: "icon",
+          isPrimitive: true,
+          rules: [Rules.isFileObject],
+        },
+      ];
   }
 }

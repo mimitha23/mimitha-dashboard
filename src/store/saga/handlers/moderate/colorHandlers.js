@@ -6,6 +6,7 @@ import { colorActions } from "store/reducers/moderate/colorReducer";
 export function* createColor({ payload }) {
   try {
     yield call(colorAPI.createColorQuery, payload);
+    yield put(colorActions.resetFormState());
     yield put(colorActions.setSuccess());
   } catch (error) {
     yield errorController({
@@ -33,6 +34,7 @@ export function* getAllColors() {
 export function* updateColor({ payload }) {
   try {
     yield call(colorAPI.updateColorQuery, payload);
+    yield put(colorActions.resetFormState());
     yield put(colorActions.setSuccess());
   } catch (error) {
     yield errorController({

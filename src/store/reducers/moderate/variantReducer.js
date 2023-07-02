@@ -2,11 +2,17 @@ import { createSlice, nanoid } from "@reduxjs/toolkit";
 import { controllStatus as status } from "../helpers";
 
 const initialState = {
-  variantType: "",
-  label_ka: "",
-  label_en: "",
-  description: "",
-  icon: null,
+  form: {
+    variantType: "",
+    label_ka: "",
+    label_en: "",
+    description: "",
+    icon: null,
+    newIcon: null,
+  },
+
+  isUpdating: false,
+  updatingVariantId: "",
 
   existingVariantTypes: [],
   allVariants: [],
@@ -23,7 +29,20 @@ const variantSlice = createSlice({
   initialState,
   reducers: {
     setVariant(state, { payload: { key, value } }) {
-      state[key] = value;
+      if (!state.isUpdating || (state.isUpdating && key !== "icon"))
+        state.form[key] = value;
+      else state.form.newIcon = value;
+    },
+
+    setVariantDefaults(state, { payload }) {
+      state.form.variantType = payload.type;
+      state.form.label_ka = payload.label.ka;
+      state.form.label_en = payload.label.en;
+      state.form.description = payload.description;
+      state.form.icon = payload.icon;
+
+      state.isUpdating = true;
+      state.updatingVariantId = payload._id;
     },
 
     // API
@@ -87,7 +106,6 @@ const variantSlice = createSlice({
     },
 
     setSuccess(state) {
-      resetFormState(state);
       state.status = status.success();
     },
 
@@ -95,10 +113,24 @@ const variantSlice = createSlice({
       state.status = status.error();
     },
 
+    // RESET
     resetState(state) {
       Object.keys(state).forEach((key) => {
         state[key] = initialState[key];
       });
+    },
+
+    resetAllVariants(state) {
+      state.allVariants = [];
+    },
+
+    resetFormState(state) {
+      state.form = initialState.form;
+
+      if (state.isUpdating) {
+        state.isUpdating = false;
+        state.updatingVariantId = "";
+      }
     },
   },
 });
@@ -106,16 +138,8 @@ const variantSlice = createSlice({
 export default variantSlice.reducer;
 export const variantActions = variantSlice.actions;
 
-function resetFormState(state) {
-  state.variantType = "";
-  state.description = "";
-  state.label_ka = "";
-  state.label_en = "";
-  state.icon = null;
-}
-
 function generatePreparationObject(payload) {
-  return {
+  const credentials = {
     type: payload.variantType,
     description: payload.description,
     icon: payload.icon,
@@ -124,4 +148,11 @@ function generatePreparationObject(payload) {
       en: payload.label_en,
     },
   };
+
+  if (payload.isUpdating && payload.newIcon)
+    credentials.newIcon = payload.newIcon;
+  if (payload.isUpdating && payload.updatingVariantId)
+    credentials._id = payload.updatingVariantId;
+
+  return credentials;
 }

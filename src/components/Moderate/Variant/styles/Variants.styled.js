@@ -8,12 +8,16 @@ export const Variants = styled.div`
     margin-top: 2rem;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(26rem, max-content));
+    grid-auto-rows: 20rem;
     gap: 3rem;
     justify-content: space-between;
+    align-items: stretch;
 
     &-item {
       border-radius: 0.5rem;
       overflow: hidden;
+      max-width: 30rem;
+      background: red;
     }
 
     &-item--icon {
@@ -26,10 +30,17 @@ export const Variants = styled.div`
         height: 3.5rem;
         width: 4rem;
       }
+
+      svg image {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+      }
     }
 
     &-item--body {
       padding: 1rem;
+      height: calc(100% - 3.5rem);
       display: flex;
       flex-direction: column;
       gap: 0.75rem;
@@ -45,6 +56,7 @@ export const Variants = styled.div`
     }
 
     &-item--actions {
+      margin-top: auto;
       display: flex;
       justify-content: flex-end;
       align-items: center;
