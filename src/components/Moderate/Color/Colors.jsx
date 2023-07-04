@@ -61,7 +61,7 @@ export default function Colors() {
 
   return (
     <Styled.Colors>
-      <div className="all-colors__header">
+      <div>
         <Search value={search} onSearch={(e) => setSearch(e.target.value)} />
       </div>
 
@@ -69,21 +69,36 @@ export default function Colors() {
         <ul className="all-colors__list">
           {filteredColors.map((color) => (
             <Styled.ColorItem key={color._id} hex={color.hex}>
-              <span className="all-colors__list-item--pattern"></span>
-              <div className="all-colors__list-item--details">
-                <span>{color.label["ka"]}</span>
-                <button
-                  className="all-colors__list-item--details__btn edit"
-                  onClick={() => onEdit(color)}
-                >
-                  <EditIcon />
-                </button>
-                <button
-                  className="all-colors__list-item--details__btn delete"
-                  onClick={() => setActiveDeletion(color._id)}
-                >
-                  <DeleteIcon />
-                </button>
+              <span className="all-colors--list__item-pattern"></span>
+              <div className="all-colors--list__item-details">
+                <div className="all-colors--list__item-details__label">
+                  <p>
+                    <span>ka:</span>
+                    &nbsp;
+                    <span>{color.label.ka}</span>
+                  </p>
+
+                  <p>
+                    <span>en:</span>
+                    &nbsp;
+                    <span>{color.label.en}</span>
+                  </p>
+                </div>
+
+                <div className="all-colors--list__item-details--actions">
+                  <button
+                    className="all-colors--list__item-details--actions__btn edit"
+                    onClick={() => onEdit(color)}
+                  >
+                    <EditIcon />
+                  </button>
+                  <button
+                    className="all-colors--list__item-details--actions__btn delete"
+                    onClick={() => setActiveDeletion(color._id)}
+                  >
+                    <DeleteIcon />
+                  </button>
+                </div>
               </div>
             </Styled.ColorItem>
           ))}

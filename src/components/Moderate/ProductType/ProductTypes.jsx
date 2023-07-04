@@ -41,8 +41,8 @@ export default function ProductTypes() {
     setActiveDeletion("");
   }
 
-  function onEdit(variant) {
-    dispatch(productTypeActions.setProductTypeDefaults(variant));
+  function onEdit(type) {
+    dispatch(productTypeActions.setProductTypeDefaults(type));
     navigate(PATHS.moderate_sidebar.createProductTypePage.absolutePath);
   }
 
@@ -72,12 +72,12 @@ export default function ProductTypes() {
                 <p>
                   <span>ka:</span>
                   &nbsp;
-                  <span>{type.label.ka}</span>
+                  <span>{type.ka}</span>
                 </p>
                 <p>
                   <span>en:</span>
                   &nbsp;
-                  <span>{type.label.en}</span>
+                  <span>{type.en}</span>
                 </p>
               </div>
 

@@ -18,36 +18,27 @@ export default memo(function InputMultipleFilterableSelect({
   error,
   message,
   list = [],
-  strictSelection = false,
+  strictSelection = true,
 }) {
   const [isTyping, setIsTyping] = useState(false);
   const [enteredValue, setEnteredValue] = useState("");
 
-  const { onFocus } = useBlurOnBody(handleOnFocus, handleOnBlur, [
-    "form__input-field",
-    "filterable_dropdown",
-  ]);
+  const random_field_id = `${name}-multiple-filterable-field`;
+  const random_dropdown_id = `${name}-multiple-filterable-dropdown`;
 
-  function handleOnFocus() {
-    setIsTyping(true);
-  }
+  const { onFocus } = useBlurOnBody(
+    () => {
+      setIsTyping(true);
+    },
+    () => {
+      setIsTyping(false);
+      setEnteredValue("");
+    },
+    [random_field_id, random_dropdown_id]
+  );
 
-  function handleOnBlur() {
-    setIsTyping(false);
-    enteredValue &&
-      selectField(
-        list.some((item) => item.caption.includes(enteredValue))
-          ? enteredValue
-          : ""
-      );
-  }
-
-  function handleOnChange(e) {
-    setEnteredValue(e.target.value);
-  }
-
-  function handleOnSelect(item) {
-    selectField(item);
+  function handleOnSelect({ key, value }) {
+    selectField({ key, value });
     enteredValue && setEnteredValue("");
   }
 
@@ -63,9 +54,9 @@ export default memo(function InputMultipleFilterableSelect({
         id={id}
         type="text"
         name={name}
-        className="form__input-field"
+        className={`form__input-field ${random_field_id}`}
         placeholder={placeholder}
-        onChange={handleOnChange}
+        onChange={(e) => setEnteredValue(e.target.value)}
         value={enteredValue}
         onFocus={onFocus}
         readOnly={readOnly}
@@ -75,8 +66,12 @@ export default memo(function InputMultipleFilterableSelect({
         <ul className="selected-fields">
           {selectedFields.map((field) => (
             <li key={nanoid()} className="selected-fields--item">
-              <span>{field}</span>
-              <button onClick={() => handleOnCloseSelected(field)}>
+              <span>{field.caption}</span>
+              <button
+                onClick={() =>
+                  handleOnCloseSelected({ key: name, value: field._id })
+                }
+              >
                 <CloseXIcon />
               </button>
             </li>
@@ -85,7 +80,7 @@ export default memo(function InputMultipleFilterableSelect({
       )}
 
       {isTyping && (
-        <div className="filterable_dropdown">
+        <div className={`filterable_dropdown ${random_dropdown_id}`}>
           <ul className="filterable_dropdown-list">
             {list
               .filter((item) =>
@@ -96,12 +91,12 @@ export default memo(function InputMultipleFilterableSelect({
               .map((item) => (
                 <li
                   className={`filterable_dropdown-list--item ${
-                    selectedFields.includes(item.caption)
+                    selectedFields.some((field) => field._id === item._id)
                       ? "selected-field"
                       : ""
                   }`}
                   key={item._id}
-                  onClick={() => handleOnSelect(item.caption)}
+                  onClick={() => handleOnSelect({ key: name, value: item._id })}
                 >
                   {item.caption}
                 </li>

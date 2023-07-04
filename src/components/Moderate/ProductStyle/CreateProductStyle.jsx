@@ -3,11 +3,11 @@ import { useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import {
-  selectCreateProductStyle,
-  selectCreateProductStyleStatus,
+  selectProductStyleForm,
+  selectProductStyleStatus,
 } from "store/selectors/moderateSelectors";
 import { useCreateProductStyleQuery } from "hooks/api/moderate";
-import { createProductStyleActions } from "store/reducers/moderate/createProductStyleReducer";
+import { productStyleActions } from "store/reducers/moderate/productStyleReducer";
 
 import { PATHS } from "config/routes";
 
@@ -17,14 +17,16 @@ import * as Styled from "./styles/CreateProductStyle.styled";
 
 export default function CreateProductStyle() {
   const dispatch = useDispatch();
-  const status = useSelector(selectCreateProductStyleStatus);
-  const { label_ka, label_en, query } = useSelector(selectCreateProductStyle);
+  const status = useSelector(selectProductStyleStatus);
+  const { label_ka, label_en, query, isUpdating } = useSelector(
+    selectProductStyleForm
+  );
 
   const { createProductStyleQuery, error } = useCreateProductStyleQuery();
 
   const handleSetProductStyle = useCallback((e) => {
     dispatch(
-      createProductStyleActions.setProductStyle({
+      productStyleActions.setProductStyle({
         key: e.target.name,
         value: e.target.value,
       })
@@ -33,7 +35,7 @@ export default function CreateProductStyle() {
 
   useEffect(() => {
     return () => {
-      dispatch(createProductStyleActions.resetState());
+      dispatch(productStyleActions.resetState());
     };
   }, []);
 
@@ -81,7 +83,7 @@ export default function CreateProductStyle() {
         />
 
         <Button
-          caption="შექმნა"
+          caption={isUpdating ? "განახლება" : "შექმნა"}
           disabled={status.loading}
           onClick={(e) => {
             e.preventDefault();

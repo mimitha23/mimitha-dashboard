@@ -1,8 +1,8 @@
 import { createSelector } from "@reduxjs/toolkit";
 
-///////////////////////////////////
-////////// Create Color //////////
-/////////////////////////////////
+////////////////////////////
+////////// Color //////////
+//////////////////////////
 const selectedColorForm = ({ color }) => ({
   color_ka: color.form.color_ka,
   color_en: color.form.color_en,
@@ -29,9 +29,9 @@ export const selectColorStatus = createSelector(
   (memorised) => memorised
 );
 
-/////////////////////////////////////
-////////// Create Variant //////////
-///////////////////////////////////
+//////////////////////////////
+////////// Variant //////////
+////////////////////////////
 const selectedVariantForm = ({ variant }) => ({
   variantType: variant.form.variantType,
   label_ka: variant.form.label_ka,
@@ -64,9 +64,9 @@ export const selectVariantStatus = createSelector(
   (memorised) => memorised
 );
 
-/////////////////////////////////////////
-////////// Create ProductType //////////
-///////////////////////////////////////
+//////////////////////////////////
+////////// ProductType //////////
+////////////////////////////////
 const selectedProductTypeForm = ({ productType }) => ({
   label_ka: productType.form.label_ka,
   label_en: productType.form.label_en,
@@ -94,41 +94,46 @@ export const selectProductTypeStatus = createSelector(
   (memorised) => memorised
 );
 
-/////////////////////////////////////////
-////////// Create ProductStyle //////////
-///////////////////////////////////////
-const selectedCreateProductStyle = ({ createProductStyle }) => ({
-  label_ka: createProductStyle.label_ka,
-  label_en: createProductStyle.label_en,
-  query: createProductStyle.query,
+///////////////////////////////////
+////////// ProductStyle //////////
+/////////////////////////////////
+const selectedProductStyleForm = ({ productStyle }) => ({
+  label_ka: productStyle.form.label_ka,
+  label_en: productStyle.form.label_en,
+  query: productStyle.form.query,
+  isUpdating: productStyle.isUpdating,
+  updatingProductStyleId: productStyle.updatingProductStyleId,
 });
 
-const selectedCreateProductStyleStatus = ({ createProductStyle }) => ({
-  loading: createProductStyle.status.loading,
-  error: createProductStyle.status.error,
-  message: createProductStyle.status.message,
+const selectedProductStyleStatus = ({ productStyle }) => ({
+  loading: productStyle.status.loading,
+  error: productStyle.status.error,
+  message: productStyle.status.message,
 });
 
-export const selectCreateProductStyle = createSelector(
-  selectedCreateProductStyle,
+export const selectAllProductStyles = ({ productStyle }) =>
+  productStyle.allProductStyles;
+
+export const selectProductStyleForm = createSelector(
+  selectedProductStyleForm,
   (memorised) => memorised
 );
 
-export const selectCreateProductStyleStatus = createSelector(
-  selectedCreateProductStyleStatus,
+export const selectProductStyleStatus = createSelector(
+  selectedProductStyleStatus,
   (memorised) => memorised
 );
 
-/////////////////////////////////////////
-////////// Register Product //////////
-///////////////////////////////////////
-const selectedRegisterProduct = ({ registerProduct }) => ({
-  productType: registerProduct.productType,
-  seasons: registerProduct.seasons,
-  styles: registerProduct.styles,
-  warnings: registerProduct.warnings,
-  texture: registerProduct.texture,
-  gender: registerProduct.gender,
+//////////////////////////////////////
+////////// RegisterProduct //////////
+////////////////////////////////////
+const selectedRegisterProductForm = ({ registerProduct }) => ({
+  productTypes: registerProduct.form.productTypes,
+  seasons: registerProduct.form.seasons,
+  productStyles: registerProduct.form.productStyles,
+  warnings: registerProduct.form.warnings,
+  texture: registerProduct.form.texture,
+  gender: registerProduct.form.gender,
 });
 
 const selectedRegisterProductStatus = ({ registerProduct }) => ({
@@ -137,12 +142,24 @@ const selectedRegisterProductStatus = ({ registerProduct }) => ({
   message: registerProduct.status.message,
 });
 
-export const selectRegisterProduct = createSelector(
-  selectedRegisterProduct,
+const selectedRegisterProductFormSugestions = ({ registerProduct }) => ({
+  productTypes: registerProduct.registerProductFormSugestions.productTypes,
+  productStyles: registerProduct.registerProductFormSugestions.productStyles,
+  seasons: registerProduct.registerProductFormSugestions.seasons,
+  gender: registerProduct.registerProductFormSugestions.gender,
+});
+
+export const selectRegisterProductForm = createSelector(
+  selectedRegisterProductForm,
   (memorised) => memorised
 );
 
 export const selectRegisterProductStatus = createSelector(
   selectedRegisterProductStatus,
+  (memorised) => memorised
+);
+
+export const selectRegisterProductFormSugestions = createSelector(
+  selectedRegisterProductFormSugestions,
   (memorised) => memorised
 );

@@ -2,9 +2,16 @@ import { createSlice } from "@reduxjs/toolkit";
 import { controllStatus as status } from "../helpers";
 
 const initialState = {
-  label_ka: "",
-  label_en: "",
-  query: "",
+  form: {
+    label_ka: "",
+    label_en: "",
+    query: "",
+  },
+
+  allProductStyles: [],
+
+  isUpdating: false,
+  updatingProductStyleId: "",
 
   status: {
     loading: false,
@@ -13,12 +20,21 @@ const initialState = {
   },
 };
 
-const createProductStyleSlice = createSlice({
+const productStyleSlice = createSlice({
   name: "create-product-style",
   initialState,
   reducers: {
     setProductStyle(state, { payload: { key, value } }) {
-      state[key] = value;
+      state.form[key] = value;
+    },
+
+    setProductStyleDefaults(state, { payload }) {
+      state.form.label_ka = payload.ka;
+      state.form.label_en = payload.en;
+      state.form.query = payload.query.replaceAll("_", " ");
+
+      state.isUpdating = true;
+      state.updatingProductStyleId = payload._id;
     },
 
     // API
@@ -58,14 +74,24 @@ const createProductStyleSlice = createSlice({
       },
     },
 
+    setDeletedProductStyle(state, { payload }) {
+      console.log(payload);
+      state.allProductStyles = state.allProductStyles.filter(
+        (style) => style._id !== payload
+      );
+    },
+
     getAllProductStyles: {
       reducer(state) {
         state.status = status.loading();
       },
     },
 
+    setAllProductStyles(state, { payload }) {
+      state.allProductStyles = payload;
+    },
+
     setSuccess(state) {
-      resetFormState();
       state.status = status.success();
     },
 
@@ -73,29 +99,40 @@ const createProductStyleSlice = createSlice({
       state.status = status.error();
     },
 
+    // RESET
     resetState(state) {
       Object.keys(state).forEach((key) => {
         state[key] = initialState[key];
       });
     },
+
+    resetAllProductStyles(state) {
+      state.allProductStyles = [];
+    },
+
+    resetFormState(state) {
+      state.form = initialState.form;
+
+      if (state.isUpdating) {
+        state.isUpdating = false;
+        state.updatingProductStyleId = "";
+      }
+    },
   },
 });
 
-export default createProductStyleSlice.reducer;
-export const createProductStyleActions = createProductStyleSlice.actions;
-
-function resetFormState(state) {
-  state.label_ka = "";
-  state.label_en = "";
-  state.query = "";
-}
+export default productStyleSlice.reducer;
+export const productStyleActions = productStyleSlice.actions;
 
 function generatePreparationObject(payload) {
-  return {
+  const credentials = {
     query: payload.query.split(" ").join("_"),
-    label: {
-      ka: payload.label_ka,
-      en: payload.label_en,
-    },
+    ka: payload.label_ka,
+    en: payload.label_en,
   };
+
+  if (payload.isUpdating && payload.updatingProductStyleId)
+    credentials._id = payload.updatingProductStyleId;
+
+  return credentials;
 }

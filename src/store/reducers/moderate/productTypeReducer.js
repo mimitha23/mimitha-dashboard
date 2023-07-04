@@ -29,8 +29,8 @@ const productTypeSlice = createSlice({
     },
 
     setProductTypeDefaults(state, { payload }) {
-      state.form.label_ka = payload.label.ka;
-      state.form.label_en = payload.label.en;
+      state.form.label_ka = payload.ka;
+      state.form.label_en = payload.en;
       state.form.query = payload.query.replaceAll("_", " ");
 
       state.isUpdating = true;
@@ -127,10 +127,8 @@ export const productTypeActions = productTypeSlice.actions;
 function generatePreparationObject(payload) {
   const credentials = {
     query: payload.query.split(" ").join("_"),
-    label: {
-      ka: payload.label_ka,
-      en: payload.label_en,
-    },
+    ka: payload.label_ka,
+    en: payload.label_en,
   };
 
   if (payload.isUpdating && payload.updatingProductTypeId)

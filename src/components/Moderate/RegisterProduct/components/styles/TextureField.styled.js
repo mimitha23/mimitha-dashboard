@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { Form } from "styles/helpers";
 
 export const TextureField = styled.div`
+  ${Form.inputFiled};
   width: 100%;
   overflow: hidden;
   grid-column: span 2;
@@ -14,8 +15,6 @@ export const TextureField = styled.div`
       grid-column: span 1;
     }
   }
-
-  ${Form.label};
 
   .texture-head {
     grid-column: span 2;
@@ -42,31 +41,22 @@ export const TextureField = styled.div`
   }
 
   .texture-field--box {
-    grid-column: span 2;
-    width: 100%;
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
-    margin-top: 1rem;
-    padding-right: 0.2rem;
-    padding-bottom: 0.2rem;
-    ${Form.input};
   }
 
-  .texture-field {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-
-    input {
-      width: 100%;
-    }
-  }
-
+  .texture-field,
   .percentage-field {
-    display: flex;
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    grid-template-rows: 2;
     gap: 1rem;
     align-items: center;
+
+    & label {
+      width: 2rem;
+    }
 
     & input {
       width: 100%;
@@ -75,12 +65,11 @@ export const TextureField = styled.div`
     & input::-webkit-inner-spin-button {
       display: none;
     }
-  }
 
-  .texture-field,
-  .percentage-field {
-    label {
-      width: 2rem;
+    &__message {
+      grid-row: 2;
+      grid-column: span 2;
+      transform: translateY(-0.2rem);
     }
   }
 `;

@@ -17,28 +17,25 @@ export default memo(function InputFilterableSelect({
   strictSelection = true,
 }) {
   const [isTyping, setIsTyping] = useState(false);
+  const [enteredValue, setEnteredValue] = useState(value);
+
+  const random_field_id = `${name}-filterable-field`;
+  const random_dropdown_id = `${name}-filterable-dropdown`;
 
   const { onFocus, removeListener } = useBlurOnBody(
     () => {
       setIsTyping(true);
     },
     () => {
-      strictSelection &&
-        setValue({
-          key: name,
-          value: list.some((item) => item.caption.includes(value)) ? value : "",
-        });
+      setEnteredValue("");
       setIsTyping(false);
     },
-    ["form__input-field", "filterable_dropdown"]
+    [random_field_id, random_dropdown_id]
   );
 
-  function handleInput(e) {
-    setValue({ key: name, value: e.target.value });
-  }
-
-  function handleDropdownItem(item) {
-    setValue({ key: name, value: item });
+  function handleDropdownItem({ key, item }) {
+    setValue({ key, value: item._id });
+    setEnteredValue(item.caption);
     setIsTyping(false);
     removeListener();
   }
@@ -51,26 +48,28 @@ export default memo(function InputFilterableSelect({
         id={id}
         type="text"
         name={name}
-        className="form__input-field"
+        className={`form__input-field ${random_field_id}`}
         placeholder={placeholder}
-        onChange={handleInput}
-        value={value}
+        onChange={(e) => setEnteredValue(e.target.value)}
+        value={enteredValue}
         onFocus={onFocus}
         readOnly={readOnly}
       />
 
       {isTyping && (
-        <div className="filterable_dropdown">
+        <div className={`filterable_dropdown ${random_dropdown_id}`}>
           <ul className="filterable_dropdown-list">
             {list
               .filter((item) =>
-                value === "" || readOnly ? item : item.caption.includes(value)
+                enteredValue === "" || readOnly
+                  ? item
+                  : item.caption.includes(enteredValue)
               )
               .map((item) => (
                 <li
                   className="filterable_dropdown-list--item"
                   key={item._id}
-                  onClick={() => handleDropdownItem(item.caption)}
+                  onClick={() => handleDropdownItem({ key: name, item })}
                 >
                   {item.caption}
                 </li>

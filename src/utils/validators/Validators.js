@@ -27,7 +27,9 @@ export default class Validators extends ValidateHelpers {
     )
       isValid = false;
 
-    const message = isValid ? "" : `${key} არ შეიძლება იყოს ცარიელი`;
+    const message = isValid
+      ? ""
+      : `${this.splitToUpperCase(key)} არ შეიძლება იყოს ცარიელი`;
 
     return { hasError: !isValid, message };
   }
@@ -44,7 +46,9 @@ export default class Validators extends ValidateHelpers {
 
     const message = isValid
       ? ""
-      : `${key} უნდა შეიყვანოთ მხოლოდ ქართული ასოებით, დაშორებისა და სიმბოლოების გარეშე.`;
+      : `${this.splitToUpperCase(
+          key
+        )} უნდა შეიყვანოთ მხოლოდ ქართული ასოებით, დაშორებისა და სიმბოლოების გარეშე.`;
 
     return { hasError: !isValid, message };
   }
@@ -60,7 +64,7 @@ export default class Validators extends ValidateHelpers {
 
     const message = isValid
       ? ""
-      : `${key} უნდა შეიყვანოთ მხოლოდ ქართული ასოებით.`;
+      : `${this.splitToUpperCase(key)} უნდა შეიყვანოთ მხოლოდ ქართული ასოებით.`;
 
     return { hasError: !isValid, message };
   }
@@ -77,7 +81,9 @@ export default class Validators extends ValidateHelpers {
 
     const message = isValid
       ? ""
-      : `${key} უნდა შეიყვანოთ მხოლოდ ლათინური ასოებით, დაშორებისა და სიმბოლოების გარეშე.`;
+      : `${this.splitToUpperCase(
+          key
+        )} უნდა შეიყვანოთ მხოლოდ ლათინური ასოებით, დაშორებისა და სიმბოლოების გარეშე.`;
 
     return { hasError: !isValid, message };
   }
@@ -93,7 +99,7 @@ export default class Validators extends ValidateHelpers {
 
     const message = isValid
       ? ""
-      : `${key} უნდა შეიყვანოთ მხოლოდ ლათინური ასოებით.`;
+      : `${this.splitToUpperCase(key)} უნდა შეიყვანოთ მხოლოდ ლათინური ასოებით.`;
 
     return { hasError: !isValid, message };
   }
@@ -109,7 +115,9 @@ export default class Validators extends ValidateHelpers {
 
     const message = isValid
       ? ""
-      : `${key} უნდა იყოს ვალიდური hex ფერი. მაგ:#26e066.`;
+      : `${this.splitToUpperCase(
+          key
+        )} უნდა იყოს ვალიდური hex ფერი. მაგ:#26e066.`;
 
     return { hasError: !isValid, message };
   }
@@ -128,7 +136,9 @@ export default class Validators extends ValidateHelpers {
     )
       isValid = false;
 
-    const message = isValid ? "" : `გთხოვთ ატვირთოთ ${key}.`;
+    const message = isValid
+      ? ""
+      : `გთხოვთ ატვირთოთ ${this.splitToUpperCase(key)}.`;
 
     return { hasError: !isValid, message };
   }
@@ -141,7 +151,39 @@ export default class Validators extends ValidateHelpers {
 
     const message = isValid
       ? ""
-      : `${key} შეიცავს 2 ან მეტ შორისს თანმიმდევრობით.`;
+      : `${this.splitToUpperCase(key)} შეიცავს 2 ან მეტ შორისს თანმიმდევრობით.`;
+
+    return { hasError: !isValid, message };
+  }
+
+  isEmptyObject({ key, value }) {
+    let isValid = true;
+
+    if (
+      (typeof value === "object" && value === null) ||
+      (typeof value === "object" && !Object.values(value)[0])
+    )
+      isValid = false;
+
+    const message = isValid
+      ? ""
+      : `გთხოვთ მიუთითოთ ${this.splitToUpperCase(key)}`;
+
+    return { hasError: !isValid, message };
+  }
+
+  isEmptyArray({ key, value }) {
+    let isValid = true;
+
+    if (
+      (typeof value === "object" && !Array.isArray(value)) ||
+      (Array.isArray(value) && !value[0])
+    )
+      isValid = false;
+
+    const message = isValid
+      ? ""
+      : `გთხოვთ მიუთითოთ ${this.splitToUpperCase(key)}`;
 
     return { hasError: !isValid, message };
   }

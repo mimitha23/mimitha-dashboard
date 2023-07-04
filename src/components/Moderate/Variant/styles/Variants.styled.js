@@ -7,17 +7,14 @@ export const Variants = styled.div`
   .all-variants__list {
     margin-top: 2rem;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(26rem, max-content));
+    grid-template-columns: repeat(auto-fit, minmax(30rem, max-content));
     gap: 3rem;
     justify-content: space-between;
-    align-items: stretch;
 
     &-item {
       border-radius: 0.5rem;
       overflow: hidden;
-      max-width: 30rem;
       min-height: 20rem;
-      background: red;
     }
 
     &-item--icon {

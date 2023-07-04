@@ -7,52 +7,45 @@ export default class RegisterProductValidation extends Validators {
 
     this.validationToExecute = [
       {
-        key: "productType",
+        key: "productTypes",
         isPrimitive: true,
-        rules: [
-          Rules.notIsEmpty,
-          Rules.isLatinLetters,
-          Rules.hasWhiteSpaceInSequence,
-        ],
+        rules: [Rules.isEmptyObject],
       },
       {
         key: "gender",
         isPrimitive: true,
-        rules: [
-          Rules.notIsEmpty,
-          Rules.isGeorgianLetters,
-          Rules.hasWhiteSpaceInSequence,
-        ],
+        rules: [Rules.isEmptyObject],
       },
       {
-        key: "styles",
-        isPrimitivesArray: true,
-        rules: [
-          Rules.notIsEmpty,
-          Rules.isGeorgianLetters,
-          Rules.hasWhiteSpaceInSequence,
-        ],
+        key: "productStyles",
+        isPrimitive: true,
+        rules: [Rules.isEmptyArray],
       },
       {
-        key: "season",
-        isPrimitivesArray: true,
-        rules: [
-          Rules.notIsEmpty,
-          Rules.isGeorgianLetters,
-          Rules.hasWhiteSpaceInSequence,
-        ],
+        key: "seasons",
+        isPrimitive: true,
+        rules: [Rules.isEmptyArray],
       },
       {
         key: "texture",
         isObjectsArray: true,
-        rules: [
-          Rules.notIsEmpty,
-          Rules.isGeorgianLetters,
-          Rules.hasWhiteSpaceInSequence,
+        fieldsToValidate: [
+          {
+            field: "texture_ka",
+            rules: [Rules.notIsEmpty, Rules.isGeorgianLetters],
+          },
+          {
+            field: "texture_en",
+            rules: [Rules.notIsEmpty, Rules.isLatinLetters],
+          },
+          {
+            field: "percentage",
+            rules: [Rules.notIsEmpty, Rules.hasWhiteSpaceInSequence],
+          },
         ],
       },
       {
-        key: "warning",
+        key: "warnings",
         isObjectsArray: true,
         rules: [
           Rules.notIsEmpty,
@@ -64,12 +57,12 @@ export default class RegisterProductValidation extends Validators {
 
     this.error = {
       hasError: false,
-      productType: { hasError: false, message: "" },
+      productTypes: { hasError: false, message: "" },
       gender: { hasError: false, message: "" },
-      styles: { hasError: false, error: "", itemErrors: [] },
-      season: { hasError: false, error: "", itemErrors: [] },
+      productStyles: { hasError: false, error: "" },
+      seasons: { hasError: false, error: "" },
       texture: { hasError: false, error: "", itemErrors: [] },
-      warning: { hasError: false, error: "", itemErrors: [] },
+      warnings: { hasError: false, error: "", itemErrors: [] },
     };
   }
 }
