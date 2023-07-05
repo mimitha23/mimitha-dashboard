@@ -25,7 +25,7 @@ const initialState = {
 };
 
 const variantSlice = createSlice({
-  name: "create-variant",
+  name: "variant",
   initialState,
   reducers: {
     setVariant(state, { payload: { key, value } }) {

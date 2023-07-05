@@ -21,7 +21,7 @@ const initialState = {
 };
 
 const productStyleSlice = createSlice({
-  name: "create-product-style",
+  name: "product-style",
   initialState,
   reducers: {
     setProductStyle(state, { payload: { key, value } }) {

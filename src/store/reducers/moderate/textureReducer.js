@@ -5,13 +5,12 @@ const initialState = {
   form: {
     label_ka: "",
     label_en: "",
-    query: "",
   },
 
-  allProductTypes: [],
+  allTextures: [],
 
   isUpdating: false,
-  updatingProductTypeId: "",
+  updatingTextureId: "",
 
   status: {
     loading: false,
@@ -20,25 +19,26 @@ const initialState = {
   },
 };
 
-const productTypeSlice = createSlice({
-  name: "product-type",
+const textureSlice = createSlice({
+  name: "texture",
   initialState,
   reducers: {
-    setProductType(state, { payload: { key, value } }) {
+    setTexture(state, { payload: { key, value } }) {
       state.form[key] = value;
     },
 
-    setProductTypeDefaults(state, { payload }) {
-      state.form.label_ka = payload.ka;
-      state.form.label_en = payload.en;
-      state.form.query = payload.query.replaceAll("_", " ");
+    setTextureDefaults(state, { payload }) {
+      state.form = {
+        label_ka: payload.ka,
+        label_en: payload.en,
+      };
 
       state.isUpdating = true;
-      state.updatingProductTypeId = payload._id;
+      state.updatingTextureId = payload._id;
     },
 
     // API
-    createProductType: {
+    createTexture: {
       prepare(payload) {
         return {
           payload: generatePreparationObject(payload),
@@ -50,7 +50,7 @@ const productTypeSlice = createSlice({
       },
     },
 
-    updateProductType: {
+    updateTexture: {
       prepare(payload) {
         return {
           payload: generatePreparationObject(payload),
@@ -62,7 +62,7 @@ const productTypeSlice = createSlice({
       },
     },
 
-    deleteProductType: {
+    deleteTexture: {
       prepare(payload) {
         return {
           payload: { _id: payload },
@@ -74,21 +74,20 @@ const productTypeSlice = createSlice({
       },
     },
 
-    setDeletedProductType(state, { payload }) {
-      console.log(payload);
-      state.allProductTypes = state.allProductTypes.filter(
-        (type) => type._id !== payload
+    setDeletedTexture(state, { payload }) {
+      state.allTextures = state.allTextures.filter(
+        (texture) => texture._id !== payload
       );
     },
 
-    getAllProductTypes: {
+    getAllTextures: {
       reducer(state) {
         state.status = status.loading();
       },
     },
 
-    setAllProductTypes(state, { payload }) {
-      state.allProductTypes = payload;
+    setAllTextures(state, { payload }) {
+      state.allTextures = payload;
     },
 
     setSuccess(state) {
@@ -106,8 +105,8 @@ const productTypeSlice = createSlice({
       });
     },
 
-    resetAllProductTypes(state) {
-      state.allProductTypes = [];
+    resetAllTextures(state) {
+      state.allTextures = [];
     },
 
     resetFormState(state) {
@@ -115,24 +114,23 @@ const productTypeSlice = createSlice({
 
       if (state.isUpdating) {
         state.isUpdating = false;
-        state.updatingProductTypeId = "";
+        state.updatingTextureId = "";
       }
     },
   },
 });
 
-export default productTypeSlice.reducer;
-export const productTypeActions = productTypeSlice.actions;
+export default textureSlice.reducer;
+export const textureActions = textureSlice.actions;
 
 function generatePreparationObject(payload) {
   const credentials = {
-    query: payload.query.split(" ").join("_"),
     ka: payload.label_ka,
     en: payload.label_en,
   };
 
-  if (payload.isUpdating && payload.updatingProductTypeId)
-    credentials._id = payload.updatingProductTypeId;
+  if (payload.isUpdating && payload.updatingVariantId)
+    credentials._id = payload.updatingVariantId;
 
   return credentials;
 }

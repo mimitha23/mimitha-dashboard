@@ -12,6 +12,10 @@ const MODERATE_SIDEBAR = {
     relativePath: "create-color",
     absolutePath: `${MAIN_NAVIGATION.moderate}/create-color`,
   },
+  createVariantPage: {
+    relativePath: "create-variant",
+    absolutePath: `${MAIN_NAVIGATION.moderate}/create-variant`,
+  },
   createProductTypePage: {
     relativePath: "create-product-type",
     absolutePath: `${MAIN_NAVIGATION.moderate}/create-product-type`,
@@ -20,9 +24,9 @@ const MODERATE_SIDEBAR = {
     relativePath: "create-product-style",
     absolutePath: `${MAIN_NAVIGATION.moderate}/create-product-style`,
   },
-  createVariantPage: {
-    relativePath: "create-variant",
-    absolutePath: `${MAIN_NAVIGATION.moderate}/create-variant`,
+  createTexturePage: {
+    relativePath: "create-texture",
+    absolutePath: `${MAIN_NAVIGATION.moderate}/create-texture`,
   },
   registerProductPage: {
     relativePath: "register-product",
@@ -50,10 +54,15 @@ const MODERATE_SIDEBAR_NESTED = {
     absolutePath: () =>
       `${MODERATE_SIDEBAR.createProductTypePage.absolutePath}/all-types`,
   },
-  productStylePage: {
+  productStylesPage: {
     relativePath: () => `all-styles`,
     absolutePath: () =>
       `${MODERATE_SIDEBAR.createProductStylePage.absolutePath}/all-styles`,
+  },
+  texturesPage: {
+    relativePath: () => `all-texture`,
+    absolutePath: () =>
+      `${MODERATE_SIDEBAR.createTexturePage.absolutePath}/all-texture`,
   },
   developedProductsPage: {
     relativePath: ({ registeredProductId }) =>
@@ -128,6 +137,11 @@ export const MODERATE_SIDEBAR_ROUTES = [
     _id: nanoid(),
     caption: "შექმენი პროდუქტის სტილი",
     path: PATHS.moderate_sidebar.createProductStylePage,
+  },
+  {
+    _id: nanoid(),
+    caption: "შექმენი ტექსტურა",
+    path: PATHS.moderate_sidebar.createTexturePage,
   },
   {
     _id: nanoid(),

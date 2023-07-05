@@ -44,7 +44,7 @@ export default function CreateProductStyle() {
       <ModerateHeader
         title="შექმენი პროდუქტის სტილი"
         linkCaption="ნახე პროდუქტის ყველა სტილი"
-        redirectPath={PATHS.moderate_nested_routes.productStylePage.relativePath()}
+        redirectPath={PATHS.moderate_nested_routes.productStylesPage.relativePath()}
       />
 
       <Form>

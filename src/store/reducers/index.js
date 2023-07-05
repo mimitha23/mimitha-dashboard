@@ -8,6 +8,7 @@ import {
   variantReducer,
   productTypeReducer,
   productStyleReducer,
+  textureReducer,
   registerProductReducer,
 } from "./moderate";
 
@@ -19,6 +20,7 @@ const rootReducer = combineReducers({
   variant: variantReducer,
   productType: productTypeReducer,
   productStyle: productStyleReducer,
+  texture: textureReducer,
   registerProduct: registerProductReducer,
 });
 

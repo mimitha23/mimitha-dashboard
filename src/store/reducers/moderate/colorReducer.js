@@ -21,7 +21,7 @@ const initialState = {
 };
 
 const colorSlice = createSlice({
-  name: "create-color",
+  name: "color",
   initialState,
   reducers: {
     setColor(state, { payload: { key, value } }) {
