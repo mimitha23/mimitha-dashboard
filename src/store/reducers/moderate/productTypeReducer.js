@@ -75,7 +75,6 @@ const productTypeSlice = createSlice({
     },
 
     setDeletedProductType(state, { payload }) {
-      console.log(payload);
       state.allProductTypes = state.allProductTypes.filter(
         (type) => type._id !== payload
       );

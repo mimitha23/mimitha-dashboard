@@ -129,8 +129,8 @@ function generatePreparationObject(payload) {
     en: payload.label_en,
   };
 
-  if (payload.isUpdating && payload.updatingVariantId)
-    credentials._id = payload.updatingVariantId;
+  if (payload.isUpdating && payload.updatingTextureId)
+    credentials._id = payload.updatingTextureId;
 
   return credentials;
 }

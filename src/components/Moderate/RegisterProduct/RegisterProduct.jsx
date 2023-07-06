@@ -76,7 +76,7 @@ export default function RegisterProduct() {
           placeholder="აირჩიეთ პროდუქტის ტიპი"
           error={error.productTypes.hasError}
           message={error.productTypes.message}
-          value={selectedTypes.caption}
+          value={selectedTypes?.caption || ""}
           setValue={setSelectable}
           list={productTypes}
         />
@@ -113,14 +113,14 @@ export default function RegisterProduct() {
           readOnly={true}
           error={error.gender.hasError}
           message={error.gender.message}
-          value={gender.caption}
+          value={gender?.caption || ""}
           setValue={setSelectable}
           list={genders}
         />
 
-        <TextureField error={error.texture} />
+        <TextureField error={error.textures} />
 
-        <WarningField />
+        <WarningField error={error.warnings} />
 
         <Button
           caption="შექმნა"

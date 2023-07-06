@@ -27,30 +27,39 @@ export default class RegisterProductValidation extends Validators {
         rules: [Rules.isEmptyArray],
       },
       {
-        key: "texture",
+        key: "textures",
         isObjectsArray: true,
         fieldsToValidate: [
           {
-            field: "texture_ka",
-            rules: [Rules.notIsEmpty, Rules.isGeorgianLetters],
-          },
-          {
-            field: "texture_en",
-            rules: [Rules.notIsEmpty, Rules.isLatinLetters],
+            field: "textures",
+            rules: [Rules.isEmptyObject],
           },
           {
             field: "percentage",
-            rules: [Rules.notIsEmpty, Rules.hasWhiteSpaceInSequence],
+            rules: [Rules.notIsEmpty, Rules.isNumber],
           },
         ],
       },
       {
         key: "warnings",
         isObjectsArray: true,
-        rules: [
-          Rules.notIsEmpty,
-          Rules.isGeorgianLetters,
-          Rules.hasWhiteSpaceInSequence,
+        fieldsToValidate: [
+          {
+            field: "ka",
+            rules: [
+              Rules.notIsEmpty,
+              Rules.isGeorgianLetters,
+              Rules.hasWhiteSpaceInSequence,
+            ],
+          },
+          {
+            field: "en",
+            rules: [
+              Rules.notIsEmpty,
+              Rules.isLatinLetters,
+              Rules.hasWhiteSpaceInSequence,
+            ],
+          },
         ],
       },
     ];
@@ -61,7 +70,7 @@ export default class RegisterProductValidation extends Validators {
       gender: { hasError: false, message: "" },
       productStyles: { hasError: false, error: "" },
       seasons: { hasError: false, error: "" },
-      texture: { hasError: false, error: "", itemErrors: [] },
+      textures: { hasError: false, error: "", itemErrors: [] },
       warnings: { hasError: false, error: "", itemErrors: [] },
     };
   }

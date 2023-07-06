@@ -20,7 +20,7 @@ export function* createTexture({ payload }) {
 export function* getAllTexture() {
   try {
     const { data } = yield call(textureAPI.getAllTextureQuery);
-    yield put(textureActions.setAllColors(data));
+    yield put(textureActions.setAllTextures(data));
     yield put(textureActions.setSuccess());
   } catch (error) {
     yield errorController({
@@ -48,7 +48,7 @@ export function* updateTexture({ payload }) {
 export function* deleteTexture({ payload }) {
   try {
     yield call(textureAPI.deleteTextureQuery, payload);
-    yield put(textureActions.setDeletedColor(payload._id));
+    yield put(textureActions.setDeletedTexture(payload._id));
     yield put(textureActions.setSuccess());
   } catch (error) {
     yield errorController({

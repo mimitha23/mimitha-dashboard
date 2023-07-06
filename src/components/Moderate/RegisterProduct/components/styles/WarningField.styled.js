@@ -1,9 +1,13 @@
 import styled from "styled-components";
-import { inputFiled } from "styles/helpers/Form.styled";
+import { Form } from "styles/helpers";
 
 export const WarningField = styled.div`
   grid-column: span 2;
-  ${inputFiled};
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  ${Form.label};
+  ${Form.error};
 
   .warning-fields--box {
     display: flex;
@@ -15,10 +19,6 @@ export const WarningField = styled.div`
       display: flex;
       align-items: center;
       gap: 1rem;
-
-      input {
-        width: 100%;
-      }
     }
   }
 

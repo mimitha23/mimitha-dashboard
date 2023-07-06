@@ -15,7 +15,7 @@ export default memo(function InputText({
 }) {
   return (
     <Styled.Input data-input>
-      <label htmlFor={id}>{label}</label>
+      {label && <label htmlFor={id}>{label}</label>}
       <input
         id={id}
         type={type}
@@ -25,7 +25,6 @@ export default memo(function InputText({
         onChange={onChange}
         value={value}
       />
-
       {anotation && <blockquote>{anotation}</blockquote>}
       {error && <p>{message}</p>}
     </Styled.Input>

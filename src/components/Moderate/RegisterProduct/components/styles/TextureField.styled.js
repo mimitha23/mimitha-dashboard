@@ -4,17 +4,9 @@ import { Form } from "styles/helpers";
 export const TextureField = styled.div`
   ${Form.inputFiled};
   width: 100%;
-  overflow: hidden;
   grid-column: span 2;
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  column-gap: 2rem;
-
-  &.filled-texture {
-    .texture-field--box {
-      grid-column: span 1;
-    }
-  }
+  display: flex;
+  flex-direction: column;
 
   .texture-head {
     grid-column: span 2;
@@ -42,24 +34,27 @@ export const TextureField = styled.div`
 
   .texture-field--box {
     display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
+    gap: 1.5rem;
   }
 
-  .texture-field,
   .percentage-field {
+    width: 50%;
     display: grid;
-    grid-template-columns: max-content 1fr;
-    grid-template-rows: 2;
-    gap: 1rem;
+    grid-template-columns: 2rem 1fr;
+    grid-template-rows: 3;
+    gap: 0.5rem;
     align-items: center;
+    padding: 0.5rem;
 
     & label {
-      width: 2rem;
+      grid-row: 1;
+      grid-column: 1;
     }
 
     & input {
       width: 100%;
+      grid-column: 2;
+      grid-row: 1;
     }
 
     & input::-webkit-inner-spin-button {
@@ -67,7 +62,7 @@ export const TextureField = styled.div`
     }
 
     &__message {
-      grid-row: 2;
+      grid-row: 3;
       grid-column: span 2;
       transform: translateY(-0.2rem);
     }

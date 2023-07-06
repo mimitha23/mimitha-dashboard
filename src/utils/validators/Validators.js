@@ -34,6 +34,18 @@ export default class Validators extends ValidateHelpers {
     return { hasError: !isValid, message };
   }
 
+  isNumber({ value, key }) {
+    let isValid = true;
+
+    if (typeof +value !== "number" || isNaN(value)) isValid = false;
+
+    const message = isValid
+      ? ""
+      : `${this.splitToUpperCase(key)} უნდა წარმოადგენდეს ციფრს`;
+
+    return { hasError: !isValid, message };
+  }
+
   isOnlyGeorgianLetters({ value, key }) {
     let isValid = true;
 
@@ -189,12 +201,18 @@ export default class Validators extends ValidateHelpers {
   }
 }
 
-const availableValidationRules = {};
-Object.getOwnPropertyNames(Validators.prototype)
-  .filter((name) => {
-    const instance = new Validators();
-    return typeof instance[name] === "function" && name !== "constructor";
-  })
-  .map((name) => (availableValidationRules[name] = name));
+const availableValidationRules = {
+  notIsEmpty: "notIsEmpty",
+  isNumber: "isNumber",
+  isOnlyGeorgianLetters: "isOnlyGeorgianLetters",
+  isGeorgianLetters: "isGeorgianLetters",
+  isOnlyLatinLetters: "isOnlyLatinLetters",
+  isLatinLetters: "isLatinLetters",
+  isValidHexColor: "isValidHexColor",
+  isFileObject: "isFileObject",
+  hasWhiteSpaceInSequence: "hasWhiteSpaceInSequence",
+  isEmptyObject: "isEmptyObject",
+  isEmptyArray: "isEmptyArray",
+};
 
 export { availableValidationRules };

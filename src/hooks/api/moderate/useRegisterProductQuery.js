@@ -18,12 +18,14 @@ export default function useRegisterProductQuery() {
     const validation = registerProductValidation.validate(credentials);
 
     setError((prev) => ({ ...prev, ...validation }));
-    // console.log({ validation });
+
     if (validation.hasError) return;
+    console.log({ credentials });
+    const checkedData = generateLowerCaseData(credentials, ["warning"]);
 
-    const checkedData = generateLowerCaseData(credentials);
-
-    // dispatch(registerProductActions.registerProduct(checkedData));
+    credentials.isUpdating
+      ? dispatch(registerProductActions.updateupdate(checkedData))
+      : dispatch(registerProductActions.registerProduct(checkedData));
   }
 
   return { registerProductQuery, error };

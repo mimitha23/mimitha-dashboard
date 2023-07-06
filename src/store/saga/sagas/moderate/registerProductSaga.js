@@ -7,4 +7,20 @@ export default function* createProductTypeSaga() {
     registerProductActions.getRegisterProductFormSugestions,
     registerProductHandlers.getRegisterProductFormSugestions
   );
+  yield takeLatest(
+    registerProductActions.registerProduct,
+    registerProductHandlers.registerProduct
+  );
+  yield takeLatest(
+    registerProductActions.updateRegisteredProduct,
+    registerProductHandlers.updateRegisteredProduct
+  );
+  yield takeLatest(
+    registerProductActions.deleteRegisteredProduct,
+    registerProductHandlers.deleteRegisteredProduct
+  );
+  yield takeLatest(
+    registerProductActions.getAllRegisteredProducts,
+    registerProductHandlers.getAllRegisteredProducts
+  );
 }

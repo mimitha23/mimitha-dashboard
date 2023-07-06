@@ -159,9 +159,12 @@ const selectedRegisterProductForm = ({ registerProduct }) => ({
   productTypes: registerProduct.form.productTypes,
   seasons: registerProduct.form.seasons,
   productStyles: registerProduct.form.productStyles,
+  warning: registerProduct.form.warning,
   warnings: registerProduct.form.warnings,
-  texture: registerProduct.form.texture,
+  textures: registerProduct.form.textures,
   gender: registerProduct.form.gender,
+  isUpdating: registerProduct.isUpdating,
+  updatingProductId: registerProduct.updatingProductId,
 });
 
 const selectedRegisterProductStatus = ({ registerProduct }) => ({
@@ -175,6 +178,7 @@ const selectedRegisterProductFormSugestions = ({ registerProduct }) => ({
   productStyles: registerProduct.registerProductFormSugestions.productStyles,
   seasons: registerProduct.registerProductFormSugestions.seasons,
   gender: registerProduct.registerProductFormSugestions.gender,
+  textures: registerProduct.registerProductFormSugestions.textures,
 });
 
 export const selectRegisterProductForm = createSelector(

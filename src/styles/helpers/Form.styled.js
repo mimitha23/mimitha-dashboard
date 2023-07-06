@@ -50,6 +50,21 @@ export const label = css`
   }
 `;
 
+export const error = css`
+  blockquote,
+  p {
+    font-weight: 300;
+    font-size: ${({ theme }) => theme.fontSize.sm};
+    color: ${({ theme }) => theme.colors.red};
+    text-wrap: balance;
+    text-align: center;
+
+    &::first-letter {
+      text-transform: capitalize;
+    }
+  }
+`;
+
 export const inputFiled = css`
   display: flex;
   flex-direction: column;
@@ -68,21 +83,7 @@ export const inputFiled = css`
     display: block;
   }
 
-  p {
-    color: ${({ theme }) => theme.colors.red};
-    text-wrap: balance;
-    text-align: center;
-  }
-
-  blockquote,
-  p {
-    font-weight: 300;
-    font-size: ${({ theme }) => theme.fontSize.sm};
-
-    &::first-letter {
-      text-transform: capitalize;
-    }
-  }
+  ${error};
 `;
 
 export const selectDropdownList = css`
