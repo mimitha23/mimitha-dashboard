@@ -1,5 +1,8 @@
+import {
+  validationType,
+  availableValidationRules as Rules,
+} from "utils/validators/helpers/Validate";
 import Validators from "utils/validators/Validators";
-import { availableValidationRules as Rules } from "utils/validators/Validators";
 
 export default class CreateProductTypeValidation extends Validators {
   constructor() {
@@ -8,7 +11,7 @@ export default class CreateProductTypeValidation extends Validators {
     this.validationToExecute = [
       {
         key: "label_ka",
-        isPrimitive: true,
+        validationType: validationType.isPrimitive,
         rules: [
           Rules.notIsEmpty,
           Rules.isGeorgianLetters,
@@ -17,7 +20,7 @@ export default class CreateProductTypeValidation extends Validators {
       },
       {
         key: "label_en",
-        isPrimitive: true,
+        validationType: validationType.isPrimitive,
         rules: [
           Rules.notIsEmpty,
           Rules.isLatinLetters,
@@ -26,7 +29,7 @@ export default class CreateProductTypeValidation extends Validators {
       },
       {
         key: "query",
-        isPrimitive: true,
+        validationType: validationType.isPrimitive,
         rules: [
           Rules.notIsEmpty,
           Rules.isLatinLetters,

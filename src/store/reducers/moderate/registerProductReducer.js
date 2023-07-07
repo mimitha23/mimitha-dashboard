@@ -194,7 +194,7 @@ const registerProductSlice = createSlice({
     registerProduct: {
       prepare(payload) {
         return {
-          payload: generatePreparationObject(payload),
+          payload: prepareDataForDB(payload),
         };
       },
 
@@ -206,7 +206,7 @@ const registerProductSlice = createSlice({
     updateRegisteredProduct: {
       prepare(payload) {
         return {
-          payload: generatePreparationObject(payload),
+          payload: prepareDataForDB(payload),
         };
       },
 
@@ -297,7 +297,7 @@ const registerProductSlice = createSlice({
 export default registerProductSlice.reducer;
 export const registerProductActions = registerProductSlice.actions;
 
-function generatePreparationObject(payload) {
+function prepareDataForDB(payload) {
   const credentials = {
     productType: {
       query: payload.productTypes.query,

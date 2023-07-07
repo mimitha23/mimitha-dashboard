@@ -29,9 +29,13 @@ const productTypeSlice = createSlice({
     },
 
     setProductTypeDefaults(state, { payload }) {
-      state.form.label_ka = payload.ka;
-      state.form.label_en = payload.en;
-      state.form.query = payload.query.replaceAll("_", " ");
+      const form = {
+        label_ka: payload.ka,
+        label_en: payload.en,
+        query: payload.query.replaceAll("_", " "),
+      };
+
+      state.form = form;
 
       state.isUpdating = true;
       state.updatingProductTypeId = payload._id;
@@ -41,7 +45,7 @@ const productTypeSlice = createSlice({
     createProductType: {
       prepare(payload) {
         return {
-          payload: generatePreparationObject(payload),
+          payload: prepareDataForDB(payload),
         };
       },
 
@@ -53,7 +57,7 @@ const productTypeSlice = createSlice({
     updateProductType: {
       prepare(payload) {
         return {
-          payload: generatePreparationObject(payload),
+          payload: prepareDataForDB(payload),
         };
       },
 
@@ -123,7 +127,7 @@ const productTypeSlice = createSlice({
 export default productTypeSlice.reducer;
 export const productTypeActions = productTypeSlice.actions;
 
-function generatePreparationObject(payload) {
+function prepareDataForDB(payload) {
   const credentials = {
     query: payload.query.split(" ").join("_"),
     ka: payload.label_ka,

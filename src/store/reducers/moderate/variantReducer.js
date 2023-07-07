@@ -3,7 +3,7 @@ import { controllStatus as status } from "../helpers";
 
 const initialState = {
   form: {
-    variantType: "",
+    variantType: null,
     label_ka: "",
     label_en: "",
     description: "",
@@ -28,18 +28,29 @@ const variantSlice = createSlice({
   name: "variant",
   initialState,
   reducers: {
-    setVariant(state, { payload: { key, value } }) {
-      if (!state.isUpdating || (state.isUpdating && key !== "icon"))
+    setVariant(state, { payload: { key, value, strict } }) {
+      if (key === "icon") {
+        const iconKey = state.isUpdating ? "newIcon" : "icon";
+        state.form[iconKey] = value;
+      } else if (key === "variantType") {
+        state.form[key] = strict
+          ? state.existingVariantTypes.find((type) => type._id === value)
+          : { _id: state.form.variantType?._id || nanoid(), caption: value };
+      } else {
         state.form[key] = value;
-      else state.form.newIcon = value;
+      }
     },
 
     setVariantDefaults(state, { payload }) {
-      state.form.variantType = payload.type;
-      state.form.label_ka = payload.label.ka;
-      state.form.label_en = payload.label.en;
-      state.form.description = payload.description;
-      state.form.icon = payload.icon;
+      const form = {
+        variantType: { _id: nanoid(), caption: payload.type },
+        label_ka: payload.ka,
+        label_en: payload.en,
+        description: payload.description,
+        icon: payload.icon,
+      };
+
+      state.form = form;
 
       state.isUpdating = true;
       state.updatingVariantId = payload._id;
@@ -62,7 +73,7 @@ const variantSlice = createSlice({
     createVariant: {
       prepare(payload) {
         return {
-          payload: generatePreparationObject(payload),
+          payload: prepareDataForDB(payload),
         };
       },
 
@@ -74,7 +85,7 @@ const variantSlice = createSlice({
     updateVariant: {
       prepare(payload) {
         return {
-          payload: generatePreparationObject(payload),
+          payload: prepareDataForDB(payload),
         };
       },
 
@@ -144,15 +155,13 @@ const variantSlice = createSlice({
 export default variantSlice.reducer;
 export const variantActions = variantSlice.actions;
 
-function generatePreparationObject(payload) {
+function prepareDataForDB(payload) {
   const credentials = {
-    type: payload.variantType,
+    type: payload.variantType.caption,
     description: payload.description,
     icon: payload.icon,
-    label: {
-      ka: payload.label_ka,
-      en: payload.label_en,
-    },
+    ka: payload.label_ka,
+    en: payload.label_en,
   };
 
   if (payload.isUpdating && payload.newIcon)

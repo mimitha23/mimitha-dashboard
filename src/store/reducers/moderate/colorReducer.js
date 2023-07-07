@@ -29,9 +29,13 @@ const colorSlice = createSlice({
     },
 
     setColorDefaults(state, { payload }) {
-      state.form.color_ka = payload.label.ka;
-      state.form.color_en = payload.label.en;
-      state.form.color_hex = payload.hex;
+      const form = {
+        color_ka: payload.ka,
+        color_en: payload.en,
+        color_hex: payload.hex,
+      };
+
+      state.form = form;
 
       state.isUpdating = true;
       state.updatingColorId = payload._id;
@@ -41,7 +45,7 @@ const colorSlice = createSlice({
     createColor: {
       prepare(payload) {
         return {
-          payload: generatePreparationObject(payload),
+          payload: prepareDataForDB(payload),
         };
       },
 
@@ -53,7 +57,7 @@ const colorSlice = createSlice({
     updateColor: {
       prepare(payload) {
         return {
-          payload: generatePreparationObject(payload),
+          payload: prepareDataForDB(payload),
         };
       },
 
@@ -123,13 +127,11 @@ const colorSlice = createSlice({
 export default colorSlice.reducer;
 export const colorActions = colorSlice.actions;
 
-function generatePreparationObject(payload) {
+function prepareDataForDB(payload) {
   const credentials = {
+    ka: payload.color_ka,
+    en: payload.color_en,
     hex: payload.color_hex,
-    label: {
-      ka: payload.color_ka,
-      en: payload.color_en,
-    },
   };
 
   if (payload.updatingColorId) credentials._id = payload.updatingColorId;

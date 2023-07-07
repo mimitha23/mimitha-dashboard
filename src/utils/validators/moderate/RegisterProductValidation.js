@@ -1,5 +1,8 @@
+import {
+  validationType,
+  availableValidationRules as Rules,
+} from "utils/validators/helpers/Validate";
 import Validators from "utils/validators/Validators";
-import { availableValidationRules as Rules } from "utils/validators/Validators";
 
 export default class RegisterProductValidation extends Validators {
   constructor() {
@@ -8,27 +11,27 @@ export default class RegisterProductValidation extends Validators {
     this.validationToExecute = [
       {
         key: "productTypes",
-        isPrimitive: true,
+        validationType: validationType.isPrimitive,
         rules: [Rules.isEmptyObject],
       },
       {
         key: "gender",
-        isPrimitive: true,
+        validationType: validationType.isPrimitive,
         rules: [Rules.isEmptyObject],
       },
       {
         key: "productStyles",
-        isPrimitive: true,
+        validationType: validationType.isPrimitive,
         rules: [Rules.isEmptyArray],
       },
       {
         key: "seasons",
-        isPrimitive: true,
+        validationType: validationType.isPrimitive,
         rules: [Rules.isEmptyArray],
       },
       {
         key: "textures",
-        isObjectsArray: true,
+        validationType: validationType.isObjectsArray,
         fieldsToValidate: [
           {
             field: "textures",
@@ -42,7 +45,7 @@ export default class RegisterProductValidation extends Validators {
       },
       {
         key: "warnings",
-        isObjectsArray: true,
+        validationType: validationType.isObjectsArray,
         fieldsToValidate: [
           {
             field: "ka",

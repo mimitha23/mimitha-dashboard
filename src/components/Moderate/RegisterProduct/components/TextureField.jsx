@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { useCallback, memo } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
 import {
@@ -13,7 +13,7 @@ import { InputFilterableSelect } from "components/layouts";
 import TextureFieldHeader from "./TextureFieldHeader";
 import * as Styled from "./styles/TextureField.styled";
 
-export default function TextureField({ error }) {
+export default memo(function TextureField({ error }) {
   const dispatch = useDispatch();
 
   const { textures: enteredTextures } = useSelector(selectRegisterProductForm);
@@ -50,7 +50,7 @@ export default function TextureField({ error }) {
               list={textureSugestions}
               error={extractedError.textures?.hasError}
               message={extractedError.textures?.message}
-              value={texture.caption || ""}
+              value={texture.textures?.caption || ""}
               setValue={({ key, value }) => setTexture({ key, value, texture })}
             />
 
@@ -85,4 +85,4 @@ export default function TextureField({ error }) {
       })}
     </Styled.TextureField>
   );
-}
+});

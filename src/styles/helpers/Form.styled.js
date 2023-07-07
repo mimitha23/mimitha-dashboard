@@ -51,7 +51,6 @@ export const label = css`
 `;
 
 export const error = css`
-  blockquote,
   p {
     font-weight: 300;
     font-size: ${({ theme }) => theme.fontSize.sm};
@@ -77,6 +76,7 @@ export const inputFiled = css`
 
   blockquote {
     display: none;
+    font-size: ${({ theme }) => theme.fontSize.sm};
   }
 
   input:focus ~ blockquote {

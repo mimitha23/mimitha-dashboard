@@ -50,8 +50,8 @@ export default function CreateVariant() {
     );
   }, []);
 
-  const handleManualSetVariant = useCallback(({ key, value }) => {
-    dispatch(variantActions.setVariant({ key, value }));
+  const handleManualSetVariant = useCallback(({ key, value, strict }) => {
+    dispatch(variantActions.setVariant({ key, value, strict }));
   }, []);
 
   const fileRef = useRef();
@@ -80,9 +80,9 @@ export default function CreateVariant() {
           placeholder="pocket"
           anotation="აირჩიე არსებული ვარიანტის ტიპი ან შექმენი ახალი"
           strictSelection={false}
-          value={variantType}
+          value={variantType?.caption || ""}
           setValue={handleManualSetVariant}
-          message={error.variantType.message}
+          message={error.variantType.itemErrors[0]?.message}
           error={error.variantType.hasError}
           list={variants}
         />

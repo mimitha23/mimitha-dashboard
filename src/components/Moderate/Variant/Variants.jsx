@@ -37,8 +37,8 @@ export default function Variants() {
       search,
       array: allVariants,
       filterHandler: (variant) =>
-        variant.label.ka.includes(search) ||
-        variant.label.en.includes(search) ||
+        variant.ka.includes(search) ||
+        variant.en.includes(search) ||
         variant.type.includes(search) ||
         variant.description.includes(search),
     });
@@ -92,12 +92,12 @@ export default function Variants() {
                   <p>
                     <span>ka:</span>
                     &nbsp;
-                    <span>{variant.label.ka}</span>
+                    <span>{variant.ka}</span>
                   </p>
                   <p>
                     <span>en:</span>
                     &nbsp;
-                    <span>{variant.label.en}</span>
+                    <span>{variant.en}</span>
                   </p>
                 </div>
 

@@ -32,8 +32,8 @@ export default function Colors() {
       search,
       array: allColors,
       filterHandler: (color) =>
-        color.label.ka.includes(search) ||
-        color.label.en.includes(search) ||
+        color.ka.includes(search) ||
+        color.en.includes(search) ||
         color.hex.includes(search),
     });
 
@@ -75,13 +75,13 @@ export default function Colors() {
                   <p>
                     <span>ka:</span>
                     &nbsp;
-                    <span>{color.label.ka}</span>
+                    <span>{color.ka}</span>
                   </p>
 
                   <p>
                     <span>en:</span>
                     &nbsp;
-                    <span>{color.label.en}</span>
+                    <span>{color.en}</span>
                   </p>
                 </div>
 

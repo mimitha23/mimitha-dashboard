@@ -1,4 +1,25 @@
 /* eslint-disable array-callback-return */
+const availableValidationRules = {
+  notIsEmpty: "notIsEmpty",
+  isNumber: "isNumber",
+  isOnlyGeorgianLetters: "isOnlyGeorgianLetters",
+  isGeorgianLetters: "isGeorgianLetters",
+  isOnlyLatinLetters: "isOnlyLatinLetters",
+  isLatinLetters: "isLatinLetters",
+  isValidHexColor: "isValidHexColor",
+  isFileObject: "isFileObject",
+  hasWhiteSpaceInSequence: "hasWhiteSpaceInSequence",
+  isEmptyObject: "isEmptyObject",
+  isEmptyArray: "isEmptyArray",
+};
+
+const validationType = {
+  isPrimitivesArray: "isPrimitivesArray",
+  isObjectsArray: "isObjectsArray",
+  isObject: "isObject",
+  isPrimitive: "isPrimitive",
+};
+
 export default class Validate {
   validate(credentials) {
     /**
@@ -15,35 +36,39 @@ export default class Validate {
       // validate all fields based on described types ↓
 
       // validate primitives
-      if (fieldToValidate.isPrimitivesArray) {
-        const fieldValidationsArr = this.validatePrimitivesArray({
-          key,
-          credentials,
-          rules: fieldToValidate.rules,
-        });
-
-        return { [key]: fieldValidationsArr };
-        // validate objects array
-      } else if (fieldToValidate.isObjectsArray) {
-        const fieldValidationsArr = this.validateObjectsArray({
-          key,
-          credentials: credentials[key],
-          fieldsToValidate: fieldToValidate.fieldsToValidate,
-        });
-
-        return { [key]: fieldValidationsArr };
-        // validate object
-      } else if (fieldToValidate.isObject) {
-        // validate primitive
-      } else if (fieldToValidate.isPrimitive) {
-        const fieldValidationsArr = this.validatePrimitive({
-          key,
-          credentials,
-          rules: fieldToValidate.rules,
-        });
-
-        return { [key]: fieldValidationsArr };
-      } else return [];
+      if (fieldToValidate.validationType === validationType.isPrimitivesArray)
+        return {
+          [key]: this.validatePrimitivesArray({
+            key,
+            credentials,
+            rules: fieldToValidate.rules,
+          }),
+        };
+      else if (fieldToValidate.validationType === validationType.isObjectsArray)
+        return {
+          [key]: this.validateObjectsArray({
+            key,
+            credentials: credentials[key],
+            fieldsToValidate: fieldToValidate.fieldsToValidate,
+          }),
+        };
+      else if (fieldToValidate.validationType === validationType.isObject)
+        return {
+          [key]: this.validateObject({
+            key,
+            credentials,
+            fieldsToValidate: fieldToValidate.fieldsToValidate,
+          }),
+        };
+      else if (fieldToValidate.validationType === validationType.isPrimitive)
+        return {
+          [key]: this.validatePrimitive({
+            key,
+            credentials,
+            rules: fieldToValidate.rules,
+          }),
+        };
+      else return [];
     });
 
     // set all described fields validations in appropriate error object
@@ -55,25 +80,23 @@ export default class Validate {
       const fieldValidationKey = Object.keys(fieldValidation)[0];
       const fieldToValidate = this.getFieldToValidate(fieldValidationKey);
 
-      if (fieldToValidate.isPrimitivesArray) {
-        this.setPrimitivesArrayError({
-          key: fieldValidationKey,
-          validationsArray: fieldValidation[fieldValidationKey],
-        });
-      } else if (fieldToValidate.isObjectsArray) {
-        this.setObjectArrayError({
-          key: fieldValidationKey,
-          validationsArray: fieldValidation[fieldValidationKey],
-        });
-      } else if (fieldToValidate.isObject) {
-      } else if (fieldToValidate.isPrimitive) {
-        this.setPrimitivesError({
-          key: fieldValidationKey,
-          validationsArray: fieldValidation[fieldValidationKey],
-        });
-      }
+      const generateSetErrorArgs = () => ({
+        key: fieldValidationKey,
+        validationsArray: fieldValidation[fieldValidationKey],
+      });
+
+      if (fieldToValidate.validationType === validationType.isPrimitivesArray)
+        this.setPrimitivesArrayError(generateSetErrorArgs());
+      else if (fieldToValidate.validationType === validationType.isObjectsArray)
+        this.setObjectArrayError(generateSetErrorArgs());
+      else if (fieldToValidate.validationType === validationType.isObject)
+        this.setObjectError(generateSetErrorArgs());
+      else if (fieldToValidate.validationType === validationType.isPrimitive)
+        this.setPrimitivesError(generateSetErrorArgs());
     });
 
     return this.error;
   }
 }
+
+export { availableValidationRules, validationType };

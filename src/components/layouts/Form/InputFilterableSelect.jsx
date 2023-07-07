@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useState, memo } from "react";
 import * as Styled from "./Form.styled";
 import { useBlurOnBody } from "hooks/utils";
@@ -17,7 +18,6 @@ export default memo(function InputFilterableSelect({
   strictSelection = true,
 }) {
   const [isTyping, setIsTyping] = useState(false);
-  const [enteredValue, setEnteredValue] = useState(value);
 
   const random_field_id = `${name}-filterable-field`;
   const random_dropdown_id = `${name}-filterable-dropdown`;
@@ -27,15 +27,14 @@ export default memo(function InputFilterableSelect({
       setIsTyping(true);
     },
     () => {
-      setEnteredValue("");
+      strictSelection && setValue({ key: name, value: "" });
       setIsTyping(false);
     },
     [random_field_id, random_dropdown_id]
   );
 
   function handleDropdownItem({ key, item }) {
-    setValue({ key, value: item._id });
-    setEnteredValue(item.caption);
+    setValue({ key, value: item._id, strict: true });
     setIsTyping(false);
     removeListener();
   }
@@ -50,8 +49,10 @@ export default memo(function InputFilterableSelect({
         name={name}
         className={`form__input-field ${random_field_id}`}
         placeholder={placeholder}
-        onChange={(e) => setEnteredValue(e.target.value)}
-        value={enteredValue}
+        onChange={(e) =>
+          setValue({ key: e.target.name, value: e.target.value, strict: false })
+        }
+        value={value}
         onFocus={onFocus}
         readOnly={readOnly}
       />
@@ -61,9 +62,7 @@ export default memo(function InputFilterableSelect({
           <ul className="filterable_dropdown-list">
             {list
               .filter((item) =>
-                enteredValue === "" || readOnly
-                  ? item
-                  : item.caption.includes(enteredValue)
+                value === "" || readOnly ? item : item.caption.includes(value)
               )
               .map((item) => (
                 <li

@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import {
@@ -57,6 +57,10 @@ export default function RegisterProduct() {
       dispatch(registerProductActions.resetState());
     };
   }, []);
+
+  const memorisedError = useMemo(() => {
+    return error;
+  }, [error]);
 
   return (
     <Styled.RegisterProduct>
@@ -118,7 +122,7 @@ export default function RegisterProduct() {
           list={genders}
         />
 
-        <TextureField error={error.textures} />
+        <TextureField error={memorisedError.textures} />
 
         <WarningField error={error.warnings} />
 

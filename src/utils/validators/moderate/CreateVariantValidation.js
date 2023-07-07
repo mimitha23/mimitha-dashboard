@@ -1,5 +1,8 @@
+import {
+  validationType,
+  availableValidationRules as Rules,
+} from "utils/validators/helpers/Validate";
 import Validators from "utils/validators/Validators";
-import { availableValidationRules as Rules } from "utils/validators/Validators";
 
 export default class CreateVariantValidation extends Validators {
   constructor(isUpdating) {
@@ -10,16 +13,21 @@ export default class CreateVariantValidation extends Validators {
     this.validationToExecute = [
       {
         key: "variantType",
-        isPrimitive: true,
-        rules: [
-          Rules.notIsEmpty,
-          Rules.isLatinLetters,
-          Rules.hasWhiteSpaceInSequence,
+        validationType: validationType.isObject,
+        fieldsToValidate: [
+          {
+            field: "caption",
+            rules: [
+              Rules.notIsEmpty,
+              Rules.isLatinLetters,
+              Rules.hasWhiteSpaceInSequence,
+            ],
+          },
         ],
       },
       {
         key: "label_ka",
-        isPrimitive: true,
+        validationType: validationType.isPrimitive,
         rules: [
           Rules.notIsEmpty,
           Rules.isGeorgianLetters,
@@ -28,7 +36,7 @@ export default class CreateVariantValidation extends Validators {
       },
       {
         key: "label_en",
-        isPrimitive: true,
+        validationType: validationType.isPrimitive,
         rules: [
           Rules.notIsEmpty,
           Rules.isLatinLetters,
@@ -37,7 +45,7 @@ export default class CreateVariantValidation extends Validators {
       },
       {
         key: "description",
-        isPrimitive: true,
+        validationType: validationType.isPrimitive,
         rules: [Rules.notIsEmpty],
       },
     ];
@@ -46,7 +54,7 @@ export default class CreateVariantValidation extends Validators {
 
     this.error = {
       hasError: false,
-      variantType: { hasError: false, message: "" },
+      variantType: { hasError: false, message: "", itemErrors: [] },
       label_ka: { hasError: false, message: "" },
       label_en: { hasError: false, message: "" },
       description: { hasError: false, message: "" },
@@ -61,7 +69,7 @@ export default class CreateVariantValidation extends Validators {
         ...this.validationToExecute,
         {
           key: "icon",
-          isPrimitive: true,
+          validationType: validationType.isPrimitive,
           rules: [Rules.notIsEmpty],
         },
         // {
@@ -75,7 +83,7 @@ export default class CreateVariantValidation extends Validators {
         ...this.validationToExecute,
         {
           key: "icon",
-          isPrimitive: true,
+          validationType: validationType.isPrimitive,
           rules: [Rules.isFileObject],
         },
       ];

@@ -28,10 +28,12 @@ const textureSlice = createSlice({
     },
 
     setTextureDefaults(state, { payload }) {
-      state.form = {
+      const form = {
         label_ka: payload.ka,
         label_en: payload.en,
       };
+
+      state.form = form;
 
       state.isUpdating = true;
       state.updatingTextureId = payload._id;
@@ -41,7 +43,7 @@ const textureSlice = createSlice({
     createTexture: {
       prepare(payload) {
         return {
-          payload: generatePreparationObject(payload),
+          payload: prepareDataForDB(payload),
         };
       },
 
@@ -53,7 +55,7 @@ const textureSlice = createSlice({
     updateTexture: {
       prepare(payload) {
         return {
-          payload: generatePreparationObject(payload),
+          payload: prepareDataForDB(payload),
         };
       },
 
@@ -123,7 +125,7 @@ const textureSlice = createSlice({
 export default textureSlice.reducer;
 export const textureActions = textureSlice.actions;
 
-function generatePreparationObject(payload) {
+function prepareDataForDB(payload) {
   const credentials = {
     ka: payload.label_ka,
     en: payload.label_en,

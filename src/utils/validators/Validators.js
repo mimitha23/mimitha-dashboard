@@ -200,19 +200,3 @@ export default class Validators extends ValidateHelpers {
     return { hasError: !isValid, message };
   }
 }
-
-const availableValidationRules = {
-  notIsEmpty: "notIsEmpty",
-  isNumber: "isNumber",
-  isOnlyGeorgianLetters: "isOnlyGeorgianLetters",
-  isGeorgianLetters: "isGeorgianLetters",
-  isOnlyLatinLetters: "isOnlyLatinLetters",
-  isLatinLetters: "isLatinLetters",
-  isValidHexColor: "isValidHexColor",
-  isFileObject: "isFileObject",
-  hasWhiteSpaceInSequence: "hasWhiteSpaceInSequence",
-  isEmptyObject: "isEmptyObject",
-  isEmptyArray: "isEmptyArray",
-};
-
-export { availableValidationRules };
