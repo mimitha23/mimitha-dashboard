@@ -33,6 +33,7 @@ export default function RegisterProduct() {
     productTypes: selectedTypes,
     seasons: selectedSeasons,
     productStyles: selectedStyles,
+    isEditable,
   } = useSelector(selectRegisterProductForm);
   const {
     gender: genders,
@@ -125,6 +126,22 @@ export default function RegisterProduct() {
         <TextureField error={memorisedError.textures} />
 
         <WarningField error={error.warnings} />
+
+        <div className="is-editable__box">
+          <div className="is-editable__field">
+            <input
+              type="checkbox"
+              id="is-editable"
+              checked={isEditable}
+              onChange={(e) =>
+                dispatch(registerProductActions.setIsEditable(e.target.checked))
+              }
+            />
+            <label htmlFor="is-editable">Is Editable</label>
+          </div>
+
+          {error.isEditable.hasError && <p>{error.isEditable.message}</p>}
+        </div>
 
         <Button
           caption="შექმნა"

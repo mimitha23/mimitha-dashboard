@@ -46,6 +46,16 @@ export default class Validators extends ValidateHelpers {
     return { hasError: !isValid, message };
   }
 
+  isBoolean({ value, key }) {
+    let isValid = true;
+
+    if (typeof value !== "boolean") isValid = false;
+
+    const message = isValid ? "" : `მიუთითეთ ${this.splitToUpperCase(key)}`;
+
+    return { hasError: !isValid, message };
+  }
+
   isOnlyGeorgianLetters({ value, key }) {
     let isValid = true;
 

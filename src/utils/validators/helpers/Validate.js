@@ -11,6 +11,7 @@ const availableValidationRules = {
   hasWhiteSpaceInSequence: "hasWhiteSpaceInSequence",
   isEmptyObject: "isEmptyObject",
   isEmptyArray: "isEmptyArray",
+  isBoolean: "isBoolean",
 };
 
 const validationType = {
@@ -95,7 +96,7 @@ export default class Validate {
         this.setPrimitivesError(generateSetErrorArgs());
     });
 
-    return this.error;
+    return this;
   }
 }
 

@@ -21,8 +21,7 @@ export function* getRegisterProductFormSugestions() {
 
 export function* registerProduct({ payload }) {
   try {
-    console.log(payload);
-    // yield call(registerProductAPI.registerProductQuery, payload);
+    yield call(registerProductAPI.registerProductQuery, payload);
     yield put(registerProductActions.resetFormState());
     yield put(registerProductActions.setSuccess());
   } catch (error) {

@@ -80,18 +80,32 @@ export default class ValidateHelpers extends Validate {
         message: validationsArray[validationErrorIndex].message,
       };
 
-      this.error.hasError = true;
+      this.error.hasError =
+        !this.error.hasError && validationErrorIndex >= 0
+          ? true
+          : this.error.hasError;
     }
+  }
+
+  setObjectError({ validationsArray, key }) {
+    const hasError = validationsArray.some((validation) => validation.hasError);
+
+    this.error[key] = {
+      message: "",
+      itemErrors: validationsArray,
+      hasError: hasError,
+    };
+
+    this.error.hasError =
+      !this.error.hasError && hasError ? true : this.error.hasError;
   }
 
   setPrimitivesArrayError({ validationsArray, key }) {
     const emptyArrayError = this.isEmptyArrayError(validationsArray);
 
-    this.error[key] = {
-      hasError: true,
-      error: emptyArrayError ? validationsArray[0].message : "",
-      itemErrors: emptyArrayError ? [] : validationsArray,
-    };
+    const hasError = validationsArray.some((validation) => validation.hasError);
+
+    this.setArrayError({ key, hasError, emptyArrayError, validationsArray });
   }
 
   setObjectArrayError({ validationsArray, key }) {
@@ -99,27 +113,9 @@ export default class ValidateHelpers extends Validate {
 
     const hasError = Array.isArray(validationsArray[0])
       ? validationsArray[0].some((validation) => validation.hasError)
-      : validationsArray.hasError;
+      : validationsArray[0].hasError;
 
-    this.error[key] = {
-      hasError: hasError,
-      error: emptyArrayError ? validationsArray[0]?.message : "",
-      itemErrors: emptyArrayError ? [] : validationsArray,
-    };
-
-    this.error.hasError = hasError;
-  }
-
-  setObjectError({ validationsArray, key }) {
-    const hasError = validationsArray.some((validation) => validation.hasError);
-
-    this.error[key] = {
-      error: "",
-      itemErrors: validationsArray,
-      hasError: hasError,
-    };
-
-    this.error.hasError = hasError;
+    this.setArrayError({ key, hasError, emptyArrayError, validationsArray });
   }
 
   // UTILS
@@ -162,6 +158,8 @@ export default class ValidateHelpers extends Validate {
     );
   }
 
+  // HELPERS
+
   splitToUpperCase(str) {
     return str
       .split("_")
@@ -203,6 +201,17 @@ export default class ValidateHelpers extends Validate {
       validationsArray.length === 1 &&
       validationsArray[0].rule === "isEmptyArray"
     );
+  }
+
+  setArrayError({ key, hasError, validationsArray, emptyArrayError }) {
+    this.error[key] = {
+      hasError: hasError,
+      message: emptyArrayError ? validationsArray[0].message : "",
+      itemErrors: emptyArrayError ? [] : validationsArray,
+    };
+
+    this.error.hasError =
+      !this.error.hasError && hasError ? true : this.error.hasError;
   }
 
   normaliseObjectError(executedValidations) {

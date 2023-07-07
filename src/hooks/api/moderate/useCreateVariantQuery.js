@@ -15,7 +15,7 @@ export default function useCreateVariantQuery() {
   const [error, setError] = useState(variantValidation.error);
 
   function createVariantQuery() {
-    const validation = variantValidation.validate(credentials);
+    const { error: validation } = variantValidation.validate(credentials);
 
     setError((prev) => ({ ...prev, ...validation }));
 

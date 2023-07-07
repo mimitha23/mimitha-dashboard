@@ -3,6 +3,7 @@ import { controllStatus as status } from "../helpers";
 
 const initialState = {
   form: {
+    isEditable: null,
     productTypes: null,
     gender: null,
     productStyles: [],
@@ -77,6 +78,10 @@ const registerProductSlice = createSlice({
       state.form[key] = isSelectedValue
         ? state.form[key].filter((v) => v._id !== selectedValue._id)
         : [{ ...selectedValue }, ...state.form[key]];
+    },
+
+    setIsEditable(state, { payload }) {
+      state.form.isEditable = payload;
     },
 
     setTexture(state, { payload: { key, value, _id: textureId } }) {
@@ -168,6 +173,19 @@ const registerProductSlice = createSlice({
       );
     },
 
+    // API
+    registerProduct: {
+      prepare(payload) {
+        return {
+          payload: prepareDataForDB(payload),
+        };
+      },
+
+      reducer(state) {
+        state.status = status.loading();
+      },
+    },
+
     setRegisteredProductDefaults(state, { payload }) {
       console.log({ payload });
       const form = {
@@ -188,19 +206,6 @@ const registerProductSlice = createSlice({
           },
         ],
       };
-    },
-
-    // API
-    registerProduct: {
-      prepare(payload) {
-        return {
-          payload: prepareDataForDB(payload),
-        };
-      },
-
-      reducer(state) {
-        state.status = status.loading();
-      },
     },
 
     updateRegisteredProduct: {

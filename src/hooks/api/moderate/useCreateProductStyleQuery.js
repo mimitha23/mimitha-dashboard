@@ -15,7 +15,7 @@ export default function useCreateProductStyleQuery() {
   const [error, setError] = useState(productStyleValidation.error);
 
   function createProductStyleQuery() {
-    const validation = productStyleValidation.validate(credentials);
+    const { error: validation } = productStyleValidation.validate(credentials);
 
     setError((prev) => ({ ...prev, ...validation }));
 

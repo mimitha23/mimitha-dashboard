@@ -83,6 +83,8 @@ export default memo(function TextureField({ error }) {
           </div>
         );
       })}
+
+      {error.hasError && error.message && <p>{error.message}</p>}
     </Styled.TextureField>
   );
 });

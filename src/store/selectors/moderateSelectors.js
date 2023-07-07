@@ -163,6 +163,7 @@ const selectedRegisterProductForm = ({ registerProduct }) => ({
   warnings: registerProduct.form.warnings,
   textures: registerProduct.form.textures,
   gender: registerProduct.form.gender,
+  isEditable: registerProduct.form.isEditable,
   isUpdating: registerProduct.isUpdating,
   updatingProductId: registerProduct.updatingProductId,
 });

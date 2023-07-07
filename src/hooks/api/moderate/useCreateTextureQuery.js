@@ -15,7 +15,7 @@ export default function useCreateColorQuery() {
   const [error, setError] = useState(textureValidation.error);
 
   function createTextureQuery() {
-    const validation = textureValidation.validate(credentials);
+    const { error: validation } = textureValidation.validate(credentials);
 
     setError((prev) => ({ ...prev, ...validation }));
 

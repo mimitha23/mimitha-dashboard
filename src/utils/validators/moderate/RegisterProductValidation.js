@@ -10,6 +10,11 @@ export default class RegisterProductValidation extends Validators {
 
     this.validationToExecute = [
       {
+        key: "isEditable",
+        validationType: validationType.isPrimitive,
+        rules: [Rules.isBoolean],
+      },
+      {
         key: "productTypes",
         validationType: validationType.isPrimitive,
         rules: [Rules.isEmptyObject],
@@ -70,11 +75,65 @@ export default class RegisterProductValidation extends Validators {
     this.error = {
       hasError: false,
       productTypes: { hasError: false, message: "" },
+      isEditable: { hasError: false, message: "" },
       gender: { hasError: false, message: "" },
-      productStyles: { hasError: false, error: "" },
-      seasons: { hasError: false, error: "" },
-      textures: { hasError: false, error: "", itemErrors: [] },
-      warnings: { hasError: false, error: "", itemErrors: [] },
+      productStyles: { hasError: false, message: "" },
+      seasons: { hasError: false, message: "" },
+      textures: { hasError: false, message: "", itemErrors: [] },
+      warnings: { hasError: false, message: "", itemErrors: [] },
     };
+  }
+
+  validateTexturesPercentageSum(textures) {
+    if (!Array.isArray(textures) || (Array.isArray(textures) && !textures[0]))
+      return this;
+
+    const reducedPercentage = textures.reduce(
+      (acc, texture) => acc + parseFloat(texture.percentage),
+      0
+    );
+
+    if (reducedPercentage > 100 || reducedPercentage < 100) {
+      this.error.textures = {
+        ...this.error.textures,
+        hasError: true,
+        error: "შეყვანილი ტექსტურების პროცენტული ჯამი უნდა წარმოადგენდეს 100%",
+      };
+
+      this.error.hasError = true;
+    }
+
+    return this;
+  }
+
+  validateSameTextures(textures) {
+    if (
+      !textures ||
+      !Array.isArray(textures) ||
+      (Array.isArray(textures) && !textures[0])
+    )
+      return this;
+
+    const enteredTextures = textures.map((txt) => txt.textures?.ka);
+
+    const temp = [];
+    let isDuplicated = false;
+
+    enteredTextures.forEach((txt) => {
+      if (temp.includes(txt)) isDuplicated = true;
+      temp.push(txt);
+    });
+
+    if (isDuplicated) {
+      this.error.textures = {
+        ...this.error.textures,
+        hasError: true,
+        error: "textures შეიცავს დუბლირებულ ტექსტურას",
+      };
+
+      this.error.hasError = true;
+    }
+
+    return this;
   }
 }

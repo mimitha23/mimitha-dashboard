@@ -15,16 +15,19 @@ export default function useRegisterProductQuery() {
   const [error, setError] = useState(registerProductValidation.error);
 
   function registerProductQuery() {
-    const validation = registerProductValidation.validate(credentials);
+    const { error: validation } = registerProductValidation
+      .validate(credentials)
+      .validateTexturesPercentageSum(credentials.textures)
+      .validateSameTextures(credentials.textures);
 
     setError((prev) => ({ ...prev, ...validation }));
 
     if (validation.hasError) return;
-    console.log({ credentials });
+
     const checkedData = generateLowerCaseData(credentials, ["warning"]);
 
     credentials.isUpdating
-      ? dispatch(registerProductActions.updateupdate(checkedData))
+      ? dispatch(registerProductActions.updateProduct(checkedData))
       : dispatch(registerProductActions.registerProduct(checkedData));
   }
 

@@ -67,7 +67,7 @@ export default function WarningField({ error }) {
         add warning
       </button>
 
-      {error?.hasError && error?.error && <p>{error.error}</p>}
+      {error?.hasError && error?.message && <p>{error.message}</p>}
 
       <EnteredWarningsList
         error={error?.itemErrors}
