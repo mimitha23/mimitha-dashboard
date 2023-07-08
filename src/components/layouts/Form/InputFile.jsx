@@ -13,7 +13,7 @@ export default memo(function InputFile({
   accept = "image/*",
 }) {
   return (
-    <Styled.Input className="form__input-text form__input-file">
+    <Styled.Input className="form__input-text form__input-file" data-input-file>
       {file && (
         <div className="form__file-icon--review">
           <figure className="form__file-icon--review__fig">

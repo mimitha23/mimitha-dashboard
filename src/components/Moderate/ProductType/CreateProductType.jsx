@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   selectProductTypeForm,
   selectProductTypeStatus,
-} from "store/selectors/moderateSelectors";
+} from "store/selectors/moderate/productTypeSelectors";
 import { useCreateProductTypeQuery } from "hooks/api/moderate";
 import { productTypeActions } from "store/reducers/moderate/productTypeReducer";
 
@@ -17,9 +17,7 @@ import { Form, InputText, Button, LoadingSpinner } from "components/layouts";
 
 export default function CreateProductType() {
   const dispatch = useDispatch();
-  const { label_ka, label_en, query, isUpdating } = useSelector(
-    selectProductTypeForm
-  );
+  const { label_ka, label_en, isUpdating } = useSelector(selectProductTypeForm);
   const status = useSelector(selectProductTypeStatus);
 
   const { createProductTypeQuery, error } = useCreateProductTypeQuery();
@@ -67,18 +65,6 @@ export default function CreateProductType() {
           error={error.label_en.hasError}
           message={error.label_en.message}
           value={label_en}
-          onChange={handleSetProductType}
-        />
-
-        <InputText
-          id="product-type"
-          label="პროდუქტის ტიპის მონიშვნა"
-          name="query"
-          placeholder="cargo trousers"
-          anotation="გამოყავით შორისით, შეიყვანეთ ლათინური ასოებით"
-          error={error.query.hasError}
-          message={error.query.message}
-          value={query}
           onChange={handleSetProductType}
         />
 

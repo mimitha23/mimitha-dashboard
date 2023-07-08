@@ -9,14 +9,20 @@ export const RegisterProduct = styled.div`
 
   .form {
     width: auto;
+    height: 100%;
     max-width: 50rem;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     margin-top: 3rem;
-    align-items: start;
+    align-content: center;
+  }
+
+  & > .form [data-input-file] {
+    grid-column: span 2;
   }
 
   .is-editable__box {
+    grid-column: span 2;
     display: flex;
     flex-direction: column;
     align-items: flex-start;

@@ -20,6 +20,8 @@ const initialState = {
         percentage: "",
       },
     ],
+    thumbnail: "",
+    newThumbnail: "",
   },
 
   allRegisteredProducts: [],
@@ -46,14 +48,6 @@ const registerProductSlice = createSlice({
   name: "registered-products",
   initialState,
   reducers: {
-    /**
-     * this on sets only the primitive type values such as:
-     * @param {object} { key: string, value: string }
-     */
-    setRegisterProductValue(state, { payload: { key, value } }) {
-      state.form[key] = value;
-    },
-
     setSelectable(state, { payload: { key, value } }) {
       const selectedValue = state.registerProductFormSugestions[key].find(
         (item) => item._id === value
@@ -268,6 +262,8 @@ const registerProductSlice = createSlice({
 
       state.registerProductFormSugestions = editedSugestions;
     },
+
+    // REQUEST STATUS SETTERS
 
     setSuccess(state) {
       state.status = status.success();

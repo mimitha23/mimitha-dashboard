@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import {
   selectAllVariants,
   selectVariantStatus,
-} from "store/selectors/moderateSelectors";
+} from "store/selectors/moderate/variantSelectors";
 import { variantActions } from "store/reducers/moderate/variantReducer";
 
 import { PATHS } from "config/routes";

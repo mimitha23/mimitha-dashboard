@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   selectProductStyleForm,
   selectProductStyleStatus,
-} from "store/selectors/moderateSelectors";
+} from "store/selectors/moderate/productStyleSelectors";
 import { useCreateProductStyleQuery } from "hooks/api/moderate";
 import { productStyleActions } from "store/reducers/moderate/productStyleReducer";
 
@@ -18,7 +18,7 @@ import * as Styled from "./styles/CreateProductStyle.styled";
 export default function CreateProductStyle() {
   const dispatch = useDispatch();
   const status = useSelector(selectProductStyleStatus);
-  const { label_ka, label_en, query, isUpdating } = useSelector(
+  const { label_ka, label_en, isUpdating } = useSelector(
     selectProductStyleForm
   );
 
@@ -67,18 +67,6 @@ export default function CreateProductStyle() {
           error={error.label_en.hasError}
           message={error.label_en.message}
           value={label_en}
-          onChange={handleSetProductStyle}
-        />
-
-        <InputText
-          id="product-type"
-          label="პროდუქტის სტილის მონიშვნა"
-          name="query"
-          placeholder="sportswear"
-          anotation="გამოყავით შორისით, შეიყვანეთ ლათინური ასოებით"
-          error={error.query.hasError}
-          message={error.query.message}
-          value={query}
           onChange={handleSetProductStyle}
         />
 

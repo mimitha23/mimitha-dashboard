@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   selectColorForm,
   selectColorStatus,
-} from "store/selectors/moderateSelectors";
+} from "store/selectors/moderate/colorSelectors";
 import { useCreateColorQuery } from "hooks/api/moderate";
 import { colorActions } from "store/reducers/moderate/colorReducer";
 

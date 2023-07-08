@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import {
   selectAllProductTypes,
   selectProductTypeStatus,
-} from "store/selectors/moderateSelectors";
+} from "store/selectors/moderate/productTypeSelectors";
 import { productTypeActions } from "store/reducers/moderate/productTypeReducer";
 
 import { PATHS } from "config/routes";

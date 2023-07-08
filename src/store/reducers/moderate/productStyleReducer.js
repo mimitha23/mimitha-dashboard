@@ -5,7 +5,6 @@ const initialState = {
   form: {
     label_ka: "",
     label_en: "",
-    query: "",
   },
 
   allProductStyles: [],
@@ -32,7 +31,6 @@ const productStyleSlice = createSlice({
       const form = {
         label_ka: payload.ka,
         label_en: payload.en,
-        query: payload.query.replaceAll("_", " "),
       };
 
       state.form = form;
@@ -130,9 +128,9 @@ export const productStyleActions = productStyleSlice.actions;
 
 function prepareDataForDB(payload) {
   const credentials = {
-    query: payload.query.split(" ").join("_"),
     ka: payload.label_ka,
     en: payload.label_en,
+    query: payload.label_en.split(" ").join("_"),
   };
 
   if (payload.isUpdating && payload.updatingProductStyleId)

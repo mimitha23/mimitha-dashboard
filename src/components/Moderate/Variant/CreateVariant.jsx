@@ -6,7 +6,7 @@ import {
   selectVariantForm,
   selectVariantStatus,
   selectExistingVariantTypes,
-} from "store/selectors/moderateSelectors";
+} from "store/selectors/moderate/variantSelectors";
 import { useCreateVariantQuery } from "hooks/api/moderate";
 import { variantActions } from "store/reducers/moderate/variantReducer";
 

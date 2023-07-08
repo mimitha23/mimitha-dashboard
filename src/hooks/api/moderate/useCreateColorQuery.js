@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { selectColorForm } from "store/selectors/moderateSelectors";
+import { selectColorForm } from "store/selectors/moderate/colorSelectors";
 import { colorActions } from "store/reducers/moderate/colorReducer";
 import { CreateColorValidation } from "utils/validators/moderate";
 import { generateLowerCaseData } from "utils";

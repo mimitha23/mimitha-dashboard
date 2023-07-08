@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import {
   selectRegisterProductForm,
   selectRegisterProductFormSugestions,
-} from "store/selectors/moderateSelectors";
+} from "store/selectors/moderate/registerProductSelectors";
 import { registerProductActions } from "store/reducers/moderate/registerProductReducer";
 
 import extractError from "../functions/extractObjectsArrayErrors";

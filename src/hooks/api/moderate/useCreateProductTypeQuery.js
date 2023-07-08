@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { selectProductTypeForm } from "store/selectors/moderateSelectors";
+import { selectProductTypeForm } from "store/selectors/moderate/productTypeSelectors";
 import { productTypeActions } from "store/reducers/moderate/productTypeReducer";
 import { CreateProductTypeValidation } from "utils/validators/moderate";
 import { generateLowerCaseData } from "utils";

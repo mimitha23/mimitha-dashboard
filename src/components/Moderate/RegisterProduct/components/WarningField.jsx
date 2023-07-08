@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
-import { selectRegisterProductForm } from "store/selectors/moderateSelectors";
+import { selectRegisterProductForm } from "store/selectors/moderate/registerProductSelectors";
 import { registerProductActions } from "store/reducers/moderate/registerProductReducer";
 
 import WarningInput from "./WarningInput";

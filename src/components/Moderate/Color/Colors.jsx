@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import {
   selectAllColors,
   selectColorStatus,
-} from "store/selectors/moderateSelectors";
+} from "store/selectors/moderate/colorSelectors";
 import { colorActions } from "store/reducers/moderate/colorReducer";
 
 import { PATHS } from "config/routes";

@@ -1,12 +1,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useCallback, useEffect, useMemo } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import {
   selectRegisterProductForm,
   selectRegisterProductStatus,
   selectRegisterProductFormSugestions,
-} from "store/selectors/moderateSelectors";
+} from "store/selectors/moderate/registerProductSelectors";
 import { useRegisterProductQuery } from "hooks/api/moderate";
 import { registerProductActions } from "store/reducers/moderate/registerProductReducer";
 
@@ -15,6 +15,7 @@ import { PATHS } from "config/routes";
 import {
   Form,
   Button,
+  InputFile,
   InputFilterableSelect,
   InputMultipleFilterableSelect,
   LoadingSpinner,
@@ -59,9 +60,7 @@ export default function RegisterProduct() {
     };
   }, []);
 
-  const memorisedError = useMemo(() => {
-    return error;
-  }, [error]);
+  const fileRef = useRef();
 
   return (
     <Styled.RegisterProduct>
@@ -123,7 +122,7 @@ export default function RegisterProduct() {
           list={genders}
         />
 
-        <TextureField error={memorisedError.textures} />
+        <TextureField error={error.textures} />
 
         <WarningField error={error.warnings} />
 
@@ -142,6 +141,16 @@ export default function RegisterProduct() {
 
           {error.isEditable.hasError && <p>{error.isEditable.message}</p>}
         </div>
+
+        <InputFile
+          name="icon"
+          label="აირჩიეთ პროდუქტის მინიატურა"
+          fileRef={fileRef}
+          // file={newIcon || icon}
+          // message={error.icon.message}
+          // error={error.icon.hasError}
+          // onChange={handleManualSetVariant}
+        />
 
         <Button
           caption="შექმნა"

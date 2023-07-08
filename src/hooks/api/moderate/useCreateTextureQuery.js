@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { selectTextureForm } from "store/selectors/moderateSelectors";
+import { selectTextureForm } from "store/selectors/moderate/textureSelectors";
 import { textureActions } from "store/reducers/moderate/textureReducer";
 import { CreateTextureValidation } from "utils/validators/moderate";
 import { generateLowerCaseData } from "utils";

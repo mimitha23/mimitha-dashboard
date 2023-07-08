@@ -27,15 +27,6 @@ export default class CreateProductStyleValidation extends Validators {
           Rules.hasWhiteSpaceInSequence,
         ],
       },
-      {
-        key: "query",
-        validationType: validationType.isPrimitive,
-        rules: [
-          Rules.notIsEmpty,
-          Rules.isLatinLetters,
-          Rules.hasWhiteSpaceInSequence,
-        ],
-      },
     ];
 
     this.error = {

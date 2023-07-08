@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import {
   selectAllTextures,
   selectTextureStatus,
-} from "store/selectors/moderateSelectors";
+} from "store/selectors/moderate/textureSelectors";
 import { textureActions } from "store/reducers/moderate/textureReducer";
 
 import { PATHS } from "config/routes";

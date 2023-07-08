@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   selectTextureForm,
   selectTextureStatus,
-} from "store/selectors/moderateSelectors";
+} from "store/selectors/moderate/textureSelectors";
 import { useCreateTextureQuery } from "hooks/api/moderate";
 import { textureActions } from "store/reducers/moderate/textureReducer";
 
