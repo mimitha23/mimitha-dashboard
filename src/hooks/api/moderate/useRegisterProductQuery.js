@@ -10,7 +10,9 @@ export default function useRegisterProductQuery() {
   const dispatch = useDispatch();
   const credentials = useSelector(selectRegisterProductForm);
 
-  const registerProductValidation = new RegisterProductValidation();
+  const registerProductValidation = new RegisterProductValidation().prepare(
+    credentials
+  );
 
   const [error, setError] = useState(registerProductValidation.error);
 
@@ -24,10 +26,15 @@ export default function useRegisterProductQuery() {
 
     if (validation.hasError) return;
 
-    const checkedData = generateLowerCaseData(credentials, ["warning"]);
+    const checkedData = generateLowerCaseData(credentials, [
+      "warning",
+      "media",
+      "newThumbnail",
+      "updatingRegisteredProductId",
+    ]);
 
     credentials.isUpdating
-      ? dispatch(registerProductActions.updateProduct(checkedData))
+      ? dispatch(registerProductActions.updateRegisteredProduct(checkedData))
       : dispatch(registerProductActions.registerProduct(checkedData));
   }
 

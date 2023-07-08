@@ -41,21 +41,6 @@ const variantSlice = createSlice({
       }
     },
 
-    setVariantDefaults(state, { payload }) {
-      const form = {
-        variantType: { _id: nanoid(), caption: payload.type },
-        label_ka: payload.ka,
-        label_en: payload.en,
-        description: payload.description,
-        icon: payload.icon,
-      };
-
-      state.form = form;
-
-      state.isUpdating = true;
-      state.updatingVariantId = payload._id;
-    },
-
     // API
     getExistingVariantTypes: {
       reducer(state) {
@@ -80,6 +65,21 @@ const variantSlice = createSlice({
       reducer(state) {
         state.status = status.loading();
       },
+    },
+
+    setVariantDefaults(state, { payload }) {
+      const form = {
+        variantType: { _id: nanoid(), caption: payload.type },
+        label_ka: payload.ka,
+        label_en: payload.en,
+        description: payload.description,
+        icon: payload.icon,
+      };
+
+      state.form = form;
+
+      state.isUpdating = true;
+      state.updatingVariantId = payload._id;
     },
 
     updateVariant: {
@@ -122,6 +122,7 @@ const variantSlice = createSlice({
       state.allVariants = payload;
     },
 
+    // REQUEST STATUS SETTERS
     setSuccess(state) {
       state.status = status.success();
     },

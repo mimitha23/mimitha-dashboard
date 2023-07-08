@@ -35,8 +35,7 @@ export function* registerProduct({ payload }) {
 
 export function* updateRegisteredProduct({ payload }) {
   try {
-    console.log(payload);
-    // yield call(registerProductAPI.updateRegisteredProductQuery, payload);
+    yield call(registerProductAPI.updateRegisteredProductQuery, payload);
     yield put(registerProductActions.resetFormState());
     yield put(registerProductActions.setSuccess());
   } catch (error) {
@@ -50,8 +49,7 @@ export function* updateRegisteredProduct({ payload }) {
 
 export function* deleteRegisteredProduct({ payload }) {
   try {
-    console.log(payload);
-    // yield call(registerProductAPI.deleteRegisteredProductQuery, payload);
+    yield call(registerProductAPI.deleteRegisteredProductQuery, payload);
     yield put(registerProductActions.setDeletedRegisteredProduct(payload._id));
     yield put(registerProductActions.setSuccess());
   } catch (error) {

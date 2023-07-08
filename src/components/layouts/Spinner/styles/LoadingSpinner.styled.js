@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const LoadingSpinner = styled.div`
-  position: absolute;
+  position: fixed;
   inset: 0;
   background: ${({ theme }) => theme.colors.black_tr_08};
   backdrop-filter: blur(2px);

@@ -15,10 +15,26 @@ export const RegisterProduct = styled.div`
     grid-template-columns: repeat(2, 1fr);
     margin-top: 3rem;
     align-content: center;
+    align-items: start;
   }
 
   & > .form [data-input-file] {
     grid-column: span 2;
+
+    & [data-input-file-review] {
+      height: 20rem;
+
+      figure {
+        height: 90%;
+        width: auto;
+        border-radius: 0.5rem;
+        overflow: hidden;
+
+        img {
+          height: 100%;
+        }
+      }
+    }
   }
 
   .is-editable__box {

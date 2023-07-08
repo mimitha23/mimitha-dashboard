@@ -6,6 +6,7 @@ export const RegisteredProducts = styled.div`
   flex-direction: column;
   gap: 3rem;
   padding: 2rem;
+  position: relative;
 
   .registered-products--list__title {
     font-size: ${({ theme }) => theme.fontSize.h3};

@@ -7,7 +7,7 @@ const availableValidationRules = {
   isOnlyLatinLetters: "isOnlyLatinLetters",
   isLatinLetters: "isLatinLetters",
   isValidHexColor: "isValidHexColor",
-  isFileObject: "isFileObject",
+  isImageFile: "isImageFile",
   hasWhiteSpaceInSequence: "hasWhiteSpaceInSequence",
   isEmptyObject: "isEmptyObject",
   isEmptyArray: "isEmptyArray",

@@ -12,7 +12,7 @@ const selectedRegisterProductForm = ({ registerProduct }) => ({
   thumbnail: registerProduct.form.thumbnail,
   newThumbnail: registerProduct.form.newThumbnail,
   isUpdating: registerProduct.isUpdating,
-  updatingProductId: registerProduct.updatingProductId,
+  updatingRegisteredProductId: registerProduct.updatingRegisteredProductId,
 });
 
 const selectedRegisterProductStatus = ({ registerProduct }) => ({
@@ -43,3 +43,6 @@ export const selectRegisterProductFormSugestions = createSelector(
   selectedRegisterProductFormSugestions,
   (memorised) => memorised
 );
+
+export const selectAllRegisteredProducts = ({ registerProduct }) =>
+  registerProduct.allRegisteredProducts;

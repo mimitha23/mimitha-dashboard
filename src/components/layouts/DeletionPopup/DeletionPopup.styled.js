@@ -34,6 +34,8 @@ export const DeletionPopup = styled.div`
     &__message {
       align-self: center;
       margin-top: auto;
+      text-align: center;
+      text-wrap: balance;
 
       &-target {
         color: ${({ theme }) => theme.colors.blue};

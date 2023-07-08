@@ -27,18 +27,6 @@ const productTypeSlice = createSlice({
       state.form[key] = value;
     },
 
-    setProductTypeDefaults(state, { payload }) {
-      const form = {
-        label_ka: payload.ka,
-        label_en: payload.en,
-      };
-
-      state.form = form;
-
-      state.isUpdating = true;
-      state.updatingProductTypeId = payload._id;
-    },
-
     // API
     createProductType: {
       prepare(payload) {
@@ -50,6 +38,18 @@ const productTypeSlice = createSlice({
       reducer(state) {
         state.status = status.loading();
       },
+    },
+
+    setProductTypeDefaults(state, { payload }) {
+      const form = {
+        label_ka: payload.ka,
+        label_en: payload.en,
+      };
+
+      state.form = form;
+
+      state.isUpdating = true;
+      state.updatingProductTypeId = payload._id;
     },
 
     updateProductType: {
@@ -92,6 +92,7 @@ const productTypeSlice = createSlice({
       state.allProductTypes = payload;
     },
 
+    // REQUEST STATUS SETTERS
     setSuccess(state) {
       state.status = status.success();
     },

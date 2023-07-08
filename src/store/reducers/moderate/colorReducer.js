@@ -28,19 +28,6 @@ const colorSlice = createSlice({
       state.form[key] = value;
     },
 
-    setColorDefaults(state, { payload }) {
-      const form = {
-        color_ka: payload.ka,
-        color_en: payload.en,
-        color_hex: payload.hex,
-      };
-
-      state.form = form;
-
-      state.isUpdating = true;
-      state.updatingColorId = payload._id;
-    },
-
     // API
     createColor: {
       prepare(payload) {
@@ -52,6 +39,19 @@ const colorSlice = createSlice({
       reducer(state) {
         state.status = status.loading();
       },
+    },
+
+    setColorDefaults(state, { payload }) {
+      const form = {
+        color_ka: payload.ka,
+        color_en: payload.en,
+        color_hex: payload.hex,
+      };
+
+      state.form = form;
+
+      state.isUpdating = true;
+      state.updatingColorId = payload._id;
     },
 
     updateColor: {
@@ -94,6 +94,7 @@ const colorSlice = createSlice({
       state.allColors = payload;
     },
 
+    // REQUEST STATUS SETTERS
     setSuccess(state) {
       state.status = status.success();
     },

@@ -6,7 +6,7 @@ export default class ValidateHelpers extends Validate {
     return rules.map((rule) => {
       const { hasError, message } = this[rule]({
         key,
-        value: credentials[key],
+        value: credentials?.[key],
       });
 
       return { rule, hasError, message };

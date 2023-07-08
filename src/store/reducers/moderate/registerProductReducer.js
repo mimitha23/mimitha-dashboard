@@ -3,16 +3,11 @@ import { controllStatus as status } from "../helpers";
 
 const initialState = {
   form: {
-    isEditable: null,
+    isEditable: false,
     productTypes: null,
     gender: null,
     productStyles: [],
     seasons: [],
-    warning: {
-      warning_ka: "",
-      warning_en: "",
-    },
-    warnings: [],
     textures: [
       {
         _id: nanoid(),
@@ -20,8 +15,13 @@ const initialState = {
         percentage: "",
       },
     ],
+    warning: {
+      warning_ka: "",
+      warning_en: "",
+    },
+    warnings: [],
     thumbnail: "",
-    newThumbnail: "",
+    newThumbnail: null,
   },
 
   allRegisteredProducts: [],
@@ -48,6 +48,7 @@ const registerProductSlice = createSlice({
   name: "registered-products",
   initialState,
   reducers: {
+    // productType and gender
     setSelectable(state, { payload: { key, value } }) {
       const selectedValue = state.registerProductFormSugestions[key].find(
         (item) => item._id === value
@@ -58,7 +59,9 @@ const registerProductSlice = createSlice({
       state.form[key] = selectedValue;
     },
 
+    // season and style
     setMultipleSelectable(state, { payload: { key, value } }) {
+      // console.log({ key, value });
       const selectedValue = state.registerProductFormSugestions[key].find(
         (item) => item._id === value
       );
@@ -74,10 +77,12 @@ const registerProductSlice = createSlice({
         : [{ ...selectedValue }, ...state.form[key]];
     },
 
+    // isEditable
     setIsEditable(state, { payload }) {
       state.form.isEditable = payload;
     },
 
+    // texture actions
     setTexture(state, { payload: { key, value, _id: textureId } }) {
       const activeTextureIndex = state.form.textures.findIndex(
         (texture) => texture._id === textureId
@@ -98,6 +103,7 @@ const registerProductSlice = createSlice({
     addTextureField(state) {
       const lastTexture = [...state.form.textures].pop();
 
+      // check if last field is filled, otherwise don't let add new field
       const lastTextureFieldIsFilled =
         Object.values(lastTexture).filter(
           (fieldValue) =>
@@ -113,8 +119,27 @@ const registerProductSlice = createSlice({
         });
     },
 
+    // warning actions
     setWarning(state, { payload: { key, value } }) {
       state.form.warning[key] = value;
+    },
+
+    addWarning(state) {
+      // check if all warning fields is filled, otherwise don't let add new
+      const lastTextureFieldIsFilled = Object.values(state.form.warning).every(
+        (fieldValue) =>
+          typeof fieldValue === "string" && fieldValue.trim() !== ""
+      );
+
+      if (!lastTextureFieldIsFilled) return;
+
+      state.form.warnings.push({
+        _id: nanoid(),
+        ka: state.form.warning.warning_ka,
+        en: state.form.warning.warning_en,
+      });
+
+      state.form.warning = initialState.form.warning;
     },
 
     updateWarning(state, { payload: warningId }) {
@@ -135,6 +160,14 @@ const registerProductSlice = createSlice({
 
       if (warningIndex < 0) return;
 
+      // check if all warning fields is filled, otherwise don't let add new
+      const lastTextureFieldIsFilled = Object.values(state.form.warning).every(
+        (fieldValue) =>
+          typeof fieldValue === "string" && fieldValue.trim() !== ""
+      );
+
+      if (!lastTextureFieldIsFilled) return;
+
       state.form.warnings[warningIndex] = {
         ...state.form.warnings[warningIndex],
         ka: state.form.warning.warning_ka,
@@ -144,27 +177,15 @@ const registerProductSlice = createSlice({
       state.form.warning = initialState.form.warning;
     },
 
-    addWarning(state) {
-      const lastTextureFieldIsFilled = Object.values(state.form.warning).every(
-        (fieldValue) =>
-          typeof fieldValue === "string" && fieldValue.trim() !== ""
-      );
-
-      if (!lastTextureFieldIsFilled) return;
-
-      state.form.warnings.push({
-        _id: nanoid(),
-        ka: state.form.warning.warning_ka,
-        en: state.form.warning.warning_en,
-      });
-
-      state.form.warning = initialState.form.warning;
-    },
-
     removeWarning(state, { payload: warningId }) {
       state.form.warnings = state.form.warnings.filter(
         (warning) => warning._id !== warningId
       );
+    },
+
+    // thumbnail
+    setThumbnail(state, { payload }) {
+      state.form.newThumbnail = payload;
     },
 
     // API
@@ -181,25 +202,43 @@ const registerProductSlice = createSlice({
     },
 
     setRegisteredProductDefaults(state, { payload }) {
-      console.log({ payload });
       const form = {
-        productTypes: null,
-        gender: null,
-        productStyles: [],
-        seasons: [],
-        warning: {
-          warning_ka: "",
-          warning_en: "",
+        ...initialState.form,
+        productTypes: {
+          ...payload.productType,
+          caption: payload.productType.ka,
         },
-        warnings: [],
-        textures: [
-          {
-            _id: nanoid(),
-            textures: null,
-            percentage: "",
+        gender: {
+          ...payload.productType,
+          caption: payload.gender.ka,
+        },
+        thumbnail: payload.thumbnail,
+        productStyles: payload.styles.map((style) => ({
+          ...style,
+          caption: style.ka,
+        })),
+        seasons: payload.seasons.map((season) => ({
+          ...season,
+          caption: season.ka,
+        })),
+        textures: payload.textures.map((texture) => ({
+          _id: nanoid(),
+          percentage: texture.percentage,
+          textures: {
+            _id: texture._id,
+            ka: texture.ka,
+            en: texture.en,
+            caption: texture.ka,
           },
-        ],
+        })),
+        warnings: payload.warnings,
+        isEditable: payload.isEditable,
       };
+
+      state.isUpdating = true;
+      state.updatingRegisteredProductId = payload._id;
+
+      state.form = { ...form };
     },
 
     updateRegisteredProduct: {
@@ -264,7 +303,6 @@ const registerProductSlice = createSlice({
     },
 
     // REQUEST STATUS SETTERS
-
     setSuccess(state) {
       state.status = status.success();
     },
@@ -300,6 +338,7 @@ export const registerProductActions = registerProductSlice.actions;
 
 function prepareDataForDB(payload) {
   const credentials = {
+    isEditable: payload.isEditable,
     productType: {
       query: payload.productTypes.query,
       ka: payload.productTypes.ka,
@@ -309,11 +348,13 @@ function prepareDataForDB(payload) {
       query: style.query,
       ka: style.ka,
       en: style.en,
+      _id: style._id,
     })),
     seasons: payload.seasons.map((season) => ({
       ka: season.ka,
       en: season.en,
       query: season.query,
+      _id: season._id,
     })),
     gender: {
       query: payload.gender.query,
@@ -323,13 +364,17 @@ function prepareDataForDB(payload) {
     textures: payload.textures.map((texture) => ({
       percentage: texture.percentage,
       ka: texture.textures.ka,
-      en: texture.textures.ka,
+      en: texture.textures.en,
+      _id: texture.textures._id,
     })),
     warnings: payload.warnings.map((warning) => ({
       ka: warning.ka,
       en: warning.en,
     })),
   };
+
+  if (payload.thumbnail) credentials.thumbnail = payload.thumbnail;
+  if (payload.newThumbnail) credentials.media = payload.newThumbnail;
 
   if (payload.isUpdating && payload.updatingRegisteredProductId)
     credentials._id = payload.updatingRegisteredProductId;

@@ -68,9 +68,10 @@ export default memo(function InputMultipleFilterableSelect({
             <li key={nanoid()} className="selected-fields--item">
               <span>{field.caption}</span>
               <button
-                onClick={() =>
-                  handleOnCloseSelected({ key: name, value: field._id })
-                }
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleOnCloseSelected({ key: name, value: field._id });
+                }}
               >
                 <CloseXIcon />
               </button>

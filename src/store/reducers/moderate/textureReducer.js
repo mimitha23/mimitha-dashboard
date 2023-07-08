@@ -27,18 +27,6 @@ const textureSlice = createSlice({
       state.form[key] = value;
     },
 
-    setTextureDefaults(state, { payload }) {
-      const form = {
-        label_ka: payload.ka,
-        label_en: payload.en,
-      };
-
-      state.form = form;
-
-      state.isUpdating = true;
-      state.updatingTextureId = payload._id;
-    },
-
     // API
     createTexture: {
       prepare(payload) {
@@ -50,6 +38,18 @@ const textureSlice = createSlice({
       reducer(state) {
         state.status = status.loading();
       },
+    },
+
+    setTextureDefaults(state, { payload }) {
+      const form = {
+        label_ka: payload.ka,
+        label_en: payload.en,
+      };
+
+      state.form = form;
+
+      state.isUpdating = true;
+      state.updatingTextureId = payload._id;
     },
 
     updateTexture: {
@@ -92,6 +92,7 @@ const textureSlice = createSlice({
       state.allTextures = payload;
     },
 
+    // REQUEST STATUS SETTERS
     setSuccess(state) {
       state.status = status.success();
     },

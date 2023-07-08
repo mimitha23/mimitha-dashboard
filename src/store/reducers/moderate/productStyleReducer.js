@@ -27,18 +27,6 @@ const productStyleSlice = createSlice({
       state.form[key] = value;
     },
 
-    setProductStyleDefaults(state, { payload }) {
-      const form = {
-        label_ka: payload.ka,
-        label_en: payload.en,
-      };
-
-      state.form = form;
-
-      state.isUpdating = true;
-      state.updatingProductStyleId = payload._id;
-    },
-
     // API
     createProductStyle: {
       prepare(payload) {
@@ -50,6 +38,18 @@ const productStyleSlice = createSlice({
       reducer(state) {
         state.status = status.loading();
       },
+    },
+
+    setProductStyleDefaults(state, { payload }) {
+      const form = {
+        label_ka: payload.ka,
+        label_en: payload.en,
+      };
+
+      state.form = form;
+
+      state.isUpdating = true;
+      state.updatingProductStyleId = payload._id;
     },
 
     updateProductStyle: {
@@ -93,6 +93,7 @@ const productStyleSlice = createSlice({
       state.allProductStyles = payload;
     },
 
+    // REQUEST STATUS SETTERS
     setSuccess(state) {
       state.status = status.success();
     },

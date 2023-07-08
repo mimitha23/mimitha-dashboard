@@ -22,8 +22,10 @@ export default class Validators extends ValidateHelpers {
     let isValid = true;
 
     if (
-      typeof value !== "string" ||
-      (typeof value === "string" && !value.trim())
+      (typeof value === "string" && !value.trim()) ||
+      (typeof value === "number" && isNaN(value)) ||
+      typeof value === "undefined" ||
+      value === null
     )
       isValid = false;
 
@@ -144,7 +146,7 @@ export default class Validators extends ValidateHelpers {
     return { hasError: !isValid, message };
   }
 
-  isFileObject({ key, value }) {
+  isImageFile({ key, value }) {
     let isValid = true;
 
     const isBlob = value instanceof Blob;
@@ -160,7 +162,9 @@ export default class Validators extends ValidateHelpers {
 
     const message = isValid
       ? ""
-      : `გთხოვთ ატვირთოთ ${this.splitToUpperCase(key)}.`;
+      : `გთხოვთ ატვირთოთ ${this.splitToUpperCase(key)}. ${this.splitToUpperCase(
+          key
+        )} უნდა წარმოადგენდეს ფოტოს (JPP, JPEG, PNG, WEBP, SVG და ა.შ).`;
 
     return { hasError: !isValid, message };
   }

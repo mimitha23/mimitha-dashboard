@@ -35,6 +35,9 @@ export default function RegisterProduct() {
     seasons: selectedSeasons,
     productStyles: selectedStyles,
     isEditable,
+    thumbnail,
+    newThumbnail,
+    isUpdating,
   } = useSelector(selectRegisterProductForm);
   const {
     gender: genders,
@@ -143,17 +146,25 @@ export default function RegisterProduct() {
         </div>
 
         <InputFile
-          name="icon"
+          name="thumbnail"
           label="აირჩიეთ პროდუქტის მინიატურა"
           fileRef={fileRef}
-          // file={newIcon || icon}
-          // message={error.icon.message}
-          // error={error.icon.hasError}
-          // onChange={handleManualSetVariant}
+          file={newThumbnail || thumbnail}
+          message={
+            error.thumbnail?.hasError
+              ? error.thumbnail.message
+              : error.newThumbnail?.hasError
+              ? error.newThumbnail.message
+              : ""
+          }
+          error={error.thumbnail?.hasError || error.newThumbnail?.hasError}
+          onChange={({ value }) =>
+            dispatch(registerProductActions.setThumbnail(value))
+          }
         />
 
         <Button
-          caption="შექმნა"
+          caption={isUpdating ? "განახლება" : "შექმნა"}
           disabled={status.loading}
           onClick={(e) => {
             e.preventDefault();

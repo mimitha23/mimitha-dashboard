@@ -6,6 +6,31 @@ export const RegisteredProductCard = styled.div`
   border-radius: 0.5rem;
   overflow: hidden;
   box-shadow: ${({ theme }) => theme.shadow.radial_sm_dark};
+  position: relative;
+
+  .proregistered-product--card__actions {
+    position: absolute;
+    right: 0.5rem;
+    top: 0.5rem;
+    font-size: 2rem;
+    display: none;
+    align-items: center;
+    gap: 1rem;
+
+    &-btn {
+      width: 3rem;
+      height: 3rem;
+      border-radius: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: ${({ theme }) => theme.colors.black_tr_05};
+    }
+  }
+
+  &:hover .proregistered-product--card__actions {
+    display: flex;
+  }
 
   .registered-product--card__fig {
     width: 100%;

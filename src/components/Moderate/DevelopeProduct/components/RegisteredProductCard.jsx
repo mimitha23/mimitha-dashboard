@@ -1,52 +1,83 @@
 import { Link } from "react-router-dom";
-import * as Styled from "./styles/RegisteredProductCard.styled";
+
 import { PATHS } from "config/routes";
 
-export default function RegisteredProductCard() {
+import { EditIcon, DeleteIcon } from "components/layouts/Icons";
+import * as Styled from "./styles/RegisteredProductCard.styled";
+
+export default function RegisteredProductCard({ product, onEdit, onDelete }) {
   return (
     <Styled.RegisteredProductCard>
       <Link
         to={PATHS.moderate_nested_routes.developedProductsPage.relativePath({
-          registeredProductId: "registerd-product-id",
+          registeredProductId: product._id,
         })}
       >
+        <div className="proregistered-product--card__actions">
+          <button
+            className="proregistered-product--card__actions-btn"
+            onClick={(e) => {
+              e.stopPropagation();
+              e.preventDefault();
+              onEdit();
+            }}
+          >
+            <EditIcon />
+          </button>
+          <button
+            className="proregistered-product--card__actions-btn delete"
+            onClick={(e) => {
+              e.stopPropagation();
+              e.preventDefault();
+              onDelete();
+            }}
+          >
+            <DeleteIcon />
+          </button>
+        </div>
+
         <figure className="registered-product--card__fig">
-          <img
-            src="https://www.bfgcdn.com/1500_1500_90/017-2701-0511/patagonia-fitz-roy-icon-uprisal-hoody-hoodie.jpg"
-            alt=""
-          />
+          <img src={product.thumbnail} alt={product.thumbnail} loading="lazy" />
         </figure>
+
         <div className="registered-product--card__details">
           <div className="registered-product--card__details-box">
             <span>პროდუქტის ტიპი:</span>
             &nbsp;
-            <span>ჰუდი</span>
+            <span>{product.productType.ka}</span>
           </div>
+
           <div className="registered-product--card__details-box">
             <span>სტილი:</span>
             &nbsp;
-            <span>ყოველდღიური</span>
+            <span>{product.styles.map((style) => style.ka).join(" / ")}</span>
           </div>
+
           <div className="registered-product--card__details-box">
             <span>სეზონი:</span>
             &nbsp;
-            <span>შემოდგომა</span>
+            <span>
+              {product.seasons.map((season) => season.ka).join(" / ")}
+            </span>
           </div>
+
           <div className="registered-product--card__details-box">
             <span>რედაქტირებადი:</span>
             &nbsp;
-            <span>კი</span>
+            <span>{product.isEditable ? "კი" : "არა"}</span>
           </div>
+
           <div className="registered-product--card__details-box">
             <span>მიმაგრებული პროდუქტები:</span>
             &nbsp;
-            <span>20</span>
+            <span>{product.attachedProducts}</span>
           </div>
-          <div className="registered-product--card__details-box">
+
+          {/* <div className="registered-product--card__details-box">
             <span>კომბინაციები:</span>
             &nbsp;
             <span>3</span>
-          </div>
+          </div> */}
         </div>
       </Link>
     </Styled.RegisteredProductCard>

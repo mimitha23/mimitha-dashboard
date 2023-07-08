@@ -84,7 +84,7 @@ export default class CreateVariantValidation extends Validators {
         {
           key: "icon",
           validationType: validationType.isPrimitive,
-          rules: [Rules.isFileObject],
+          rules: [Rules.isImageFile],
         },
       ];
   }

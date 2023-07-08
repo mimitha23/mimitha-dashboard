@@ -84,6 +84,38 @@ export default class RegisterProductValidation extends Validators {
     };
   }
 
+  prepare(credentials) {
+    const thumbnailValidationToExecute = {};
+
+    if (credentials.isUpdating) {
+      thumbnailValidationToExecute.rules = [];
+      this.error.thumbnail = { hasError: false, message: "" };
+      this.validationToExecute.push({
+        key: "thumbnail",
+        validationType: validationType.isPrimitive,
+        rules: [Rules.notIsEmpty],
+      });
+
+      if (credentials.newThumbnail) {
+        this.error.newThumbnail = { hasError: false, message: "" };
+        this.validationToExecute.push({
+          key: "newThumbnail",
+          validationType: validationType.isPrimitive,
+          rules: [Rules.isImageFile],
+        });
+      }
+    } else {
+      this.error.newThumbnail = { hasError: false, message: "" };
+      this.validationToExecute.push({
+        key: "newThumbnail",
+        validationType: validationType.isPrimitive,
+        rules: [Rules.isImageFile],
+      });
+    }
+
+    return this;
+  }
+
   validateTexturesPercentageSum(textures) {
     if (!Array.isArray(textures) || (Array.isArray(textures) && !textures[0]))
       return this;

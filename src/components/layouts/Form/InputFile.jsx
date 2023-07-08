@@ -15,7 +15,7 @@ export default memo(function InputFile({
   return (
     <Styled.Input className="form__input-text form__input-file" data-input-file>
       {file && (
-        <div className="form__file-icon--review">
+        <div className="form__file-icon--review" data-input-file-review>
           <figure className="form__file-icon--review__fig">
             <img
               src={file instanceof Object ? URL.createObjectURL(file) : file}

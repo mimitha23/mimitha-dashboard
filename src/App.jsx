@@ -9,7 +9,7 @@ function App() {
   return (
     <>
       <Navigation />
-      <Suspense fallback={<LoadingSpinner />}>
+      <Suspense fallback={<LoadingSpinner caption="Page Is Loading" />}>
         <Routes>
           {routes.map((route, index) => (
             <Route key={index} path={route.path} element={route.element}>
