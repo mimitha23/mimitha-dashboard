@@ -32,9 +32,26 @@ export const TextureField = styled.div`
     }
   }
 
-  .texture-field--box {
+  .texture-field__list {
     display: flex;
-    gap: 1.5rem;
+    flex-direction: column;
+    gap: 2rem;
+
+    &-item {
+      display: flex;
+      gap: 1.5rem;
+      position: relative;
+
+      .texture-field__remove-btn {
+        position: absolute;
+        top: -1.5rem;
+        right: 0;
+
+        &:hover {
+          color: ${({ theme }) => theme.colors.red};
+        }
+      }
+    }
   }
 
   .percentage-field {

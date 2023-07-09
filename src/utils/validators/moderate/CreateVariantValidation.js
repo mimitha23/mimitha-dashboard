@@ -5,10 +5,8 @@ import {
 import Validators from "utils/validators/Validators";
 
 export default class CreateVariantValidation extends Validators {
-  constructor(isUpdating) {
+  constructor() {
     super();
-
-    this.isUpdating = isUpdating;
 
     this.validationToExecute = [
       {
@@ -50,8 +48,6 @@ export default class CreateVariantValidation extends Validators {
       },
     ];
 
-    this.controlValidationRulesOnUpdate();
-
     this.error = {
       hasError: false,
       variantType: { hasError: false, message: "", itemErrors: [] },
@@ -63,29 +59,32 @@ export default class CreateVariantValidation extends Validators {
     };
   }
 
-  controlValidationRulesOnUpdate() {
-    if (this.isUpdating)
-      this.validationToExecute = [
-        ...this.validationToExecute,
-        {
-          key: "icon",
-          validationType: validationType.isPrimitive,
-          rules: [Rules.notIsEmpty],
-        },
-        // {
-        //   key: "newIcon",
-        //   isPrimitive: true,
-        //   rules: [Rules.isFileObject],
-        // },
-      ];
-    else
-      this.validationToExecute = [
-        ...this.validationToExecute,
-        {
-          key: "icon",
+  prepare(credentials) {
+    if (credentials.isUpdating) {
+      this.error.icon = { hasError: false, message: "" };
+      this.validationToExecute.push({
+        key: "icon",
+        validationType: validationType.isPrimitive,
+        rules: [Rules.notIsEmpty],
+      });
+
+      if (credentials.newIcon) {
+        this.error.newIcon = { hasError: false, message: "" };
+        this.validationToExecute.push({
+          key: "newIcon",
           validationType: validationType.isPrimitive,
           rules: [Rules.isImageFile],
-        },
-      ];
+        });
+      }
+    } else {
+      this.error.newIcon = { hasError: false, message: "" };
+      this.validationToExecute.push({
+        key: "newIcon",
+        validationType: validationType.isPrimitive,
+        rules: [Rules.isImageFile],
+      });
+    }
+
+    return this;
   }
 }

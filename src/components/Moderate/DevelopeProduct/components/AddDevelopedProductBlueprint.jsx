@@ -1,6 +1,12 @@
+import { useSelector } from "react-redux";
+
+import { selectDevelopeProductForm } from "store/selectors/moderate/developeProductSelectors";
+
 import * as Styled from "./styles/AddDevelopedProductBlueprint.styled";
 
 export default function AddDevelopedProductBlueprint() {
+  const form = useSelector(selectDevelopeProductForm);
+
   return (
     <Styled.AddDevelopedProductBlueprint>
       <div className="add-developed--product__assets-box">
@@ -46,57 +52,100 @@ export default function AddDevelopedProductBlueprint() {
         <div className="registered-product--card__details-box">
           <span>სათაური (ka):</span>
           &nbsp;
-          <span>ჰუდი</span>
+          <span>
+            {form.title_ka || (
+              <span className="is-empty-part">არ არის შევსებული</span>
+            )}
+          </span>
         </div>
+
         <div className="registered-product--card__details-box">
           <span>სათაური (en):</span>
           &nbsp;
-          <span>hoody</span>
+          <span>
+            {form.title_en || (
+              <span className="is-empty-part">არ არის შევსებული</span>
+            )}
+          </span>
         </div>
+
         <div className="registered-product--card__details-box">
           <span>ფასი:</span>
           &nbsp;
-          <span>30₾</span>
+          <span>
+            {form.price ? (
+              `${form.price}₾`
+            ) : (
+              <span className="is-empty-part">არ არის შევსებული</span>
+            )}
+          </span>
         </div>
-        <div className="registered-product--card__details-box">
-          <span>ფასდაკლება:</span>
-          &nbsp;
-          <span>კი</span>
-        </div>
-        <div className="registered-product--card__details-box">
-          <span>ახალი ფასი:</span>
-          &nbsp;
-          <span>20₾</span>
-        </div>
+
         <div className="registered-product--card__details-box">
           <span>ფერი:</span>
           &nbsp;
-          <span>ლურჯი</span>
+          <span>
+            {form.color.ka || (
+              <span className="is-empty-part">არ არის შევსებული</span>
+            )}
+          </span>
         </div>
+
         <div className="registered-product--card__details-box">
           <span>ზომა:</span>
           &nbsp;
-          <span>sm</span>
+          <span>
+            {form.sizes[0].size.ka ? (
+              form.sizes
+                .map((size) =>
+                  size.size.ka ? `${size.size.ka} - ${size.amount}` : ""
+                )
+                .join(" / ")
+            ) : (
+              <span className="is-empty-part">არ არის შევსებული</span>
+            )}
+          </span>
         </div>
+
         <div className="registered-product--card__details-box">
-          <span>მარაგი:</span>
+          <span>ჯამური მარაგი:</span>
           &nbsp;
-          <span>30</span>
+          <span>
+            {form.sizes.reduce(
+              (acc, size) => acc + parseFloat(size.amount),
+              0
+            ) || <span className="is-empty-part">არ არის შევსებული</span>}
+          </span>
         </div>
+
         <div className="registered-product--card__details-box">
           <span>ვარიანტები:</span>
           &nbsp;
-          <span>30</span>
+          <span>
+            {form.variants?.length || (
+              <span className="is-empty-part">არ არის შევსებული</span>
+            )}
+          </span>
         </div>
+
         <div className="registered-product--card__details-box">
           <span>აღწერა (ka):</span>
           &nbsp;
-          <span>პროდუქტის აღწერა</span>
+          <span>
+            {form.description_ka || (
+              <span className="is-empty-part">არ არის შევსებული</span>
+            )}
+          </span>
         </div>
+
         <div className="registered-product--card__details-box">
           <span>აღწერა (en):</span>
           &nbsp;
-          <span>product description</span>
+          <span>
+            {form.description_en || (
+              <span className="is-empty-part">არ არის შევსებული</span>
+            )}
+          </span>
         </div>
       </div>
     </Styled.AddDevelopedProductBlueprint>

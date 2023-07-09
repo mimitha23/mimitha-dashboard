@@ -51,6 +51,10 @@ export default function RegisterProduct() {
     dispatch(registerProductActions.setSelectable({ key, value }));
   }, []);
 
+  const selectSelectable = useCallback(({ key, value }) => {
+    dispatch(registerProductActions.selectSelectable({ key, value }));
+  }, []);
+
   const setMultipleSelectable = useCallback(({ key, value }) => {
     dispatch(registerProductActions.setMultipleSelectable({ key, value }));
   }, []);
@@ -85,6 +89,7 @@ export default function RegisterProduct() {
           message={error.productTypes.message}
           value={selectedTypes?.caption || ""}
           setValue={setSelectable}
+          selectValue={selectSelectable}
           list={productTypes}
         />
 
@@ -121,7 +126,7 @@ export default function RegisterProduct() {
           error={error.gender.hasError}
           message={error.gender.message}
           value={gender?.caption || ""}
-          setValue={setSelectable}
+          selectValue={selectSelectable}
           list={genders}
         />
 

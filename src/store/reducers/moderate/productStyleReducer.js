@@ -77,7 +77,6 @@ const productStyleSlice = createSlice({
     },
 
     setDeletedProductStyle(state, { payload }) {
-      console.log(payload);
       state.allProductStyles = state.allProductStyles.filter(
         (style) => style._id !== payload
       );

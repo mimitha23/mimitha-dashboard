@@ -9,6 +9,10 @@ export const input = css`
   input {
     padding: 0 1rem;
     height: 4rem;
+
+    &::-webkit-inner-spin-button {
+      display: none;
+    }
   }
 
   input,
@@ -76,6 +80,8 @@ export const inputFiled = css`
 
   blockquote {
     display: none;
+    text-align: center;
+    text-wrap: balance;
     font-size: ${({ theme }) => theme.fontSize.sm};
   }
 

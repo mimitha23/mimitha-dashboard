@@ -12,6 +12,7 @@ export default memo(function InputFilterableSelect({
   readOnly = false,
   value,
   setValue,
+  selectValue,
   error,
   message,
   list = [],
@@ -22,23 +23,23 @@ export default memo(function InputFilterableSelect({
   const random_field_id = `${name}-filterable-field`;
   const random_dropdown_id = `${name}-filterable-dropdown`;
 
-  const { onFocus, removeListener } = useBlurOnBody(
+  const { onFocus, removeListener, blur } = useBlurOnBody(
     () => {
       setIsTyping(true);
     },
     () => {
-      strictSelection && setValue({ key: name, value: "" });
+      strictSelection && selectValue({ key: name, value: null });
       setIsTyping(false);
     },
     [random_field_id, random_dropdown_id]
   );
 
-  function handleDropdownItem({ key, item }) {
-    setValue({ key, value: item._id, strict: true });
-    setIsTyping(false);
+  function handleDropdownItem(item) {
     removeListener();
+    setIsTyping(false);
+    selectValue({ key: name, value: item });
   }
-
+  // console.log({ blur, isTyping });
   return (
     <Styled.InputFilterableSelect>
       <label htmlFor={id}>{label}</label>
@@ -49,15 +50,13 @@ export default memo(function InputFilterableSelect({
         name={name}
         className={`form__input-field ${random_field_id}`}
         placeholder={placeholder}
-        onChange={(e) =>
-          setValue({ key: e.target.name, value: e.target.value, strict: false })
-        }
+        onChange={(e) => setValue({ key: name, value: e.target.value })}
         value={value}
         onFocus={onFocus}
         readOnly={readOnly}
       />
 
-      {isTyping && (
+      {isTyping && !blur && (
         <div className={`filterable_dropdown ${random_dropdown_id}`}>
           <ul className="filterable_dropdown-list">
             {list
@@ -66,9 +65,9 @@ export default memo(function InputFilterableSelect({
               )
               .map((item) => (
                 <li
-                  className="filterable_dropdown-list--item"
                   key={item._id}
-                  onClick={() => handleDropdownItem({ key: name, item })}
+                  className="filterable_dropdown-list--item"
+                  onClick={() => handleDropdownItem(item)}
                 >
                   {item.caption}
                 </li>

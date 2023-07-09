@@ -47,6 +47,10 @@ export const AppStyles = createGlobalStyle`
     color:${({ theme }) => theme.colors.black}
   }
 
+  textarea{
+    font-family: inherit;
+  }
+
   a,
   input,
   button{

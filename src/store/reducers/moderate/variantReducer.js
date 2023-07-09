@@ -3,7 +3,12 @@ import { controllStatus as status } from "../helpers";
 
 const initialState = {
   form: {
-    variantType: null,
+    variantType: {
+      ka: "",
+      en: "",
+      caption: "",
+      _id: "",
+    },
     label_ka: "",
     label_en: "",
     description: "",
@@ -28,17 +33,25 @@ const variantSlice = createSlice({
   name: "variant",
   initialState,
   reducers: {
-    setVariant(state, { payload: { key, value, strict } }) {
-      if (key === "icon") {
-        const iconKey = state.isUpdating ? "newIcon" : "icon";
-        state.form[iconKey] = value;
-      } else if (key === "variantType") {
-        state.form[key] = strict
-          ? state.existingVariantTypes.find((type) => type._id === value)
-          : { _id: state.form.variantType?._id || nanoid(), caption: value };
-      } else {
-        state.form[key] = value;
+    setVariant(state, { payload: { key, value } }) {
+      state.form[key] = value;
+    },
+
+    setVariantType(state, { payload: value }) {
+      state.form.variantType.caption = value;
+    },
+
+    selectVariantType(state, { payload: variant }) {
+      if (variant === null) {
+        state.form.variantType = initialState.form.variantType;
+        return;
       }
+
+      state.form.variantType = variant;
+    },
+
+    setIcon(state, { payload }) {
+      state.form.newIcon = payload;
     },
 
     // API
@@ -160,13 +173,13 @@ function prepareDataForDB(payload) {
   const credentials = {
     type: payload.variantType.caption,
     description: payload.description,
-    icon: payload.icon,
     ka: payload.label_ka,
     en: payload.label_en,
   };
 
-  if (payload.isUpdating && payload.newIcon)
-    credentials.newIcon = payload.newIcon;
+  if (payload.icon) credentials.icon = payload.icon;
+  if (payload.newIcon) credentials.media = payload.newIcon;
+
   if (payload.isUpdating && payload.updatingVariantId)
     credentials._id = payload.updatingVariantId;
 

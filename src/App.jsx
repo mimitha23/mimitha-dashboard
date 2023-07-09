@@ -1,30 +1,23 @@
 import { Suspense } from "react";
-import { Routes, Route } from "react-router-dom";
+import { BrowserRouter, RouterProvider } from "react-router-dom";
+import router from "config/router";
+import { LoadingSpinner } from "components/layouts";
+
+import ThemeProvider from "providers/ThemeProvider";
 
 import Navigation from "components/navigation/Navigation";
-import { LoadingSpinner } from "components/layouts";
-import routes from "config/router";
 
 function App() {
   return (
     <>
-      <Navigation />
-      <Suspense fallback={<LoadingSpinner caption="Page Is Loading" />}>
-        <Routes>
-          {routes.map((route, index) => (
-            <Route key={index} path={route.path} element={route.element}>
-              {route.children &&
-                route.children.map((childRoute, childIndex) => (
-                  <Route
-                    key={childIndex}
-                    path={childRoute.path}
-                    element={childRoute.element}
-                  />
-                ))}
-            </Route>
-          ))}
-        </Routes>
-      </Suspense>
+      <ThemeProvider>
+        <BrowserRouter>
+          <Navigation />
+        </BrowserRouter>
+        <Suspense fallback={<LoadingSpinner caption="Page Is Loading" />}>
+          <RouterProvider router={router} />
+        </Suspense>
+      </ThemeProvider>
     </>
   );
 }

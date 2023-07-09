@@ -1,3 +1,14 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+
+import {
+  selectDevelopeProductStatus,
+  selectDevelopeProductForm,
+  selectDevelopeProductFormSugestions,
+} from "store/selectors/moderate/developeProductSelectors";
+import { developeProductActions } from "store/reducers/moderate/developeProductReducer";
+
 import { PATHS } from "config/routes";
 
 import {
@@ -7,13 +18,36 @@ import {
   InputFile,
   InputFilterableSelect,
   InputTextarea,
+  LoadingSpinner,
 } from "components/layouts";
 import AddDevelopedProductBlueprint from "./components/AddDevelopedProductBlueprint";
 import AddVariantField from "./components/AddVariantField";
 import ModerateHeader from "../components/ModerateHeader";
+import SizeField from "./components/SizeField";
 import * as Styled from "./styles/AddDevelopedProduct.styled";
 
 export default function AddDevelopedProduct() {
+  const dispatch = useDispatch();
+  const { colors, variants, sizes } = useSelector(
+    selectDevelopeProductFormSugestions
+  );
+
+  const status = useSelector(selectDevelopeProductStatus);
+  const { color } = useSelector(selectDevelopeProductForm);
+
+  function setDevelopedProduct(e) {
+    dispatch(
+      developeProductActions.setDevelopedProduct({
+        key: e.target.name,
+        value: e.target.value,
+      })
+    );
+  }
+
+  useEffect(() => {
+    dispatch(developeProductActions.getDevelopeProductFormSugestions());
+  }, []);
+
   return (
     <Styled.AddDevelopedProduct>
       <ModerateHeader
@@ -33,6 +67,7 @@ export default function AddDevelopedProduct() {
               message="მესიჯი"
               name="title_ka"
               placeholder="შავი ჰუდი ჯიბით"
+              onChange={setDevelopedProduct}
             />
 
             <InputText
@@ -41,6 +76,7 @@ export default function AddDevelopedProduct() {
               message="მესიჯი"
               name="title_en"
               placeholder="black hoody with pocket"
+              onChange={setDevelopedProduct}
             />
 
             <InputText
@@ -50,57 +86,30 @@ export default function AddDevelopedProduct() {
               name="price"
               placeholder="30"
               type="number"
-            />
-
-            <InputFilterableSelect
-              id="sale"
-              label="ფასდაკლება"
-              message="მესიჯი"
-              name="sale"
-              placeholder="sale"
-              // anotation="აირჩიე არსებული ვარიანტის ტიპი ან შექმენი ახალი"
-              list={["კი", "არა"]}
-            />
-
-            <InputText
-              id="product-new--price"
-              label="პროდუქტის ახალი ფასი"
-              message="მესიჯი"
-              name="newPrice"
-              placeholder="30"
-              type="number"
+              onChange={setDevelopedProduct}
             />
 
             <InputFilterableSelect
               id="color"
               label="ფერი"
-              message="მესიჯი"
               name="color"
+              message="მესიჯი"
               placeholder="ლურჯი"
-              anotation="აირჩიეთ ფერი"
-              list={["წითელი", "ყვითელი", "ლურჯი", "მწვანე", "შავი", "თეთრი"]}
+              list={colors}
+              value={color?.caption || ""}
+              setValue={({ value: enteredValue }) => {
+                dispatch(
+                  developeProductActions.setColor({ value: enteredValue })
+                );
+              }}
+              selectValue={({ value: color }) =>
+                dispatch(developeProductActions.selectColor({ value: color }))
+              }
             />
 
-            <InputFilterableSelect
-              id="size"
-              label="ზომა"
-              message="მესიჯი"
-              name="size"
-              placeholder="sm"
-              anotation="აირჩიეთ ზომა"
-              list={["xs", "s", "m", "l", "xl", "xxl", "2xl"]}
-            />
+            <SizeField sizes={sizes} />
 
-            <InputText
-              id="size-in-stock"
-              label="პროდუქტის მარაგი"
-              message="მესიჯი"
-              name="stock"
-              placeholder="30"
-              type="number"
-            />
-
-            <AddVariantField />
+            <AddVariantField variants={variants} />
 
             <InputTextarea
               id="product-description--ka"
@@ -108,6 +117,7 @@ export default function AddDevelopedProduct() {
               message="მესიჯი"
               name="description_ka"
               placeholder="აღწერე პროდუქტი..."
+              onChange={setDevelopedProduct}
             />
 
             <InputTextarea
@@ -116,6 +126,7 @@ export default function AddDevelopedProduct() {
               message="მესიჯი"
               name="description_en"
               placeholder="describe product..."
+              onChange={setDevelopedProduct}
             />
 
             <InputFile
@@ -132,6 +143,8 @@ export default function AddDevelopedProduct() {
 
         <AddDevelopedProductBlueprint />
       </div>
+
+      {status.loading && <LoadingSpinner />}
     </Styled.AddDevelopedProduct>
   );
 }

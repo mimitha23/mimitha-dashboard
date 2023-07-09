@@ -4,14 +4,30 @@ import { controllStatus as status } from "../helpers";
 const initialState = {
   form: {
     isEditable: false,
-    productTypes: null,
-    gender: null,
+    productTypes: {
+      _id: "",
+      ka: "",
+      en: "",
+      query: "",
+      caption: "",
+    },
+    gender: {
+      _id: "",
+      ka: "",
+      en: "",
+      query: "",
+      caption: "",
+    },
     productStyles: [],
     seasons: [],
     textures: [
       {
         _id: nanoid(),
-        textures: null,
+        textures: {
+          ka: "",
+          en: "",
+          caption: "",
+        },
         percentage: "",
       },
     ],
@@ -50,13 +66,16 @@ const registerProductSlice = createSlice({
   reducers: {
     // productType and gender
     setSelectable(state, { payload: { key, value } }) {
-      const selectedValue = state.registerProductFormSugestions[key].find(
-        (item) => item._id === value
-      );
+      state.form[key].caption = value;
+    },
 
-      if (!selectedValue) return;
+    selectSelectable(state, { payload: { key, value } }) {
+      if (value === null) {
+        state.form[key] = initialState.form[key];
+        return;
+      }
 
-      state.form[key] = selectedValue;
+      state.form[key] = value;
     },
 
     // season and style
@@ -83,21 +102,33 @@ const registerProductSlice = createSlice({
     },
 
     // texture actions
-    setTexture(state, { payload: { key, value, _id: textureId } }) {
-      const activeTextureIndex = state.form.textures.findIndex(
-        (texture) => texture._id === textureId
+    setTexture(state, { payload: { key, value, fieldId } }) {
+      const activeFieldIndex = state.form.textures.findIndex(
+        (texture) => texture._id === fieldId
       );
 
-      if (activeTextureIndex < 0) return;
+      if (activeFieldIndex < 0) return;
 
-      const valueToAssign =
-        key === "percentage"
-          ? value
-          : state.registerProductFormSugestions.textures.find(
-              (texture) => texture._id === value
-            );
+      if (key === "percentage") {
+        state.form.textures[activeFieldIndex].percentage = value;
+      } else if (key === "textures") {
+        state.form.textures[activeFieldIndex].textures.caption = value;
+      }
+    },
 
-      state.form.textures[activeTextureIndex][key] = valueToAssign;
+    selectTexture(state, { payload: { value: texture, fieldId } }) {
+      if (texture === null) {
+        state.form.textures = initialState.form.textures;
+        return;
+      }
+
+      const activeFieldIndex = state.form.textures.findIndex(
+        (field) => field._id === fieldId
+      );
+
+      if (activeFieldIndex < 0) return;
+
+      state.form.textures[activeFieldIndex].textures = texture;
     },
 
     addTextureField(state) {
@@ -113,10 +144,15 @@ const registerProductSlice = createSlice({
 
       lastTextureFieldIsFilled &&
         state.form.textures.push({
+          ...initialState.form.textures[0],
           _id: nanoid(),
-          textures: null,
-          percentage: "",
         });
+    },
+
+    removeTextureField(state, { payload }) {
+      state.form.textures = state.form.textures.filter(
+        (texture) => texture._id !== payload
+      );
     },
 
     // warning actions

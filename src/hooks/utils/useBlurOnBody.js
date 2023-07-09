@@ -15,13 +15,15 @@ function useBlurOnBody(handleOnFocus, handleOnBlur, excludeElCls) {
 
   function onFocus(e) {
     handleOnFocus();
-    setBlur(false);
+    blur && setBlur(false);
   }
 
   const removeListener = () => {
     document
       .querySelector("body")
       .removeEventListener("click", onBodyClick, true);
+
+    blur && setBlur(true);
   };
 
   function onBodyClick(e) {
@@ -38,7 +40,7 @@ function useBlurOnBody(handleOnFocus, handleOnBlur, excludeElCls) {
         .addEventListener("click", onBodyClick, true);
 
     return () => {
-      removeListener();
+      !blur && removeListener();
     };
   }, [blur]);
 

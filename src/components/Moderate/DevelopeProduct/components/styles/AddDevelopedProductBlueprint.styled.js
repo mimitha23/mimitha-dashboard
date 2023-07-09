@@ -11,6 +11,10 @@ export const AddDevelopedProductBlueprint = styled.div`
   padding: 1rem;
   border-radius: 0.5rem;
 
+  .is-empty-part {
+    opacity: 0.5;
+  }
+
   .add-developed--product__assets-box {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(8rem, max-content));

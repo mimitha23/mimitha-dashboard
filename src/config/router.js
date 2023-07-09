@@ -1,8 +1,8 @@
-import { Navigate } from "react-router-dom";
+import { createBrowserRouter, Navigate } from "react-router-dom";
 import { PATHS } from "./routes";
 import * as Pages from "pages";
 
-const routes = [
+const router = createBrowserRouter([
   {
     path: PATHS.main_navigation.root,
     element: <Navigate to={PATHS.main_navigation.login} />,
@@ -81,12 +81,14 @@ const routes = [
           {}
         ),
         element: <Pages.DevelopedProductsPage />,
-      },
-      {
-        path: PATHS.moderate_nested_routes.developedProductPage.relativePath(
-          {}
-        ),
-        element: <Pages.DevelopedProductPage />,
+        children: [
+          {
+            path: PATHS.moderate_nested_routes.developedProductPage.relativePath(
+              {}
+            ),
+            element: <Pages.DevelopedProductPage />,
+          },
+        ],
       },
       {
         path: PATHS.moderate_nested_routes.addDevelopedProductPage.absolutePath(
@@ -100,6 +102,6 @@ const routes = [
     path: PATHS.main_navigation.login,
     element: <Pages.LoginPage />,
   },
-];
+]);
 
-export default routes;
+export default router;

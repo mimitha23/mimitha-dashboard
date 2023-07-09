@@ -10,7 +10,9 @@ export default function useCreateVariantQuery() {
   const dispatch = useDispatch();
   const credentials = useSelector(selectVariantForm);
 
-  const variantValidation = new CreateVariantValidation(credentials.isUpdating);
+  const variantValidation = new CreateVariantValidation(
+    credentials.isUpdating
+  ).prepare(credentials);
 
   const [error, setError] = useState(variantValidation.error);
 

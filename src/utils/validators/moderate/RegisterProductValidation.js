@@ -85,10 +85,7 @@ export default class RegisterProductValidation extends Validators {
   }
 
   prepare(credentials) {
-    const thumbnailValidationToExecute = {};
-
     if (credentials.isUpdating) {
-      thumbnailValidationToExecute.rules = [];
       this.error.thumbnail = { hasError: false, message: "" };
       this.validationToExecute.push({
         key: "thumbnail",

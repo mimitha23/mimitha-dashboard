@@ -50,10 +50,6 @@ export default function CreateVariant() {
     );
   }, []);
 
-  const handleManualSetVariant = useCallback(({ key, value, strict }) => {
-    dispatch(variantActions.setVariant({ key, value, strict }));
-  }, []);
-
   const fileRef = useRef();
 
   useEffect(() => {
@@ -80,11 +76,16 @@ export default function CreateVariant() {
           placeholder="pocket"
           anotation="აირჩიე არსებული ვარიანტის ტიპი ან შექმენი ახალი"
           strictSelection={false}
-          value={variantType?.caption || ""}
-          setValue={handleManualSetVariant}
           message={error.variantType.itemErrors[0]?.message}
           error={error.variantType.hasError}
           list={variants}
+          value={variantType?.caption || ""}
+          setValue={({ value }) =>
+            dispatch(variantActions.setVariantType(value))
+          }
+          selectValue={({ value }) =>
+            dispatch(variantActions.selectVariantType(value))
+          }
         />
 
         <InputText
@@ -126,9 +127,15 @@ export default function CreateVariant() {
           accept="image/svg+xml"
           fileRef={fileRef}
           file={newIcon || icon}
-          message={error.icon.message}
-          error={error.icon.hasError}
-          onChange={handleManualSetVariant}
+          message={
+            error.icon?.hasError
+              ? error.icon.message
+              : error.newIcon?.hasError
+              ? error.newIcon.message
+              : ""
+          }
+          error={error.icon?.hasError || error.newIcon?.hasError}
+          onChange={({ value }) => dispatch(variantActions.setIcon(value))}
         />
 
         <Button
