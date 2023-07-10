@@ -3,6 +3,9 @@ import { Form } from "styles/helpers";
 
 export const SizeField = styled.div`
   grid-column: span 2;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
 
   .size-field__header {
     display: flex;
@@ -35,13 +38,15 @@ export const SizeField = styled.div`
 
     .size-field__inps {
       display: grid;
-      grid-template-columns: 1fr 10rem;
-      align-items: end;
+      grid-template-columns: 1fr 15rem;
+      align-items: start;
+      align-content: start;
       gap: 2rem;
       position: relative;
 
       &-amount--inp {
-        ${Form.inputFiled}
+        ${Form.inputFiled};
+        /* margin-top: 0.5rem; */
       }
 
       .size-field__remove-btn {

@@ -71,7 +71,7 @@ export const error = css`
 export const inputFiled = css`
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.75rem;
   width: 100%;
 
   ${label}

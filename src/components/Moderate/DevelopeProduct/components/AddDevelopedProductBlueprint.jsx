@@ -10,42 +10,19 @@ export default function AddDevelopedProductBlueprint() {
   return (
     <Styled.AddDevelopedProductBlueprint>
       <div className="add-developed--product__assets-box">
-        <figure className="add-developed--product__assets-item">
-          <img
-            src="https://www.bfgcdn.com/1500_1500_90/017-2701-0511/patagonia-fitz-roy-icon-uprisal-hoody-hoodie.jpg"
-            alt=""
-          />
-        </figure>
-        <figure className="add-developed--product__assets-item">
-          <img
-            src="https://www.bfgcdn.com/1500_1500_90/017-2701-0511/patagonia-fitz-roy-icon-uprisal-hoody-hoodie.jpg"
-            alt=""
-          />
-        </figure>
-        <figure className="add-developed--product__assets-item">
-          <img
-            src="https://www.bfgcdn.com/1500_1500_90/017-2701-0511/patagonia-fitz-roy-icon-uprisal-hoody-hoodie.jpg"
-            alt=""
-          />
-        </figure>
-        <figure className="add-developed--product__assets-item">
-          <img
-            src="https://www.bfgcdn.com/1500_1500_90/017-2701-0511/patagonia-fitz-roy-icon-uprisal-hoody-hoodie.jpg"
-            alt=""
-          />
-        </figure>
-        <figure className="add-developed--product__assets-item">
-          <img
-            src="https://www.bfgcdn.com/1500_1500_90/017-2701-0511/patagonia-fitz-roy-icon-uprisal-hoody-hoodie.jpg"
-            alt=""
-          />
-        </figure>
-        <figure className="add-developed--product__assets-item">
-          <img
-            src="https://www.bfgcdn.com/1500_1500_90/017-2701-0511/patagonia-fitz-roy-icon-uprisal-hoody-hoodie.jpg"
-            alt=""
-          />
-        </figure>
+        {form.assets[0] &&
+          form.assets.map((asset) => (
+            <figure className="add-developed--product__assets-item">
+              <img
+                src={asset instanceof Blob ? URL.createObjectURL(asset) : asset}
+                alt=""
+              />
+            </figure>
+          ))}
+
+        {!form.assets[0] && (
+          <p className="no-files--message">ფაილები არ არის ატვირთული</p>
+        )}
       </div>
 
       <div className="registered-product--card__details">

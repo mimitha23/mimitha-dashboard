@@ -17,11 +17,16 @@ export const AddDevelopedProductBlueprint = styled.div`
 
   .add-developed--product__assets-box {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(8rem, max-content));
+    grid-template-columns: repeat(auto-fit, 12rem);
+    padding: 1rem;
     gap: 1rem;
+    min-height: 12rem;
+    border-radius: 0.5rem;
+    border: 1px solid ${({ theme }) => theme.colors.gray_shade};
 
     .add-developed--product__assets-item {
       width: 100%;
+      height: 12rem;
       border: 1px solid ${({ theme }) => theme.colors.gray_shade};
       border-radius: 0.5rem;
       overflow: hidden;
@@ -29,8 +34,21 @@ export const AddDevelopedProductBlueprint = styled.div`
 
       img {
         width: 100%;
-        object-fit: contain;
+        height: 100%;
+        object-fit: cover;
       }
+    }
+
+    .no-files--message {
+      grid-column: 1/-1;
+      justify-self: center;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      opacity: 0.5;
+      font-weight: 900;
     }
   }
 

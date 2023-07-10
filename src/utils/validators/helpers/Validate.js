@@ -100,4 +100,19 @@ export default class Validate {
   }
 }
 
-export { availableValidationRules, validationType };
+function extractObjectsArrayError(errors) {
+  if (!errors) return {};
+
+  const temp = {};
+
+  errors.forEach((error) => {
+    temp[error.key] = {
+      hasError: error.hasError,
+      message: error.message,
+    };
+  });
+
+  return temp;
+}
+
+export { availableValidationRules, validationType, extractObjectsArrayError };

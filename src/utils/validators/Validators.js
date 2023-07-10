@@ -187,7 +187,10 @@ export default class Validators extends ValidateHelpers {
 
     if (
       (typeof value === "object" && value === null) ||
-      (typeof value === "object" && !Object.values(value)[0])
+      (typeof value === "object" &&
+        !Object.values(value).every(
+          (value) => value !== "" && value !== null && value !== undefined
+        ))
     )
       isValid = false;
 

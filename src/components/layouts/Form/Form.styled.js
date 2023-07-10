@@ -6,6 +6,34 @@ export const Form = styled.form``;
 export const Input = styled.div`
   ${FormStyles.inputFiled};
 
+  &.form__input-file
+    .form__file-icon--review
+    .form__file-icon--review__fig.multiple {
+    position: relative;
+
+    .multiple-file__close-btn {
+      position: absolute;
+      top: -0.5rem;
+      right: -0.5rem;
+      width: 1.75rem;
+      height: 1.75rem;
+      border-radius: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 1.2rem;
+      background: ${({ theme }) => theme.colors.black_tr_05};
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
+    }
+
+    &:hover .multiple-file__close-btn {
+      pointer-events: all;
+      opacity: 1;
+    }
+  }
+
   .form__input-file--label {
     text-align: center;
     border-radius: 0.5rem;

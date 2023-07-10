@@ -39,16 +39,18 @@ export default memo(function InputFilterableSelect({
     setIsTyping(false);
     selectValue({ key: name, value: item });
   }
-  // console.log({ blur, isTyping });
+
   return (
     <Styled.InputFilterableSelect>
-      <label htmlFor={id}>{label}</label>
+      {label && <label htmlFor={id}>{label}</label>}
 
       <input
         id={id}
         type="text"
         name={name}
-        className={`form__input-field ${random_field_id}`}
+        className={`form__input-field ${random_field_id} ${
+          error ? "error" : ""
+        }`}
         placeholder={placeholder}
         onChange={(e) => setValue({ key: name, value: e.target.value })}
         value={value}

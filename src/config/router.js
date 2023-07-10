@@ -1,8 +1,8 @@
-import { createBrowserRouter, Navigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import { PATHS } from "./routes";
 import * as Pages from "pages";
 
-const router = createBrowserRouter([
+const router = [
   {
     path: PATHS.main_navigation.root,
     element: <Navigate to={PATHS.main_navigation.login} />,
@@ -102,6 +102,6 @@ const router = createBrowserRouter([
     path: PATHS.main_navigation.login,
     element: <Pages.LoginPage />,
   },
-]);
+];
 
 export default router;

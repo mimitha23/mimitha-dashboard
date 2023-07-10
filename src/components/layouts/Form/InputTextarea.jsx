@@ -20,7 +20,7 @@ export default memo(function InputTextarea({
         id={id}
         type={type}
         name={name}
-        className="form__input-textarea"
+        className={`form__input-textarea ${error ? "error" : ""}`}
         placeholder={placeholder}
         onChange={onChange}
         value={value}
@@ -29,6 +29,7 @@ export default memo(function InputTextarea({
       {anotation && (
         <blockquote className="form__input-anotation">{anotation}</blockquote>
       )}
+
       {error && <p className="form__input-error--message">{message}</p>}
     </Styled.InputTextarea>
   );

@@ -1,80 +1,59 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect } from "react";
-import { nanoid } from "@reduxjs/toolkit";
+import { useDispatch, useSelector } from "react-redux";
 
-import { CloseXIcon, OpenIcon } from "components/layouts/Icons";
+import { useBlurOnBody } from "hooks/utils";
+import { selectDevelopeProductForm } from "store/selectors/moderate/developeProductSelectors";
+import { developeProductActions } from "store/reducers/moderate/developeProductReducer";
+
+import { CloseXIcon } from "components/layouts/Icons";
 import * as Styled from "./styles/AddVariantField.styled";
 
-const variants = [
-  {
-    _id: nanoid(),
-    type: "pocket",
-    label: "pocket left",
-  },
-  {
-    _id: nanoid(),
-    type: "pocket",
-    label: "pocket right",
-  },
-  {
-    _id: nanoid(),
-    type: "pocket",
-    label: "pocket top",
-  },
-  {
-    _id: nanoid(),
-    type: "pocket",
-    label: "pocket bottom",
-  },
-  {
-    _id: nanoid(),
-    type: "zipper",
-    label: "with zipper",
-  },
-  {
-    _id: nanoid(),
-    type: "zipper",
-    label: "without zipper",
-  },
-  {
-    _id: nanoid(),
-    type: "cuff",
-    label: "with cuff",
-  },
-  {
-    _id: nanoid(),
-    type: "cuff",
-    label: "without cuff",
-  },
-  {
-    _id: nanoid(),
-    type: "pocket",
-    label: "pocket left",
-  },
-  {
-    _id: nanoid(),
-    type: "pocket",
-    label: "pocket left",
-  },
-];
+export default function AddVariantField({ variants, error }) {
+  const dispatch = useDispatch();
 
-export default function AddVariantField() {
   const [openDropdownBox, setOpenDropdownBox] = useState(false);
   const [filteredDropdown, setFilteredDropdown] = useState([]);
-  const [userSearch, setUserSearch] = useState("");
 
-  function handleSearch(e) {
-    setUserSearch(e.target.value);
+  const { enteredVariant, variants: enteredVariants } = useSelector(
+    selectDevelopeProductForm
+  );
 
-    if (!openDropdownBox) setOpenDropdownBox(true);
+  const random_field_id = `variant-field__filterable-field`;
+  const random_dropdown_id = `variant-field__filterable-dropdown`;
+
+  const { onFocus, blur } = useBlurOnBody(
+    () => {
+      setOpenDropdownBox(true);
+    },
+    () => {
+      setOpenDropdownBox(false);
+    },
+    [random_field_id, random_dropdown_id]
+  );
+
+  function onSearch(e) {
+    dispatch(
+      developeProductActions.setDevelopedProduct({
+        key: e.target.name,
+        value: e.target.value,
+      })
+    );
+  }
+
+  function onSelect(variant) {
+    dispatch(developeProductActions.selectVariant(variant));
   }
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {
       setFilteredDropdown(
-        variants.filter((vr) =>
-          userSearch === ""
-            ? vr
-            : vr.label.includes(userSearch) || vr.type.includes(userSearch)
+        variants.filter((variant) =>
+          enteredVariant
+            ? variant.ka.includes(enteredVariant) ||
+              variant.en.includes(enteredVariant) ||
+              variant.type.includes(enteredVariant)
+            : variant
         )
       );
     }, 500);
@@ -82,40 +61,61 @@ export default function AddVariantField() {
     return () => {
       clearTimeout(timeoutId);
     };
-  }, [userSearch]);
+  }, [enteredVariant, variants]);
 
   return (
     <Styled.AddVariantField>
-      <ul className="selected-variants__list">
-        <li className="selected-variants__item">
-          <span className="selected-variants__item-type">Pocket</span>
-          <span className="selected-variants__item-label">pocket left</span>
-          <button className="selected-variants__item-close--btn">
-            <CloseXIcon />
-          </button>
-        </li>
-      </ul>
+      <label htmlFor="add-variant" className="add-variant__label">
+        ვარიანტი
+      </label>
 
       <input
-        className="add-variant__btn"
-        placeholder="add variant"
-        value={userSearch}
-        onChange={handleSearch}
+        id="add-variant"
+        className={`add-variant__btn ${random_field_id} ${
+          error.hasError ? "error" : ""
+        }`}
+        placeholder="დაამატე ვარიანტი"
+        name="enteredVariant"
+        value={enteredVariant}
+        onChange={onSearch}
+        onFocus={onFocus}
       />
 
-      {openDropdownBox && userSearch && (
-        <div className="select-variant__dropdown">
-          <div className="select-variant__dropdown-header">
-            <button className="select-variant__dropdown-header__expand-btn">
-              <OpenIcon />
-            </button>
-          </div>
+      {error.hasError && <p className="size-field__message">{error.message}</p>}
 
+      <ul className="selected-variants__list">
+        {enteredVariants.map((variant) => (
+          <li className="selected-variants__item" key={variant._id}>
+            <span className="selected-variants__item-type">{variant.type}</span>
+            <span className="selected-variants__item-label">{variant.ka}</span>
+            <button
+              className="selected-variants__item-close--btn"
+              onClick={(e) => {
+                e.preventDefault();
+                dispatch(developeProductActions.removeVariant(variant._id));
+              }}
+            >
+              <CloseXIcon />
+            </button>
+          </li>
+        ))}
+      </ul>
+
+      {openDropdownBox && !blur && (
+        <div className={`select-variant__dropdown ${random_dropdown_id}`}>
           <ul className="select-variant__dropdown-list">
-            {filteredDropdown.map((vr) => (
-              <li key={vr._id} className="select-variant__dropdown-list--item">
-                <span>{vr.type}</span>
-                <span>{vr.label}</span>
+            {filteredDropdown.map((variant) => (
+              <li
+                key={`dropdown--${variant._id}`}
+                onClick={() => onSelect(variant)}
+                className={`select-variant__dropdown-list--item ${
+                  enteredVariants.some((v) => v._id === variant._id)
+                    ? "selected"
+                    : ""
+                }`}
+              >
+                <span>{variant.type}</span>
+                <span>{variant.ka}</span>
               </li>
             ))}
           </ul>

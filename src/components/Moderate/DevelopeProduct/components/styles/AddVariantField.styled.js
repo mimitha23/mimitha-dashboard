@@ -7,6 +7,7 @@ export const AddVariantField = styled.div`
   flex-direction: column;
   gap: 1rem;
   position: relative;
+  ${Form.inputFiled};
 
   .selected-variants__list {
     display: flex;
@@ -45,7 +46,6 @@ export const AddVariantField = styled.div`
     }
   }
 
-  ${Form.input};
   .add-variant__btn {
     height: 4rem;
     border-radius: 0.5rem;
@@ -60,18 +60,10 @@ export const AddVariantField = styled.div`
     top: calc(100% + 1rem);
     left: 0;
     right: 0;
+    top: 7.5rem;
     padding: 1rem;
     border-radius: 0.5rem;
     box-shadow: ${({ theme }) => theme.shadow.radial_sm_dark};
-
-    &-header {
-      display: flex;
-      justify-content: flex-end;
-    }
-
-    &-header__expand-btn {
-      font-size: 2rem;
-    }
 
     &-list {
       margin-top: 0.5rem;
@@ -80,6 +72,11 @@ export const AddVariantField = styled.div`
       &--item {
         display: flex;
         flex-direction: column;
+
+        &.selected {
+          background: ${({ theme }) => theme.colors.blue};
+          color: ${({ theme }) => theme.colors.white};
+        }
 
         span:first-child {
           font-size: ${({ theme }) => theme.fontSize.md};

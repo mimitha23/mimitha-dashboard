@@ -54,7 +54,9 @@ export default memo(function InputMultipleFilterableSelect({
         id={id}
         type="text"
         name={name}
-        className={`form__input-field ${random_field_id}`}
+        className={`form__input-field ${random_field_id} ${
+          error ? "error" : ""
+        }`}
         placeholder={placeholder}
         onChange={(e) => setEnteredValue(e.target.value)}
         value={enteredValue}

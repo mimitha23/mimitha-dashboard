@@ -7,7 +7,7 @@ import {
 } from "store/selectors/moderate/registerProductSelectors";
 import { registerProductActions } from "store/reducers/moderate/registerProductReducer";
 
-import extractError from "../functions/extractObjectsArrayErrors";
+import { extractObjectsArrayError } from "utils/validators/helpers/Validate";
 
 import { MinusIcon } from "components/layouts/Icons";
 import { InputFilterableSelect } from "components/layouts";
@@ -54,7 +54,7 @@ export default memo(function TextureField({ error }) {
 
       <ul className="texture-field__list">
         {enteredTextures.map((texture, i) => {
-          const extractedError = extractError(error.itemErrors[i]);
+          const extractedError = extractObjectsArrayError(error.itemErrors[i]);
 
           return (
             <li className="texture-field__list-item" key={texture._id}>
@@ -78,7 +78,9 @@ export default memo(function TextureField({ error }) {
                 <label>%</label>
                 <input
                   type="number"
-                  className="percentage-input"
+                  className={`percentage-input ${
+                    extractedError.percentage?.hasError ? "error" : ""
+                  }`}
                   name="percentage"
                   placeholder="100"
                   max={100}

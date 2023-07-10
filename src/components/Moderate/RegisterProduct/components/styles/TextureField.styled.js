@@ -39,6 +39,7 @@ export const TextureField = styled.div`
 
     &-item {
       display: flex;
+      align-items: flex-start;
       gap: 1.5rem;
       position: relative;
 
@@ -61,7 +62,6 @@ export const TextureField = styled.div`
     grid-template-rows: 3;
     gap: 0.5rem;
     align-items: center;
-    padding: 0.5rem;
 
     & label {
       grid-row: 1;

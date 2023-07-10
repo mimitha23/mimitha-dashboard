@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import {
@@ -7,6 +7,7 @@ import {
   selectDevelopeProductForm,
   selectDevelopeProductFormSugestions,
 } from "store/selectors/moderate/developeProductSelectors";
+import { useDevelopeProductQuery } from "hooks/api/moderate";
 import { developeProductActions } from "store/reducers/moderate/developeProductReducer";
 
 import { PATHS } from "config/routes";
@@ -33,7 +34,11 @@ export default function AddDevelopedProduct() {
   );
 
   const status = useSelector(selectDevelopeProductStatus);
-  const { color } = useSelector(selectDevelopeProductForm);
+  const { color, assets, isUpdating } = useSelector(selectDevelopeProductForm);
+
+  const filesRef = useRef(null);
+
+  const { developeProductQuery, error } = useDevelopeProductQuery();
 
   function setDevelopedProduct(e) {
     dispatch(
@@ -42,6 +47,14 @@ export default function AddDevelopedProduct() {
         value: e.target.value,
       })
     );
+  }
+
+  function setColor({ value: enteredValue }) {
+    dispatch(developeProductActions.setColor({ value: enteredValue }));
+  }
+
+  function selectColor({ value: color }) {
+    dispatch(developeProductActions.selectColor({ value: color }));
   }
 
   useEffect(() => {
@@ -64,28 +77,31 @@ export default function AddDevelopedProduct() {
             <InputText
               id="product-title_ka"
               label="პროდუქტის სათაური (ka)"
-              message="მესიჯი"
               name="title_ka"
               placeholder="შავი ჰუდი ჯიბით"
+              error={error.title_ka.hasError}
+              message={error.title_ka.message}
               onChange={setDevelopedProduct}
             />
 
             <InputText
               id="product-title_en"
               label="პროდუქტის სათაური (en)"
-              message="მესიჯი"
-              name="title_en"
               placeholder="black hoody with pocket"
+              name="title_en"
+              error={error.title_en.hasError}
+              message={error.title_en.message}
               onChange={setDevelopedProduct}
             />
 
             <InputText
               id="product-price"
               label="პროდუქტის ფასი"
-              message="მესიჯი"
               name="price"
               placeholder="30"
               type="number"
+              error={error.price.hasError}
+              message={error.price.message}
               onChange={setDevelopedProduct}
             />
 
@@ -93,51 +109,71 @@ export default function AddDevelopedProduct() {
               id="color"
               label="ფერი"
               name="color"
-              message="მესიჯი"
               placeholder="ლურჯი"
               list={colors}
               value={color?.caption || ""}
-              setValue={({ value: enteredValue }) => {
-                dispatch(
-                  developeProductActions.setColor({ value: enteredValue })
-                );
-              }}
-              selectValue={({ value: color }) =>
-                dispatch(developeProductActions.selectColor({ value: color }))
-              }
+              setValue={setColor}
+              selectValue={selectColor}
+              error={error.color.hasError}
+              message={error.color.message}
             />
 
-            <SizeField sizes={sizes} />
+            <SizeField sizes={sizes} error={error.sizes} />
 
-            <AddVariantField variants={variants} />
+            <AddVariantField variants={variants} error={error.variants} />
 
             <InputTextarea
               id="product-description--ka"
               label="პროდუქტის აღწერა (ka)"
-              message="მესიჯი"
               name="description_ka"
               placeholder="აღწერე პროდუქტი..."
+              error={error.description_ka.hasError}
+              message={error.description_ka.message}
               onChange={setDevelopedProduct}
             />
 
             <InputTextarea
               id="product-description--en"
               label="პროდუქტის აღწერა (en)"
-              message="მესიჯი"
               name="description_en"
               placeholder="describe product..."
+              error={error.description_en.hasError}
+              message={error.description_en.message}
               onChange={setDevelopedProduct}
             />
 
             <InputFile
-              name="icon"
-              // fileRef={fileRef}
-              // file={file}
-              // onChange={(e) => setFile(e.target.files[0])}
+              name="newAssets"
               label="დაამატეთ პროდუქტის მედია ფაილები"
+              fileRef={filesRef}
+              file={assets}
+              multiple={true}
+              message={
+                error.filesToUpload?.hasError
+                  ? error.filesToUpload.message
+                  : error.filesToDelete?.hasError
+                  ? error.filesToDelete.message
+                  : ""
+              }
+              error={
+                error.filesToUpload?.hasError || error.filesToDelete?.hasError
+              }
+              onChange={({ value }) =>
+                dispatch(developeProductActions.setAssets(value))
+              }
+              onRemoveFile={(file) =>
+                dispatch(developeProductActions.removeAsset(file))
+              }
             />
 
-            <Button caption="შექმნა" />
+            <Button
+              caption={isUpdating ? "განახლება" : "შექმნა"}
+              disabled={status.loading}
+              onClick={(e) => {
+                e.preventDefault();
+                developeProductQuery();
+              }}
+            />
           </Form>
         </div>
 

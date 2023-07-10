@@ -2,11 +2,14 @@ import { useSelector, useDispatch } from "react-redux";
 import { selectDevelopeProductForm } from "store/selectors/moderate/developeProductSelectors";
 
 import { InputFilterableSelect } from "components/layouts";
-import { PlusIcon, MinusIcon } from "components/layouts/Icons";
-import * as Styled from "./styles/SizeField.styled";
 import { developeProductActions } from "store/reducers/moderate/developeProductReducer";
 
-export default function SizeField({ sizes }) {
+import { extractObjectsArrayError } from "utils/validators/helpers/Validate";
+
+import { PlusIcon, MinusIcon } from "components/layouts/Icons";
+import * as Styled from "./styles/SizeField.styled";
+
+export default function SizeField({ sizes, error }) {
   const dispatch = useDispatch();
   const { sizes: selectedSizes } = useSelector(selectDevelopeProductForm);
 
@@ -48,53 +51,64 @@ export default function SizeField({ sizes }) {
       </div>
 
       <ul className="size-field__inps-list">
-        {selectedSizes.map((size, i) => (
-          <li className="size-field__inps" key={size._id}>
-            <InputFilterableSelect
-              id="size"
-              name="size"
-              placeholder="sm"
-              anotation="აირჩიე არსებული ზომა ან შექმენი ახალი"
-              list={sizes}
-              value={size.size.caption}
-              error={false}
-              message={""}
-              setValue={({ key, value }) =>
-                onSetSize({ key, value, sizeId: size._id })
-              }
-              selectValue={({ value }) =>
-                onSelectSize({ value, sizeId: size._id })
-              }
-            />
+        {selectedSizes.map((size, i) => {
+          const extractedError = extractObjectsArrayError(error.itemErrors[i]);
 
-            <div className="size-field__inps-amount--inp">
-              <input
-                type="number"
-                placeholder="რაოდენობა"
-                name="amount"
-                onChange={(e) =>
-                  onSetSize({
-                    key: e.target.name,
-                    value: e.target.value,
-                    sizeId: size._id,
-                  })
+          return (
+            <li className="size-field__inps" key={size._id}>
+              <InputFilterableSelect
+                id="size"
+                name="size"
+                placeholder="sm"
+                anotation="აირჩიე არსებული ზომა ან შექმენი ახალი"
+                list={sizes}
+                value={size.size.caption}
+                error={extractedError.size?.hasError}
+                message={extractedError.size?.message}
+                setValue={({ key, value }) =>
+                  onSetSize({ key, value, sizeId: size._id })
+                }
+                selectValue={({ value }) =>
+                  onSelectSize({ value, sizeId: size._id })
                 }
               />
-            </div>
 
-            {i > 0 && (
-              <button
-                className="size-field__remove-btn"
-                onClick={(e) => {
-                  e.preventDefault();
-                  dispatch(developeProductActions.removeSizeField(size._id));
-                }}
-              >
-                <MinusIcon />
-              </button>
-            )}
-          </li>
-        ))}
+              <div className="size-field__inps-amount--inp">
+                <input
+                  type="number"
+                  placeholder="რაოდენობა"
+                  className={extractedError.amount?.hasError ? "error" : ""}
+                  name="amount"
+                  onChange={(e) =>
+                    onSetSize({
+                      key: e.target.name,
+                      value: e.target.value,
+                      sizeId: size._id,
+                    })
+                  }
+                />
+
+                {extractedError.amount?.hasError && (
+                  <p className="size-field__message">
+                    {extractedError.amount?.message}
+                  </p>
+                )}
+              </div>
+
+              {i > 0 && (
+                <button
+                  className="size-field__remove-btn"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    dispatch(developeProductActions.removeSizeField(size._id));
+                  }}
+                >
+                  <MinusIcon />
+                </button>
+              )}
+            </li>
+          );
+        })}
       </ul>
     </Styled.SizeField>
   );

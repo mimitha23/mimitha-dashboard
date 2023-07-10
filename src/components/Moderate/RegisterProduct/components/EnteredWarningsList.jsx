@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { selectRegisterProductForm } from "store/selectors/moderate/registerProductSelectors";
 import { registerProductActions } from "store/reducers/moderate/registerProductReducer";
 
-import extractError from "../functions/extractObjectsArrayErrors";
+import { extractObjectsArrayError } from "utils/validators/helpers/Validate";
 
 import { CloseXIcon, EditIcon } from "components/layouts/Icons";
 
@@ -25,7 +25,7 @@ export default function EnteredWarningsList({
     warnings[0] && (
       <ul className="entered-warnings__list">
         {warnings.map((warning, i) => {
-          const extractedError = extractError(error[i]);
+          const extractedError = extractObjectsArrayError(error[i]);
 
           return (
             <Fragment key={warning._id}>

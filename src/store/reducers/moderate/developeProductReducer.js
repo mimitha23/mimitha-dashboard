@@ -24,10 +24,13 @@ const initialState = {
         amount: "",
       },
     ],
+    enteredVariant: "",
     variants: [],
     description_ka: "",
     description_en: "",
     assets: [],
+    filesToUpload: [],
+    filesToDelete: [],
   },
 
   developeProductFormSugestions: {
@@ -55,6 +58,25 @@ const developeProductSlice = createSlice({
     // primitives
     setDevelopedProduct(state, { payload: { key, value } }) {
       state.form[key] = value;
+    },
+
+    // variant
+    selectVariant(state, { payload: variant }) {
+      const variantIsSelected = state.form.variants.find(
+        (v) => v._id === variant._id
+      );
+
+      if (variantIsSelected) return;
+
+      state.form.variants = [...state.form.variants, variant].sort(
+        (variantA, variantB) => (variantA.type < variantB.type ? -1 : 1)
+      );
+    },
+
+    removeVariant(state, { payload }) {
+      state.form.variants = state.form.variants
+        .filter((v) => v._id !== payload)
+        .sort((variantA, variantB) => (variantA.type < variantB.type ? -1 : 1));
     },
 
     // size
@@ -120,6 +142,43 @@ const developeProductSlice = createSlice({
       }
 
       state.form.color = color;
+    },
+
+    // assets
+    setAssets(state, { payload }) {
+      const files = Array.from(payload);
+
+      files.forEach((file) => {
+        if (
+          !state.form.assets.some(
+            (asset) => asset instanceof Blob && asset.name === file.name
+          )
+        )
+          state.form.assets.push(file);
+        if (
+          !state.form.filesToUpload.some(
+            (asset) => asset instanceof Blob && asset.name === file.name
+          )
+        )
+          state.form.filesToUpload.push(file);
+      });
+    },
+
+    removeAsset(state, { payload }) {
+      function filterFile(asset) {
+        return (
+          (asset instanceof Blob && asset.name !== payload.name) ||
+          typeof asset === "string"
+        );
+      }
+
+      if (payload instanceof Blob) {
+        state.form.assets = state.form.assets.filter(filterFile);
+
+        state.form.filesToUpload = state.form.filesToUpload.filter(filterFile);
+      } else {
+        state.form.assets = state.form.assets.filter();
+      }
     },
 
     // API
