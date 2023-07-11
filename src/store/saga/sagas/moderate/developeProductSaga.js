@@ -8,6 +8,10 @@ export default function* createColorSaga() {
     developeProductHandlers.attachDevelopedProduct
   );
   yield takeLatest(
+    developeProductActions.getDevelopedProduct,
+    developeProductHandlers.getDevelopedProduct
+  );
+  yield takeLatest(
     developeProductActions.updateDevelopedProduct,
     developeProductHandlers.updateDevelopedProduct
   );

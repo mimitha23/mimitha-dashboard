@@ -11,7 +11,7 @@ import { PATHS } from "config/routes";
 import { registerProductActions } from "store/reducers/moderate/registerProductReducer";
 
 import { Filter, LoadingSpinner, DeletionPopup } from "components/layouts";
-import RegisteredProductCard from "./components/RegisteredProductCard";
+import RegisteredProductCard from "./components/RegisteredProducts/RegisteredProductCard";
 import * as Styled from "./styles/RegisteredProducts.styled";
 
 export default function RegisteredProducts() {

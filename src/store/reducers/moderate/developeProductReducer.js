@@ -28,6 +28,7 @@ const initialState = {
     variants: [],
     description_ka: "",
     description_en: "",
+    isPublic: false,
     assets: [],
     filesToUpload: [],
     filesToDelete: [],
@@ -41,10 +42,18 @@ const initialState = {
 
   allDevelopedProducts: [],
 
+  developedProduct: null,
+
   isUpdating: false,
   updatingDevelopedProductId: "",
 
   status: {
+    loading: false,
+    error: null,
+    message: "",
+  },
+
+  singleProductStatus: {
     loading: false,
     error: null,
     message: "",
@@ -144,6 +153,11 @@ const developeProductSlice = createSlice({
       state.form.color = color;
     },
 
+    // isPublic
+    setIsPublic(state, { payload }) {
+      state.form.isPublic = payload;
+    },
+
     // assets
     setAssets(state, { payload }) {
       const files = Array.from(payload);
@@ -234,6 +248,14 @@ const developeProductSlice = createSlice({
     },
 
     getAllDevelopedProducts: {
+      prepare(payload) {
+        return {
+          payload: {
+            registeredProductId: payload.registeredProductId,
+          },
+        };
+      },
+
       reducer(state) {
         state.status = status.loading();
       },
@@ -241,6 +263,25 @@ const developeProductSlice = createSlice({
 
     setAllDevelopedProducts(state, { payload }) {
       state.allDevelopedProducts = payload;
+    },
+
+    getDevelopedProduct: {
+      prepare(payload) {
+        return {
+          payload: {
+            registeredProductId: payload.registeredProductId,
+            productId: payload.developedProductId,
+          },
+        };
+      },
+
+      reducer(state) {
+        state.singleProductStatus = status.loading();
+      },
+    },
+
+    setActiveDevelopedProduct(state, { payload }) {
+      state.developedProduct = payload;
     },
 
     getDevelopeProductFormSugestions: {
@@ -274,6 +315,14 @@ const developeProductSlice = createSlice({
       state.status = status.error();
     },
 
+    setSingleProductSuccess(state, { payload }) {
+      state.singleProductStatus = status.success();
+    },
+
+    setSingleProductError(state, { payload }) {
+      state.singleProductStatus = status.error();
+    },
+
     // RESET
     resetState(state) {
       Object.keys(state).forEach((key) => {
@@ -283,6 +332,10 @@ const developeProductSlice = createSlice({
 
     resetAllDevelopedProducts(state) {
       state.allDevelopedProducts = [];
+    },
+
+    resetDevelopedProduct(state) {
+      state.developedProduct = null;
     },
 
     resetFormState(state) {
@@ -300,10 +353,45 @@ export default developeProductSlice.reducer;
 export const developeProductActions = developeProductSlice.actions;
 
 function prepareDataForDB(payload) {
-  const credentials = {};
+  const credentials = {
+    product: payload.registeredProductId,
+    isPublic: payload.isPublic,
+    title: {
+      ka: payload.title_ka,
+      en: payload.title_en,
+    },
+    price: payload.price,
+    color: {
+      ka: payload.color.ka,
+      en: payload.color.en,
+      hex: payload.color.hex,
+      _id: payload.color._id,
+    },
+    size: payload.sizes.map((size) => ({
+      size: size.size.en,
+      amount: size.amount,
+    })),
+    inStock: payload.sizes.reduce(
+      (acc, size) => acc + parseFloat(size.amount),
+      0
+    ),
+    variants: payload.variants.map((variant) => variant._id),
+    description: {
+      ka: payload.description_ka,
+      en: payload.description_en,
+    },
+  };
 
-  if (payload.isUpdating && payload.updatingDevelopedProductId)
+  if (payload.isUpdating) {
     credentials._id = payload.updatingDevelopedProductId;
+    credentials.filesToDelete = payload.filesToDelete;
+    credentials.assets = payload.assets.filter(
+      (asset) => !(asset instanceof File) && typeof asset === "string"
+    );
+    if (payload.filesToUpload[0]) credentials.media = payload.filesToUpload;
+  } else {
+    credentials.media = payload.filesToUpload;
+  }
 
   return credentials;
 }

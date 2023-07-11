@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { moderateContentBox } from "styles/helpers";
+import { moderateContentBox, Form } from "styles/helpers";
 
 export const AddDevelopedProduct = styled.div`
   ${moderateContentBox};
@@ -50,6 +50,22 @@ export const AddDevelopedProduct = styled.div`
           object-fit: cover;
         }
       }
+    }
+  }
+
+  .is-public__box {
+    grid-column: span 2;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+    ${Form.label};
+    ${Form.error};
+
+    .is-public__field {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
     }
   }
 `;

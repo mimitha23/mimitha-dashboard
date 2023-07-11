@@ -6,8 +6,10 @@ import { developeProductActions } from "store/reducers/moderate/developeProductR
 
 import { extractObjectsArrayError } from "utils/validators/helpers/Validate";
 
-import { PlusIcon, MinusIcon } from "components/layouts/Icons";
-import * as Styled from "./styles/SizeField.styled";
+import SizeFieldHeader from "./SizeFieldHeader";
+import RemoveFieldButton from "./RemoveFieldButton";
+import AmountInput from "./AmountInput";
+import * as Styled from "./SizeField.styled";
 
 export default function SizeField({ sizes, error }) {
   const dispatch = useDispatch();
@@ -34,21 +36,7 @@ export default function SizeField({ sizes, error }) {
 
   return (
     <Styled.SizeField>
-      <div className="size-field__header">
-        <label>ზომა</label>
-        <button
-          className="size-field__add-btn"
-          onClick={(e) => {
-            e.preventDefault();
-            dispatch(developeProductActions.addSizeField());
-          }}
-        >
-          <span>დაამატე ველი</span>
-          <span>
-            <PlusIcon />
-          </span>
-        </button>
-      </div>
+      <SizeFieldHeader />
 
       <ul className="size-field__inps-list">
         {selectedSizes.map((size, i) => {
@@ -73,39 +61,13 @@ export default function SizeField({ sizes, error }) {
                 }
               />
 
-              <div className="size-field__inps-amount--inp">
-                <input
-                  type="number"
-                  placeholder="რაოდენობა"
-                  className={extractedError.amount?.hasError ? "error" : ""}
-                  name="amount"
-                  onChange={(e) =>
-                    onSetSize({
-                      key: e.target.name,
-                      value: e.target.value,
-                      sizeId: size._id,
-                    })
-                  }
-                />
+              <AmountInput
+                error={extractedError}
+                onSetSize={onSetSize}
+                size={size}
+              />
 
-                {extractedError.amount?.hasError && (
-                  <p className="size-field__message">
-                    {extractedError.amount?.message}
-                  </p>
-                )}
-              </div>
-
-              {i > 0 && (
-                <button
-                  className="size-field__remove-btn"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    dispatch(developeProductActions.removeSizeField(size._id));
-                  }}
-                >
-                  <MinusIcon />
-                </button>
-              )}
+              {i > 0 && <RemoveFieldButton sizeId={size._id} />}
             </li>
           );
         })}

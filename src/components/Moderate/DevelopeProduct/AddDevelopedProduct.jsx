@@ -1,5 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useRef } from "react";
+import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 import {
@@ -21,20 +22,20 @@ import {
   InputTextarea,
   LoadingSpinner,
 } from "components/layouts";
-import AddDevelopedProductBlueprint from "./components/AddDevelopedProductBlueprint";
-import AddVariantField from "./components/AddVariantField";
+import AddDevelopedProductBlueprint from "./components/DevelopeProductBluePrint/AddDevelopedProductBlueprint";
+import AddVariantField from "./components/VariantField/AddVariantField";
 import ModerateHeader from "../components/ModerateHeader";
-import SizeField from "./components/SizeField";
+import SizeField from "./components/SizeField/SizeField";
 import * as Styled from "./styles/AddDevelopedProduct.styled";
 
 export default function AddDevelopedProduct() {
   const dispatch = useDispatch();
-  const { colors, variants, sizes } = useSelector(
-    selectDevelopeProductFormSugestions
-  );
+  const { colors, sizes } = useSelector(selectDevelopeProductFormSugestions);
+
+  const { registeredProductId } = useParams();
 
   const status = useSelector(selectDevelopeProductStatus);
-  const { color, assets, isUpdating } = useSelector(selectDevelopeProductForm);
+  const developeForm = useSelector(selectDevelopeProductForm);
 
   const filesRef = useRef(null);
 
@@ -67,7 +68,7 @@ export default function AddDevelopedProduct() {
         title="განავითარე პროდუქტი"
         linkCaption="ნახე ყველა მიმაგრებული პროდუქტი"
         redirectPath={PATHS.moderate_nested_routes.developedProductsPage.absolutePath(
-          { registeredProductId: "registered-product-id" }
+          { registeredProductId }
         )}
       />
 
@@ -79,6 +80,7 @@ export default function AddDevelopedProduct() {
               label="პროდუქტის სათაური (ka)"
               name="title_ka"
               placeholder="შავი ჰუდი ჯიბით"
+              value={developeForm.title_ka}
               error={error.title_ka.hasError}
               message={error.title_ka.message}
               onChange={setDevelopedProduct}
@@ -89,6 +91,7 @@ export default function AddDevelopedProduct() {
               label="პროდუქტის სათაური (en)"
               placeholder="black hoody with pocket"
               name="title_en"
+              value={developeForm.title_en}
               error={error.title_en.hasError}
               message={error.title_en.message}
               onChange={setDevelopedProduct}
@@ -100,6 +103,7 @@ export default function AddDevelopedProduct() {
               name="price"
               placeholder="30"
               type="number"
+              value={developeForm.price}
               error={error.price.hasError}
               message={error.price.message}
               onChange={setDevelopedProduct}
@@ -111,7 +115,7 @@ export default function AddDevelopedProduct() {
               name="color"
               placeholder="ლურჯი"
               list={colors}
-              value={color?.caption || ""}
+              value={developeForm.color?.caption || ""}
               setValue={setColor}
               selectValue={selectColor}
               error={error.color.hasError}
@@ -120,13 +124,14 @@ export default function AddDevelopedProduct() {
 
             <SizeField sizes={sizes} error={error.sizes} />
 
-            <AddVariantField variants={variants} error={error.variants} />
+            <AddVariantField error={error.variants} />
 
             <InputTextarea
               id="product-description--ka"
               label="პროდუქტის აღწერა (ka)"
               name="description_ka"
               placeholder="აღწერე პროდუქტი..."
+              value={developeForm.description_ka}
               error={error.description_ka.hasError}
               message={error.description_ka.message}
               onChange={setDevelopedProduct}
@@ -137,16 +142,35 @@ export default function AddDevelopedProduct() {
               label="პროდუქტის აღწერა (en)"
               name="description_en"
               placeholder="describe product..."
+              value={developeForm.description_en}
               error={error.description_en.hasError}
               message={error.description_en.message}
               onChange={setDevelopedProduct}
             />
 
+            <div className="is-public__box">
+              <div className="is-public__field">
+                <input
+                  type="checkbox"
+                  id="is-public"
+                  checked={developeForm.isPublic}
+                  onChange={(e) =>
+                    dispatch(
+                      developeProductActions.setIsPublic(e.target.checked)
+                    )
+                  }
+                />
+                <label htmlFor="is-public">Is Public</label>
+              </div>
+
+              {error.isPublic.hasError && <p>{error.isPublic.message}</p>}
+            </div>
+
             <InputFile
               name="newAssets"
               label="დაამატეთ პროდუქტის მედია ფაილები"
               fileRef={filesRef}
-              file={assets}
+              file={developeForm.assets}
               multiple={true}
               message={
                 error.filesToUpload?.hasError
@@ -167,7 +191,7 @@ export default function AddDevelopedProduct() {
             />
 
             <Button
-              caption={isUpdating ? "განახლება" : "შექმნა"}
+              caption={developeForm.isUpdating ? "განახლება" : "შექმნა"}
               disabled={status.loading}
               onClick={(e) => {
                 e.preventDefault();

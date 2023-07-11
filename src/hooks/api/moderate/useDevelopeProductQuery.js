@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
 
 import { selectDevelopeProductForm } from "store/selectors/moderate/developeProductSelectors";
 import { developeProductActions } from "store/reducers/moderate/developeProductReducer";
@@ -10,6 +11,8 @@ export default function useDevelopeProductQuery() {
   const dispatch = useDispatch();
   const credentials = useSelector(selectDevelopeProductForm);
 
+  const { registeredProductId } = useParams();
+
   const developeProductValidation = new DevelopeProductValidation().prepare(
     credentials
   );
@@ -17,6 +20,8 @@ export default function useDevelopeProductQuery() {
   const [error, setError] = useState(developeProductValidation.error);
 
   function developeProductQuery() {
+    if (!registeredProductId) return;
+
     const { error: validation } =
       developeProductValidation.validate(credentials);
 
@@ -31,9 +36,19 @@ export default function useDevelopeProductQuery() {
       "updatingDevelopedProductId",
     ]);
 
-    // credentials.isUpdating
-    //   ? dispatch(developeProductActions.attachDevelopedProduct(checkedData))
-    //   : dispatch(developeProductActions.updateDevelopedProduct(checkedData));
+    credentials.isUpdating
+      ? dispatch(
+          developeProductActions.updateDevelopedProduct({
+            ...checkedData,
+            registeredProductId,
+          })
+        )
+      : dispatch(
+          developeProductActions.attachDevelopedProduct({
+            ...checkedData,
+            registeredProductId,
+          })
+        );
   }
 
   return { developeProductQuery, error };

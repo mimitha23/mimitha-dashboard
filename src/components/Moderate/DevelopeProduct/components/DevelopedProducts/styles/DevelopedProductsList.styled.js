@@ -2,6 +2,7 @@ import styled from "styled-components";
 
 export const DevelopedProductsList = styled.div`
   flex: 1;
+  position: relative;
 
   .developed-products__list {
     display: grid;

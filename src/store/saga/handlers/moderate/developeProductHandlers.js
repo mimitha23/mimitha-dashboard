@@ -17,9 +17,27 @@ export function* attachDevelopedProduct({ payload }) {
   }
 }
 
+export function* getDevelopedProduct({ payload }) {
+  try {
+    const { data } = yield call(
+      developeProductAPI.getDevelopedProductQuery,
+      payload
+    );
+    yield put(developeProductActions.setActiveDevelopedProduct(data));
+    yield put(developeProductActions.setSingleProductSuccess());
+  } catch (error) {
+    yield errorController({
+      error,
+      location: "getDevelopedProductHandler",
+      errorSetter: developeProductActions.setSingleProductError,
+    });
+  }
+}
+
 export function* updateDevelopedProduct({ payload }) {
   try {
-    yield call(developeProductAPI.updateDevelopedProductQuery, payload);
+    console.log({ payload });
+    // yield call(developeProductAPI.updateDevelopedProductQuery, payload);
     yield put(developeProductActions.resetFormState());
     yield put(developeProductActions.setSuccess());
   } catch (error) {
@@ -45,10 +63,11 @@ export function* deleteDevelopedProduct({ payload }) {
   }
 }
 
-export function* getAllDevelopedProducts() {
+export function* getAllDevelopedProducts({ payload }) {
   try {
     const { data } = yield call(
-      developeProductAPI.getAllDevelopedProductsQuery
+      developeProductAPI.getAllDevelopedProductsQuery,
+      payload
     );
     yield put(developeProductActions.setAllDevelopedProducts(data));
     yield put(developeProductActions.setSuccess());

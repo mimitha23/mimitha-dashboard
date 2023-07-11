@@ -52,23 +52,11 @@ export const Variants = styled.div`
       gap: 1rem;
     }
 
-    &-item--actions {
+    [data-edit-and-delete-buttons] {
       margin-top: auto;
-      display: flex;
-      justify-content: flex-end;
-      align-items: center;
-      gap: 2rem;
 
-      &__btn {
-        font-size: 2rem;
-      }
-
-      &__btn.edit {
+      button.edit {
         color: ${({ theme }) => theme.colors.white};
-      }
-
-      &__btn.delete {
-        color: ${({ theme }) => theme.colors.red};
       }
     }
   }

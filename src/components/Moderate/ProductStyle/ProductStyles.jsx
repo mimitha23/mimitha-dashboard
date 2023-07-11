@@ -1,7 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
 
 import {
   selectAllProductStyles,
@@ -9,16 +8,14 @@ import {
 } from "store/selectors/moderate/productStyleSelectors";
 import { productStyleActions } from "store/reducers/moderate/productStyleReducer";
 
-import { PATHS } from "config/routes";
 import useDebounceOnSearch from "../hooks/useDebounceOnSearch";
 
 import { DeletionPopup, LoadingSpinner } from "components/layouts";
-import { EditIcon, DeleteIcon } from "components/layouts/Icons";
 import Search from "../components/Search";
+import StylesList from "./components/StylesList";
 import * as Styled from "./styles/ProductStyles.styled";
 
 export default function ProductStyles() {
-  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const allProductStyles = useSelector(selectAllProductStyles);
@@ -41,11 +38,6 @@ export default function ProductStyles() {
     setActiveDeletion("");
   }
 
-  function onEdit(style) {
-    dispatch(productStyleActions.setProductStyleDefaults(style));
-    navigate(PATHS.moderate_sidebar.createProductStylePage.absolutePath);
-  }
-
   useEffect(() => {
     dispatch(productStyleActions.getAllProductStyles());
 
@@ -65,39 +57,10 @@ export default function ProductStyles() {
       </div>
 
       {!status.loading && (
-        <ul className="all-product--styles__list">
-          {filteredProductStyles.map((style) => (
-            <li key={style._id} className="all-product--styles__list-item">
-              <div className="all-product--styles__list-item--label">
-                <p>
-                  <span>ka:</span>
-                  &nbsp;
-                  <span>{style.ka}</span>
-                </p>
-                <p>
-                  <span>en:</span>
-                  &nbsp;
-                  <span>{style.en}</span>
-                </p>
-              </div>
-
-              <div className="all-product--styles__list-item--actions">
-                <button
-                  className="all-product--styles__list-item--actions__btn edit"
-                  onClick={() => onEdit(style)}
-                >
-                  <EditIcon />
-                </button>
-                <button
-                  className="all-product--styles__list-item--actions__btn delete"
-                  onClick={() => setActiveDeletion(style._id)}
-                >
-                  <DeleteIcon />
-                </button>
-              </div>
-            </li>
-          ))}
-        </ul>
+        <StylesList
+          filteredProductStyles={filteredProductStyles}
+          setActiveDeletion={setActiveDeletion}
+        />
       )}
 
       {status.loading && <LoadingSpinner />}

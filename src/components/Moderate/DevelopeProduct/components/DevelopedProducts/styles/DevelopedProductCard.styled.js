@@ -1,9 +1,18 @@
 import styled from "styled-components";
 
 export const DevelopedProductCard = styled.li`
+  position: relative;
   border-radius: 0.5rem;
   overflow: hidden;
   box-shadow: ${({ theme }) => theme.shadow.radial_sm_dark};
+
+  [data-edit-and-delete-buttons] {
+    display: none;
+  }
+
+  &:hover [data-edit-and-delete-buttons] {
+    display: flex;
+  }
 
   .developed-product--card__fig {
     width: 100%;
@@ -13,7 +22,7 @@ export const DevelopedProductCard = styled.li`
     img {
       width: 100%;
       height: 100%;
-      object-fit: contain;
+      object-fit: cover;
     }
   }
 

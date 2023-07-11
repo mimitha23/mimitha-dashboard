@@ -1,7 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
 
 import {
   selectAllColors,
@@ -9,16 +8,14 @@ import {
 } from "store/selectors/moderate/colorSelectors";
 import { colorActions } from "store/reducers/moderate/colorReducer";
 
-import { PATHS } from "config/routes";
 import useDebounceOnSearch from "../hooks/useDebounceOnSearch";
 
-import { EditIcon, DeleteIcon } from "components/layouts/Icons";
 import { LoadingSpinner, DeletionPopup } from "components/layouts";
+import ColorsList from "./components/ColorsList";
 import Search from "../components/Search";
 import * as Styled from "./styles/Colors.styled";
 
 export default function Colors() {
-  const navigate = useNavigate();
   const dispatch = useDispatch();
   const allColors = useSelector(selectAllColors);
   const status = useSelector(selectColorStatus);
@@ -42,11 +39,6 @@ export default function Colors() {
     setActiveDeletion("");
   }
 
-  function onEdit(color) {
-    dispatch(colorActions.setColorDefaults(color));
-    navigate(PATHS.moderate_sidebar.createColorPage.absolutePath);
-  }
-
   useEffect(() => {
     dispatch(colorActions.getAllColors());
 
@@ -66,43 +58,10 @@ export default function Colors() {
       </div>
 
       {!status.loading && (
-        <ul className="all-colors__list">
-          {filteredColors.map((color) => (
-            <Styled.ColorItem key={color._id} hex={color.hex}>
-              <span className="all-colors--list__item-pattern"></span>
-              <div className="all-colors--list__item-details">
-                <div className="all-colors--list__item-details__label">
-                  <p>
-                    <span>ka:</span>
-                    &nbsp;
-                    <span>{color.ka}</span>
-                  </p>
-
-                  <p>
-                    <span>en:</span>
-                    &nbsp;
-                    <span>{color.en}</span>
-                  </p>
-                </div>
-
-                <div className="all-colors--list__item-details--actions">
-                  <button
-                    className="all-colors--list__item-details--actions__btn edit"
-                    onClick={() => onEdit(color)}
-                  >
-                    <EditIcon />
-                  </button>
-                  <button
-                    className="all-colors--list__item-details--actions__btn delete"
-                    onClick={() => setActiveDeletion(color._id)}
-                  >
-                    <DeleteIcon />
-                  </button>
-                </div>
-              </div>
-            </Styled.ColorItem>
-          ))}
-        </ul>
+        <ColorsList
+          filteredColors={filteredColors}
+          setActiveDeletion={setActiveDeletion}
+        />
       )}
 
       {status.loading && <LoadingSpinner />}

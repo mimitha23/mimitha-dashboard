@@ -1,7 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
 
 import {
   selectAllProductTypes,
@@ -9,16 +8,14 @@ import {
 } from "store/selectors/moderate/productTypeSelectors";
 import { productTypeActions } from "store/reducers/moderate/productTypeReducer";
 
-import { PATHS } from "config/routes";
 import useDebounceOnSearch from "../hooks/useDebounceOnSearch";
 
 import { DeletionPopup, LoadingSpinner } from "components/layouts";
-import { EditIcon, DeleteIcon } from "components/layouts/Icons";
 import Search from "../components/Search";
+import TypesList from "./components/TypesList";
 import * as Styled from "./styles/ProductTypes.styled";
 
 export default function ProductTypes() {
-  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const allProductTypes = useSelector(selectAllProductTypes);
@@ -41,11 +38,6 @@ export default function ProductTypes() {
     setActiveDeletion("");
   }
 
-  function onEdit(type) {
-    dispatch(productTypeActions.setProductTypeDefaults(type));
-    navigate(PATHS.moderate_sidebar.createProductTypePage.absolutePath);
-  }
-
   useEffect(() => {
     dispatch(productTypeActions.getAllProductTypes());
 
@@ -65,39 +57,10 @@ export default function ProductTypes() {
       </div>
 
       {!status.loading && (
-        <ul className="all-product--types__list">
-          {filteredProductTypes.map((type) => (
-            <li key={type._id} className="all-product--types__list-item">
-              <div className="all-product--types__list-item--label">
-                <p>
-                  <span>ka:</span>
-                  &nbsp;
-                  <span>{type.ka}</span>
-                </p>
-                <p>
-                  <span>en:</span>
-                  &nbsp;
-                  <span>{type.en}</span>
-                </p>
-              </div>
-
-              <div className="all-product--types__list-item--actions">
-                <button
-                  className="all-product--types__list-item--actions__btn edit"
-                  onClick={() => onEdit(type)}
-                >
-                  <EditIcon />
-                </button>
-                <button
-                  className="all-product--types__list-item--actions__btn delete"
-                  onClick={() => setActiveDeletion(type._id)}
-                >
-                  <DeleteIcon />
-                </button>
-              </div>
-            </li>
-          ))}
-        </ul>
+        <TypesList
+          filteredProductTypes={filteredProductTypes}
+          setActiveDeletion={setActiveDeletion}
+        />
       )}
 
       {status.loading && <LoadingSpinner />}

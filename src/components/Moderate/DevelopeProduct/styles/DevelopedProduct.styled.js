@@ -47,7 +47,7 @@ export const DevelopedProduct = styled.div`
 
     .developed-product__details-box {
       display: grid;
-      grid-template-columns: 3rem max-content 1fr;
+      grid-template-columns: max-content 1fr;
       gap: 1rem;
       align-items: center;
 

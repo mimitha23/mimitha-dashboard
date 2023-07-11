@@ -10,6 +10,11 @@ export default class DevelopeProductValidation extends Validators {
 
     this.validationToExecute = [
       {
+        key: "isPublic",
+        validationType: validationType.isPrimitive,
+        rules: [Rules.isBoolean],
+      },
+      {
         key: "title_ka",
         validationType: validationType.isPrimitive,
         rules: [
@@ -78,6 +83,7 @@ export default class DevelopeProductValidation extends Validators {
 
     this.error = {
       hasError: false,
+      isPublic: { hasError: false, message: "" },
       title_ka: { hasError: false, message: "" },
       title_en: { hasError: false, message: "" },
       price: { hasError: false, message: "" },

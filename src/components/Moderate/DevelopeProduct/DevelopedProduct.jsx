@@ -1,70 +1,143 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
+
+import {
+  selectDevelopedProduct,
+  selectSingleDevelopeProductStatus,
+} from "store/selectors/moderate/developeProductSelectors";
+import { developeProductActions } from "store/reducers/moderate/developeProductReducer";
+
+import { Spinner } from "components/layouts";
+import DevelopedProductAssets from "./components/DevelopedProduct/DevelopedProductAssets";
+import CloseDevelopedProductButton from "./components/DevelopedProduct/CloseDevelopedProductButton";
+import DevelopedProductCardDetailBlock from "./components/DevelopedProduct/DevelopedProductCardDetailBlock";
 import * as Styled from "./styles/DevelopedProduct.styled";
-import { CloseXIcon, EditIcon } from "components/layouts/Icons";
-import { useNavigate } from "react-router-dom";
 
 export default function DevelopedProduct() {
-  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const status = useSelector(selectSingleDevelopeProductStatus);
+  const product = useSelector(selectDevelopedProduct);
+
+  const { registeredProductId, developedProductId } = useParams();
+
+  useEffect(() => {
+    dispatch(
+      developeProductActions.getDevelopedProduct({
+        registeredProductId,
+        developedProductId,
+      })
+    );
+
+    return () => {
+      dispatch(developeProductActions.resetDevelopedProduct());
+    };
+  }, []);
 
   return (
     <Styled.DevelopedProduct>
-      <div className="developed-product__header">
-        <button
-          onClick={() => navigate(-1)}
-          className="developed-product__header-close--btn"
-        >
-          <CloseXIcon />
-        </button>
-      </div>
-      <main className="developed-product__main">
-        <figure className="developed-product__fig">
-          <img
-            src="https://www.bfgcdn.com/1500_1500_90/017-2701-0511/patagonia-fitz-roy-icon-uprisal-hoody-hoodie.jpg"
-            alt=""
-          />
-        </figure>
+      <CloseDevelopedProductButton />
 
-        <div className="developed-product__details">
-          <div className="developed-product__details-box">
-            <button>
-              <EditIcon />
-            </button>
-            <span>სახელი:</span>
-            <span>ჰუდი</span>
-          </div>
+      {!status.loading && product && (
+        <main className="developed-product__main">
+          <DevelopedProductAssets assets={product.assets} />
 
-          <div className="developed-product__details-box">
-            <button>
-              <EditIcon />
-            </button>
-            <span>ფასი:</span>
-            <span>30₾</span>
-          </div>
+          <div className="developed-product__details">
+            <DevelopedProductCardDetailBlock
+              label="რედაქტირებადი"
+              value={product.product.isEditable ? "კი" : "არა"}
+            />
 
-          <div className="developed-product__details-box">
-            <span></span>
-            <span>რეიტინგი:</span>
-            <span>4.5</span>
-          </div>
+            <DevelopedProductCardDetailBlock
+              label="საჯარო"
+              value={product.isPublic ? "კი" : "არა"}
+            />
 
-          <div className="developed-product__details-box">
-            <span></span>
-            <span>გაყიდულია:</span>
-            <span>116</span>
-          </div>
+            <DevelopedProductCardDetailBlock
+              label="რეიტინგი"
+              value={product.rating}
+            />
 
-          <div className="developed-product__details-box">
-            <span></span>
-            <span>ფერი:</span>
-            <span>ლურჯი</span>
-          </div>
+            <DevelopedProductCardDetailBlock
+              label="გაყიდულია"
+              value={product.soldOut}
+            />
 
-          <div className="developed-product__details-box">
-            <span></span>
-            <span>მარაგშია:</span>
-            <span>3</span>
+            <DevelopedProductCardDetailBlock
+              label="მარაგშია"
+              value={product.inStock}
+            />
+
+            <DevelopedProductCardDetailBlock
+              label="ზომები"
+              value={product.size
+                .map((size) =>
+                  size.size ? `${size.size} - ${size.amount}` : ""
+                )
+                .join(" / ")}
+            />
+
+            <DevelopedProductCardDetailBlock
+              label="ფასდაკლება"
+              value={product.sale ? "კი" : "არა"}
+            />
+
+            <DevelopedProductCardDetailBlock
+              label="ფასი"
+              value={`${product.price}₾`}
+            />
+
+            <DevelopedProductCardDetailBlock
+              label="სახელი"
+              value={product.title.ka}
+            />
+
+            <DevelopedProductCardDetailBlock
+              label="პროდუქტის ტიპი"
+              value={product.product.productType.ka}
+            />
+
+            <DevelopedProductCardDetailBlock
+              label="სტილი"
+              value={product.product.styles
+                .map((style) => style.ka)
+                .join(" / ")}
+            />
+
+            <DevelopedProductCardDetailBlock
+              label="სეზონი"
+              value={product.product.seasons
+                .map((season) => season.ka)
+                .join(" / ")}
+            />
+
+            <DevelopedProductCardDetailBlock
+              label="სქესი"
+              value={product.product.gender.ka}
+            />
+
+            <DevelopedProductCardDetailBlock
+              label="ფერი"
+              value={product.color.ka}
+            />
+
+            <DevelopedProductCardDetailBlock
+              label="აღწერა"
+              value={product.description.ka}
+            />
+
+            {/* variants */}
+
+            {/* textures */}
+
+            {/* warnings */}
           </div>
-        </div>
-      </main>
+        </main>
+      )}
+
+      {status.loading && <Spinner position="absolute" />}
     </Styled.DevelopedProduct>
   );
 }
