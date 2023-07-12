@@ -26,6 +26,11 @@ export default function RegisteredProductCard({ product, onEdit, onDelete }) {
 
         <div className="registered-product--card__details">
           <CardDetailBlock
+            label="რედაქტირებადი"
+            value={product.isEditable ? "კი" : "არა"}
+          />
+
+          <CardDetailBlock
             label="პროდუქტის ტიპი"
             value={product.productType.ka}
           />
@@ -40,10 +45,7 @@ export default function RegisteredProductCard({ product, onEdit, onDelete }) {
             value={product.seasons.map((season) => season.ka).join(" / ")}
           />
 
-          <CardDetailBlock
-            label="რედაქტირებადი"
-            value={product.isEditable ? "კი" : "არა"}
-          />
+          <CardDetailBlock label="სქესი" value={product.gender.ka} />
 
           <CardDetailBlock
             label="მიმაგრებული პროდუქტები"

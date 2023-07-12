@@ -22,7 +22,7 @@ import {
   InputTextarea,
   LoadingSpinner,
 } from "components/layouts";
-import AddDevelopedProductBlueprint from "./components/DevelopeProductBluePrint/AddDevelopedProductBlueprint";
+import DevelopedProductBlueprint from "./components/DevelopeProductBluePrint/DevelopedProductBlueprint";
 import AddVariantField from "./components/VariantField/AddVariantField";
 import ModerateHeader from "../components/ModerateHeader";
 import SizeField from "./components/SizeField/SizeField";
@@ -182,9 +182,10 @@ export default function AddDevelopedProduct() {
               error={
                 error.filesToUpload?.hasError || error.filesToDelete?.hasError
               }
-              onChange={({ value }) =>
-                dispatch(developeProductActions.setAssets(value))
-              }
+              onChange={({ value }) => {
+                dispatch(developeProductActions.setAssets(value));
+                filesRef.current.value = "";
+              }}
               onRemoveFile={(file) =>
                 dispatch(developeProductActions.removeAsset(file))
               }
@@ -201,7 +202,7 @@ export default function AddDevelopedProduct() {
           </Form>
         </div>
 
-        <AddDevelopedProductBlueprint />
+        <DevelopedProductBlueprint />
       </div>
 
       {status.loading && <LoadingSpinner />}

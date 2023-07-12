@@ -5,6 +5,8 @@ export const DevelopedProductsList = styled.div`
   position: relative;
 
   .developed-products__list {
+    width: 100%;
+    min-height: 70vh;
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(max-content, 30rem));
     grid-auto-rows: 32rem;

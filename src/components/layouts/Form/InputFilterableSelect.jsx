@@ -35,9 +35,9 @@ export default memo(function InputFilterableSelect({
   );
 
   function handleDropdownItem(item) {
-    removeListener();
     setIsTyping(false);
     selectValue({ key: name, value: item });
+    removeListener();
   }
 
   return (

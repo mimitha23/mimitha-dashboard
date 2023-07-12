@@ -97,17 +97,22 @@ export default class DevelopeProductValidation extends Validators {
 
   prepare(credentials) {
     if (credentials.isUpdating) {
-      this.error.filesToUpload = {
-        hasError: false,
-        message: "",
-        itemErrors: [],
-      };
+      if (
+        Array.isArray(credentials.filesToUpload) &&
+        credentials.filesToUpload[0]
+      ) {
+        this.error.filesToUpload = {
+          hasError: false,
+          message: "",
+          itemErrors: [],
+        };
 
-      this.validationToExecute.push({
-        key: "filesToUpload",
-        validationType: validationType.isPrimitive,
-        rules: [Rules.notIsEmpty, Rules.isImageFile],
-      });
+        this.validationToExecute.push({
+          key: "filesToUpload",
+          validationType: validationType.isPrimitivesArray,
+          rules: [Rules.isEmptyObject, Rules.isImageFile],
+        });
+      }
 
       if (
         Array.isArray(credentials.filesToDelete) &&

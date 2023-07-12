@@ -12,9 +12,9 @@ export const DevelopedProducts = styled.div`
   }
 
   .developed-products__aside {
-    align-self: flex-start;
-    max-width: 50rem;
     position: sticky;
     top: calc(${({ theme }) => theme.app.nav_h} + 1rem);
+    align-self: flex-start;
+    width: 50rem;
   }
 `;

@@ -1,14 +1,14 @@
 import { useSelector, useDispatch } from "react-redux";
-import { selectDevelopeProductForm } from "store/selectors/moderate/developeProductSelectors";
 
-import { InputFilterableSelect } from "components/layouts";
+import { selectDevelopeProductForm } from "store/selectors/moderate/developeProductSelectors";
 import { developeProductActions } from "store/reducers/moderate/developeProductReducer";
 
 import { extractObjectsArrayError } from "utils/validators/helpers/Validate";
 
+import AmountInput from "./AmountInput";
 import SizeFieldHeader from "./SizeFieldHeader";
 import RemoveFieldButton from "./RemoveFieldButton";
-import AmountInput from "./AmountInput";
+import { InputFilterableSelect } from "components/layouts";
 import * as Styled from "./SizeField.styled";
 
 export default function SizeField({ sizes, error }) {

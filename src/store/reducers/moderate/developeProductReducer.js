@@ -125,16 +125,16 @@ const developeProductSlice = createSlice({
     },
 
     selectSize(state, { payload: { value: size, fieldId } }) {
-      if (size === null) {
-        state.form.sizes = initialState.form.sizes;
-        return;
-      }
-
       const activeFieldIndex = state.form.sizes.findIndex(
         (field) => field._id === fieldId
       );
 
       if (activeFieldIndex < 0) return;
+
+      if (size === null) {
+        state.form.sizes = initialState.form.sizes;
+        return;
+      }
 
       state.form.sizes[activeFieldIndex].size = size;
     },
@@ -162,36 +162,31 @@ const developeProductSlice = createSlice({
     setAssets(state, { payload }) {
       const files = Array.from(payload);
 
+      const filterAsset = (asset, file) =>
+        asset instanceof Blob && asset.name === file.name;
+
       files.forEach((file) => {
-        if (
-          !state.form.assets.some(
-            (asset) => asset instanceof Blob && asset.name === file.name
-          )
-        )
+        if (!state.form.assets.some((asset) => filterAsset(asset, file)))
           state.form.assets.push(file);
-        if (
-          !state.form.filesToUpload.some(
-            (asset) => asset instanceof Blob && asset.name === file.name
-          )
-        )
+        if (!state.form.filesToUpload.some((asset) => filterAsset(asset, file)))
           state.form.filesToUpload.push(file);
       });
     },
 
     removeAsset(state, { payload }) {
-      function filterFile(asset) {
-        return (
-          (asset instanceof Blob && asset.name !== payload.name) ||
-          typeof asset === "string"
-        );
-      }
+      const filterFile = (asset) =>
+        (asset instanceof Blob && asset.name !== payload.name) ||
+        typeof asset === "string";
 
       if (payload instanceof Blob) {
         state.form.assets = state.form.assets.filter(filterFile);
-
         state.form.filesToUpload = state.form.filesToUpload.filter(filterFile);
       } else {
-        state.form.assets = state.form.assets.filter();
+        state.form.assets = state.form.assets.filter(
+          (asset) => asset !== payload
+        );
+
+        state.form.filesToDelete.push(payload);
       }
     },
 
@@ -209,9 +204,35 @@ const developeProductSlice = createSlice({
     },
 
     setDevelopedProductDefaults(state, { payload }) {
-      const form = {};
+      const form = {
+        title_ka: payload.title.ka,
+        title_en: payload.title.en,
+        price: payload.price,
+        color: { ...payload.color, caption: payload.color.ka },
+        sizes: payload.size.map((size) => ({
+          _id: nanoid(),
+          size: {
+            ka: size.size,
+            en: size.size,
+            caption: size.size,
+            _id: size._id,
+          },
+          amount: size.amount,
+        })),
+        variants: payload.variants.map((variant) => ({
+          ...variant,
+          caption: variant.ka,
+        })),
+        description_ka: payload.description.ka,
+        description_en: payload.description.en,
+        isPublic: payload.isPublic,
+        assets: payload.assets,
+      };
 
-      state.form = form;
+      state.form = {
+        ...initialState.form,
+        ...form,
+      };
 
       state.isUpdating = true;
       state.updatingDevelopedProductId = payload._id;
@@ -232,7 +253,10 @@ const developeProductSlice = createSlice({
     deleteDevelopedProduct: {
       prepare(payload) {
         return {
-          payload: { _id: payload },
+          payload: {
+            registeredProductId: payload.registeredProductId,
+            developedProductId: payload.developedProductId,
+          },
         };
       },
 
@@ -271,12 +295,14 @@ const developeProductSlice = createSlice({
           payload: {
             registeredProductId: payload.registeredProductId,
             productId: payload.developedProductId,
+            getDefaults: payload.getDefaults ? true : false,
           },
         };
       },
 
-      reducer(state) {
-        state.singleProductStatus = status.loading();
+      reducer(state, { payload }) {
+        state[payload.getDefaults ? "status" : "singleProductStatus"] =
+          status.loading();
       },
     },
 

@@ -4,13 +4,13 @@ import { EditAndDeleteButtons } from "components/layouts";
 import ProductCardDetailBlock from "./ProductCardDetailBlock";
 import * as Styled from "./styles/DevelopedProductCard.styled";
 
-export default function DevelopedProductCard({ product }) {
+export default function DevelopedProductCard({ product, onDelete, onEdit }) {
   return (
     <Styled.DevelopedProductCard>
       <Link to={`developed-product/${product._id}`}>
         <EditAndDeleteButtons
-          onEdit={() => {}}
-          onDelete={() => {}}
+          onEdit={onEdit}
+          onDelete={onDelete}
           isAbsolute={true}
         />
 

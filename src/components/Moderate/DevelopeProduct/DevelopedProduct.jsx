@@ -10,20 +10,28 @@ import {
 import { developeProductActions } from "store/reducers/moderate/developeProductReducer";
 
 import { Spinner } from "components/layouts";
-import DevelopedProductAssets from "./components/DevelopedProduct/DevelopedProductAssets";
-import CloseDevelopedProductButton from "./components/DevelopedProduct/CloseDevelopedProductButton";
-import DevelopedProductCardDetailBlock from "./components/DevelopedProduct/DevelopedProductCardDetailBlock";
+import {
+  VariantDetails,
+  TextureDetails,
+  WarningDetails,
+  DevelopedProductSlider,
+  DevelopedProductActions,
+  CloseDevelopedProductButton,
+  DevelopedProductCardDetailBlock,
+} from "./components/DevelopedProduct";
 import * as Styled from "./styles/DevelopedProduct.styled";
 
 export default function DevelopedProduct() {
   const dispatch = useDispatch();
 
+  const { registeredProductId, developedProductId } = useParams();
+
   const status = useSelector(selectSingleDevelopeProductStatus);
   const product = useSelector(selectDevelopedProduct);
 
-  const { registeredProductId, developedProductId } = useParams();
-
   useEffect(() => {
+    if (!registeredProductId || !developedProductId) return;
+
     dispatch(
       developeProductActions.getDevelopedProduct({
         registeredProductId,
@@ -42,7 +50,7 @@ export default function DevelopedProduct() {
 
       {!status.loading && product && (
         <main className="developed-product__main">
-          <DevelopedProductAssets assets={product.assets} />
+          <DevelopedProductSlider assets={product.assets} />
 
           <div className="developed-product__details">
             <DevelopedProductCardDetailBlock
@@ -128,11 +136,17 @@ export default function DevelopedProduct() {
               value={product.description.ka}
             />
 
-            {/* variants */}
+            <VariantDetails variants={product.variants} />
 
-            {/* textures */}
+            <TextureDetails textures={product.product.textures} />
 
-            {/* warnings */}
+            <WarningDetails warnings={product.product.warnings} />
+
+            <DevelopedProductActions
+              registeredProductId={registeredProductId}
+              developedProductId={developedProductId}
+              product={product}
+            />
           </div>
         </main>
       )}

@@ -1,12 +1,13 @@
 import styled from "styled-components";
 
-export const AddDevelopedProductBlueprint = styled.div`
+export const DevelopedProductBlueprint = styled.div`
   position: sticky;
   top: calc(${({ theme }) => theme.app.nav_h} + 1rem);
   align-self: flex-start;
   flex: 1;
-  background: ${({ theme }) => theme.colors.text};
-  color: ${({ theme }) => theme.colors.bg};
+  background: ${({ theme }) =>
+    theme.mode === "DARK" ? theme.colors.text : theme.colors.gray_shade};
+  color: ${({ theme }) => theme.colors.dark_gray};
   min-height: calc(100vh - 4rem - ${({ theme }) => theme.app.nav_h});
   padding: 1rem;
   border-radius: 0.5rem;

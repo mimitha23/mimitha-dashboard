@@ -1,14 +1,21 @@
 import styled from "styled-components";
 
 export const DevelopedProduct = styled.div`
-  width: 50rem;
+  width: 100%;
   display: flex;
   flex-direction: column;
   gap: 1rem;
   padding: 1rem;
-  min-height: calc(100vh - ${({ theme }) => theme.app.nav_h} - 1rem);
-  background: ${({ theme }) => theme.colors.text};
-  color: ${({ theme }) => theme.colors.bg};
+  background: ${({ theme }) =>
+    theme.mode === "DARK" ? theme.colors.text : theme.colors.gray_shade};
+  color: ${({ theme }) => theme.colors.dark_gray};
+  height: calc(100vh - 12rem - ${({ theme }) => theme.app.nav_h});
+  overflow: auto;
+  border-radius: 0.5rem;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 
   .developed-product__header {
     display: flex;
@@ -16,7 +23,7 @@ export const DevelopedProduct = styled.div`
 
     &-close--btn {
       font-size: 3rem;
-      color: ${({ theme }) => theme.colors.bg};
+      color: ${({ theme }) => theme.colors.dark_gray};
     }
   }
 
@@ -24,18 +31,6 @@ export const DevelopedProduct = styled.div`
     display: flex;
     flex-direction: column;
     gap: 1rem;
-  }
-
-  .developed-product__fig {
-    height: 20rem;
-    aspect-ratio: 1/1;
-    background: ${({ theme }) => theme.colors.white};
-
-    img {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-    }
   }
 
   .developed-product__details {

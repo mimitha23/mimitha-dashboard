@@ -26,7 +26,7 @@ export default memo(function InputFile({
                 key={`file-${index}`}
               >
                 <img
-                  src={f instanceof Object ? URL.createObjectURL(f) : ""}
+                  src={f instanceof Object ? URL.createObjectURL(f) : f}
                   alt=""
                 />
 

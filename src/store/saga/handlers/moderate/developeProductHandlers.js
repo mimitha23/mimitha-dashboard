@@ -23,7 +23,11 @@ export function* getDevelopedProduct({ payload }) {
       developeProductAPI.getDevelopedProductQuery,
       payload
     );
-    yield put(developeProductActions.setActiveDevelopedProduct(data));
+
+    payload.getDefaults
+      ? yield put(developeProductActions.setDevelopedProductDefaults(data))
+      : yield put(developeProductActions.setActiveDevelopedProduct(data));
+
     yield put(developeProductActions.setSingleProductSuccess());
   } catch (error) {
     yield errorController({
@@ -36,8 +40,7 @@ export function* getDevelopedProduct({ payload }) {
 
 export function* updateDevelopedProduct({ payload }) {
   try {
-    console.log({ payload });
-    // yield call(developeProductAPI.updateDevelopedProductQuery, payload);
+    yield call(developeProductAPI.updateDevelopedProductQuery, payload);
     yield put(developeProductActions.resetFormState());
     yield put(developeProductActions.setSuccess());
   } catch (error) {
@@ -52,7 +55,11 @@ export function* updateDevelopedProduct({ payload }) {
 export function* deleteDevelopedProduct({ payload }) {
   try {
     yield call(developeProductAPI.deleteDevelopedProductQuery, payload);
-    yield put(developeProductActions.setDeletedDevelopedProduct(payload._id));
+    yield put(
+      developeProductActions.setDeletedDevelopedProduct(
+        payload.developedProductId
+      )
+    );
     yield put(developeProductActions.setSuccess());
   } catch (error) {
     yield errorController({

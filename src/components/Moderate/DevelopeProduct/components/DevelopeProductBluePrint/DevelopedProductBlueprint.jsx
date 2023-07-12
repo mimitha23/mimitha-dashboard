@@ -5,9 +5,9 @@ import { selectDevelopeProductForm } from "store/selectors/moderate/developeProd
 
 import AssetsReview from "./AssetsReview";
 import DetailsBlock from "./DetailsBlock";
-import * as Styled from "./AddDevelopedProductBlueprint.styled";
+import * as Styled from "./DevelopedProductBlueprint.styled";
 
-export default function AddDevelopedProductBlueprint() {
+export default function DevelopedProductBlueprint() {
   const form = useSelector(selectDevelopeProductForm);
 
   const [size, setSize] = useState({
@@ -35,7 +35,7 @@ export default function AddDevelopedProductBlueprint() {
   }, [form.sizes]);
 
   return (
-    <Styled.AddDevelopedProductBlueprint>
+    <Styled.DevelopedProductBlueprint>
       <AssetsReview assets={form.assets} />
 
       <div className="registered-product--card__details">
@@ -57,6 +57,6 @@ export default function AddDevelopedProductBlueprint() {
 
         <DetailsBlock label="აღწერა (en)" value={form.description_en} />
       </div>
-    </Styled.AddDevelopedProductBlueprint>
+    </Styled.DevelopedProductBlueprint>
   );
 }
