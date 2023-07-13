@@ -102,7 +102,7 @@ export const selectDropdownList = css`
   gap: 0.5rem;
 
   &--item {
-    padding: 0.5rem;
+    padding: 0.75rem 1rem;
     border-radius: 0.5rem;
     cursor: pointer;
     transition: all 0.2s ease;

@@ -1,1 +1,1 @@
-export { default as useBlurOnBody } from "./useBlurOnBody";
+export { default as useClickOutside } from "./useClickOutside";

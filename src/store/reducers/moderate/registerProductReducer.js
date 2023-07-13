@@ -379,6 +379,7 @@ function prepareDataForDB(payload) {
       query: payload.productTypes.query,
       ka: payload.productTypes.ka,
       en: payload.productTypes.en,
+      _id: payload.productTypes._id,
     },
     styles: payload.productStyles.map((style) => ({
       query: style.query,

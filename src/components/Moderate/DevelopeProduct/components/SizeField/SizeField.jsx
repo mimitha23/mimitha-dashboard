@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+import { useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
 import { selectDevelopeProductForm } from "store/selectors/moderate/developeProductSelectors";
@@ -15,7 +17,7 @@ export default function SizeField({ sizes, error }) {
   const dispatch = useDispatch();
   const { sizes: selectedSizes } = useSelector(selectDevelopeProductForm);
 
-  function onSetSize({ key, value, sizeId }) {
+  const onSetSize = useCallback(({ key, value, sizeId }) => {
     dispatch(
       developeProductActions.setSize({
         key,
@@ -23,16 +25,16 @@ export default function SizeField({ sizes, error }) {
         fieldId: sizeId,
       })
     );
-  }
+  }, []);
 
-  function onSelectSize({ value, sizeId }) {
+  const onSelectSize = useCallback(({ value, sizeId }) => {
     dispatch(
       developeProductActions.selectSize({
         value,
         fieldId: sizeId,
       })
     );
-  }
+  }, []);
 
   return (
     <Styled.SizeField>
@@ -50,9 +52,9 @@ export default function SizeField({ sizes, error }) {
                 placeholder="sm"
                 anotation="აირჩიე არსებული ზომა ან შექმენი ახალი"
                 list={sizes}
-                value={size.size.caption}
-                error={extractedError.size?.hasError}
-                message={extractedError.size?.message}
+                value={size.size.caption || ""}
+                error={extractedError.size?.hasError || false}
+                message={extractedError.size?.message || ""}
                 setValue={({ key, value }) =>
                   onSetSize({ key, value, sizeId: size._id })
                 }

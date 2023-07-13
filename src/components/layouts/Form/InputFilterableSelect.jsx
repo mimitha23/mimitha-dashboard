@@ -1,7 +1,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useState, memo } from "react";
+
 import * as Styled from "./Form.styled";
-import { useBlurOnBody } from "hooks/utils";
+import { useClickOutside } from "hooks/utils";
 
 export default memo(function InputFilterableSelect({
   id,
@@ -20,46 +21,31 @@ export default memo(function InputFilterableSelect({
 }) {
   const [isTyping, setIsTyping] = useState(false);
 
-  const random_field_id = `${name}-filterable-field`;
-  const random_dropdown_id = `${name}-filterable-dropdown`;
-
-  const { onFocus, removeListener, blur } = useBlurOnBody(
-    () => {
-      setIsTyping(true);
-    },
-    () => {
-      strictSelection && selectValue({ key: name, value: null });
-      setIsTyping(false);
-    },
-    [random_field_id, random_dropdown_id]
-  );
-
   function handleDropdownItem(item) {
     setIsTyping(false);
     selectValue({ key: name, value: item });
-    removeListener();
   }
 
+  const dropdown_ref = useClickOutside(isTyping, () => setIsTyping(false));
+
   return (
-    <Styled.InputFilterableSelect>
+    <Styled.InputFilterableSelect ref={dropdown_ref}>
       {label && <label htmlFor={id}>{label}</label>}
 
       <input
         id={id}
         type="text"
         name={name}
-        className={`form__input-field ${random_field_id} ${
-          error ? "error" : ""
-        }`}
+        className={`form__input-field  ${error ? "error" : ""}`}
         placeholder={placeholder}
         onChange={(e) => setValue({ key: name, value: e.target.value })}
         value={value}
-        onFocus={onFocus}
+        onFocus={() => setIsTyping(true)}
         readOnly={readOnly}
       />
 
-      {isTyping && !blur && (
-        <div className={`filterable_dropdown ${random_dropdown_id}`}>
+      {isTyping && (
+        <div className="filterable_dropdown">
           <ul className="filterable_dropdown-list">
             {list
               .filter((item) =>
@@ -79,6 +65,7 @@ export default memo(function InputFilterableSelect({
       )}
 
       {anotation && <blockquote>{anotation}</blockquote>}
+
       {error && <p>{message}</p>}
     </Styled.InputFilterableSelect>
   );

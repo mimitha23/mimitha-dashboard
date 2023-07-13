@@ -4,8 +4,9 @@ import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 import {
-  selectDevelopeProductStatus,
   selectDevelopeProductForm,
+  selectDevelopeProductStatus,
+  selectDevelopedProductAssets,
   selectDevelopeProductFormSugestions,
 } from "store/selectors/moderate/developeProductSelectors";
 import { useDevelopeProductQuery } from "hooks/api/moderate";
@@ -26,16 +27,18 @@ import DevelopedProductBlueprint from "./components/DevelopeProductBluePrint/Dev
 import AddVariantField from "./components/VariantField/AddVariantField";
 import ModerateHeader from "../components/ModerateHeader";
 import SizeField from "./components/SizeField/SizeField";
+import CopyDevelopedProductConfig from "./components/CopyDevelopedProductConfig/CopyDevelopedProductConfig";
 import * as Styled from "./styles/AddDevelopedProduct.styled";
 
 export default function AddDevelopedProduct() {
   const dispatch = useDispatch();
-  const { colors, sizes } = useSelector(selectDevelopeProductFormSugestions);
 
   const { registeredProductId } = useParams();
 
   const status = useSelector(selectDevelopeProductStatus);
+  const assets = useSelector(selectDevelopedProductAssets);
   const developeForm = useSelector(selectDevelopeProductForm);
+  const { colors, sizes } = useSelector(selectDevelopeProductFormSugestions);
 
   const filesRef = useRef(null);
 
@@ -60,6 +63,10 @@ export default function AddDevelopedProduct() {
 
   useEffect(() => {
     dispatch(developeProductActions.getDevelopeProductFormSugestions());
+
+    return () => {
+      dispatch(developeProductActions.resetState());
+    };
   }, []);
 
   return (
@@ -74,6 +81,7 @@ export default function AddDevelopedProduct() {
 
       <div className="add-developed--product__content">
         <div className="add-developed--product__form-wrapper">
+          <CopyDevelopedProductConfig />
           <Form>
             <InputText
               id="product-title_ka"
@@ -170,7 +178,7 @@ export default function AddDevelopedProduct() {
               name="newAssets"
               label="დაამატეთ პროდუქტის მედია ფაილები"
               fileRef={filesRef}
-              file={developeForm.assets}
+              file={assets.assets}
               multiple={true}
               message={
                 error.filesToUpload?.hasError

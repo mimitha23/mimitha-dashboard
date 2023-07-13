@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { useBlurOnBody } from "hooks/utils";
+import { useClickOutside } from "hooks/utils";
 import { selectDevelopeProductForm } from "store/selectors/moderate/developeProductSelectors";
 import { developeProductActions } from "store/reducers/moderate/developeProductReducer";
 
@@ -17,19 +17,6 @@ export default function AddVariantField({ error }) {
 
   const { enteredVariant } = useSelector(selectDevelopeProductForm);
 
-  const random_field_id = `variant-field__filterable-field`;
-  const random_dropdown_id = `variant-field__filterable-dropdown`;
-
-  const { onFocus, blur } = useBlurOnBody(
-    () => {
-      setOpenDropdownBox(true);
-    },
-    () => {
-      setOpenDropdownBox(false);
-    },
-    [random_field_id, random_dropdown_id]
-  );
-
   function onSearch(e) {
     dispatch(
       developeProductActions.setDevelopedProduct({
@@ -39,34 +26,31 @@ export default function AddVariantField({ error }) {
     );
   }
 
+  const dropdown_ref = useClickOutside(openDropdownBox, () =>
+    setOpenDropdownBox(false)
+  );
+
   return (
-    <Styled.AddVariantField>
+    <Styled.AddVariantField ref={dropdown_ref}>
       <label htmlFor="add-variant" className="add-variant__label">
         ვარიანტი
       </label>
 
       <input
         id="add-variant"
-        className={`add-variant__btn ${random_field_id} ${
-          error.hasError ? "error" : ""
-        }`}
+        className={`add-variant__btn  ${error.hasError ? "error" : ""}`}
         placeholder="დაამატე ვარიანტი"
         name="enteredVariant"
         value={enteredVariant}
         onChange={onSearch}
-        onFocus={onFocus}
+        onFocus={() => setOpenDropdownBox(true)}
       />
 
       {error.hasError && <p className="size-field__message">{error.message}</p>}
 
       <EnteredVariants />
 
-      {openDropdownBox && !blur && (
-        <DropdownList
-          random_dropdown_id={random_dropdown_id}
-          enteredVariant={enteredVariant}
-        />
-      )}
+      {openDropdownBox && <DropdownList enteredVariant={enteredVariant} />}
     </Styled.AddVariantField>
   );
 }

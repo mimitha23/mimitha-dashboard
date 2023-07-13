@@ -7,7 +7,7 @@ import {
 } from "store/selectors/moderate/developeProductSelectors";
 import { developeProductActions } from "store/reducers/moderate/developeProductReducer";
 
-export default function DropdownList({ random_dropdown_id, enteredVariant }) {
+export default function DropdownList({ enteredVariant }) {
   const dispatch = useDispatch();
 
   const { variants: variantSugestions } = useSelector(
@@ -40,7 +40,7 @@ export default function DropdownList({ random_dropdown_id, enteredVariant }) {
   }, [enteredVariant, variantSugestions]);
 
   return (
-    <div className={`select-variant__dropdown ${random_dropdown_id}`}>
+    <div className="select-variant__dropdown">
       <ul className="select-variant__dropdown-list">
         {filteredDropdown.map((variant) => (
           <li

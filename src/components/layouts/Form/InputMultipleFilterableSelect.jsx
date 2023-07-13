@@ -1,7 +1,7 @@
 import { useState, memo } from "react";
 import { nanoid } from "@reduxjs/toolkit";
 
-import { useBlurOnBody } from "hooks/utils";
+import { useClickOutside } from "hooks/utils";
 
 import { CloseXIcon } from "../Icons";
 import * as Styled from "./Form.styled";
@@ -23,19 +23,7 @@ export default memo(function InputMultipleFilterableSelect({
   const [isTyping, setIsTyping] = useState(false);
   const [enteredValue, setEnteredValue] = useState("");
 
-  const random_field_id = `${name}-multiple-filterable-field`;
-  const random_dropdown_id = `${name}-multiple-filterable-dropdown`;
-
-  const { onFocus } = useBlurOnBody(
-    () => {
-      setIsTyping(true);
-    },
-    () => {
-      setIsTyping(false);
-      setEnteredValue("");
-    },
-    [random_field_id, random_dropdown_id]
-  );
+  const dropdown_ref = useClickOutside(isTyping, () => setIsTyping(false));
 
   function handleOnSelect({ key, value }) {
     selectField({ key, value });
@@ -47,20 +35,18 @@ export default memo(function InputMultipleFilterableSelect({
   }
 
   return (
-    <Styled.InputMultipleFilterableSelect>
+    <Styled.InputMultipleFilterableSelect ref={dropdown_ref}>
       <label htmlFor={id}>{label}</label>
 
       <input
         id={id}
         type="text"
         name={name}
-        className={`form__input-field ${random_field_id} ${
-          error ? "error" : ""
-        }`}
+        className={`form__input-field  ${error ? "error" : ""}`}
         placeholder={placeholder}
         onChange={(e) => setEnteredValue(e.target.value)}
         value={enteredValue}
-        onFocus={onFocus}
+        onFocus={() => setIsTyping(true)}
         readOnly={readOnly}
       />
 
@@ -83,7 +69,7 @@ export default memo(function InputMultipleFilterableSelect({
       )}
 
       {isTyping && (
-        <div className={`filterable_dropdown ${random_dropdown_id}`}>
+        <div className="filterable_dropdown">
           <ul className="filterable_dropdown-list">
             {list
               .filter((item) =>

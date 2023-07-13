@@ -9,14 +9,16 @@ export const AddDevelopedProduct = styled.div`
   .add-developed--product__content {
     width: 100%;
     display: flex;
+    gap: 2rem;
     margin-top: 2rem;
   }
 
   .add-developed--product__form-wrapper {
     flex: 1;
     display: flex;
+    flex-direction: column;
     justify-content: center;
-    align-items: flex-start;
+    align-items: center;
 
     .form {
       width: 100%;

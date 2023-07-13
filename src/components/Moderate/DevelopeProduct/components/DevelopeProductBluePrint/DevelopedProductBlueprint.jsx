@@ -1,7 +1,10 @@
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 
-import { selectDevelopeProductForm } from "store/selectors/moderate/developeProductSelectors";
+import {
+  selectDevelopeProductForm,
+  selectDevelopedProductAssets,
+} from "store/selectors/moderate/developeProductSelectors";
 
 import AssetsReview from "./AssetsReview";
 import DetailsBlock from "./DetailsBlock";
@@ -9,6 +12,7 @@ import * as Styled from "./DevelopedProductBlueprint.styled";
 
 export default function DevelopedProductBlueprint() {
   const form = useSelector(selectDevelopeProductForm);
+  const assets = useSelector(selectDevelopedProductAssets);
 
   const [size, setSize] = useState({
     size: "",
@@ -36,7 +40,7 @@ export default function DevelopedProductBlueprint() {
 
   return (
     <Styled.DevelopedProductBlueprint>
-      <AssetsReview assets={form.assets} />
+      <AssetsReview assets={assets.assets} />
 
       <div className="registered-product--card__details">
         <DetailsBlock label="სათაური (ka)" value={form.title_ka} />

@@ -2,14 +2,14 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 
-import { selectDevelopeProductForm } from "store/selectors/moderate/developeProductSelectors";
+import { selectDevelopeProductFullForm } from "store/selectors/moderate/developeProductSelectors";
 import { developeProductActions } from "store/reducers/moderate/developeProductReducer";
 import { DevelopeProductValidation } from "utils/validators/moderate";
 import { generateLowerCaseData } from "utils";
 
 export default function useDevelopeProductQuery() {
   const dispatch = useDispatch();
-  const credentials = useSelector(selectDevelopeProductForm);
+  const credentials = useSelector(selectDevelopeProductFullForm);
 
   const { registeredProductId } = useParams();
 

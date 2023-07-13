@@ -132,7 +132,9 @@ const developeProductSlice = createSlice({
       if (activeFieldIndex < 0) return;
 
       if (size === null) {
-        state.form.sizes = initialState.form.sizes;
+        state.form.sizes[activeFieldIndex].size =
+          initialState.form.sizes[0].size;
+
         return;
       }
 
