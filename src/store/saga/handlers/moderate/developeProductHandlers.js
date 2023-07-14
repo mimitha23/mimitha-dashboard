@@ -38,6 +38,23 @@ export function* getDevelopedProduct({ payload }) {
   }
 }
 
+export function* copyDevelopedProductConfig({ payload }) {
+  try {
+    const { data } = yield call(
+      developeProductAPI.copyDevelopedProductConfigQuery,
+      payload
+    );
+    yield put(developeProductActions.setCopyDevelopedProductConfig(data));
+    yield put(developeProductActions.setSuccess());
+  } catch (error) {
+    yield errorController({
+      error,
+      location: "copyDevelopedProductConfigHandler",
+      errorSetter: developeProductActions.setSingleProductError,
+    });
+  }
+}
+
 export function* updateDevelopedProduct({ payload }) {
   try {
     yield call(developeProductAPI.updateDevelopedProductQuery, payload);

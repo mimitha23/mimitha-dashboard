@@ -4,7 +4,13 @@ import { BiSearchAlt } from "react-icons/bi";
 
 // import { BsFillHandbagFill } from "react-icons/bs";
 
-import { AiOutlineMinus, AiOutlinePlus, AiOutlineClose } from "react-icons/ai";
+import {
+  AiOutlineMinus,
+  AiOutlinePlus,
+  AiOutlineClose,
+  AiFillEye,
+  AiFillEyeInvisible,
+} from "react-icons/ai";
 
 import { HiOutlineLockClosed, HiOutlineLockOpen } from "react-icons/hi";
 
@@ -41,6 +47,8 @@ const CloseXIcon = AiOutlineClose;
 const DeleteIcon = MdDelete;
 // const DollarIcon = FaDollarSign;
 const EditIcon = MdModeEditOutline;
+const EyeShowIcon = AiFillEye;
+const EyeHideIcon = AiFillEyeInvisible;
 // const EuroIcon = FaEuroSign;
 // const FacebookIcon = FaFacebook;
 const FilterIcon = MdOutlineFilterList;
@@ -69,6 +77,8 @@ export {
   DeleteIcon,
   // DollarIcon,
   EditIcon,
+  EyeShowIcon,
+  EyeHideIcon,
   // EuroIcon,
   // FacebookIcon,
   FilterIcon,

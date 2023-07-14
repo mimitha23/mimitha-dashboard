@@ -9,8 +9,13 @@ export async function attachDevelopedProductQuery(payload) {
 
 export async function getDevelopedProductQuery(payload) {
   return await axiosFormDataQuery.get(
-    `/moderate/develope-product/${payload.registeredProductId}/products/${payload.productId}`,
-    payload
+    `/moderate/develope-product/${payload.registeredProductId}/products/${payload.productId}`
+  );
+}
+
+export async function copyDevelopedProductConfigQuery(payload) {
+  return await axiosFormDataQuery.get(
+    `/moderate/develope-product/${payload.registeredProductId}/products/copy?${payload.params}`
   );
 }
 

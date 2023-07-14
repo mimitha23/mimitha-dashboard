@@ -312,6 +312,49 @@ const developeProductSlice = createSlice({
       state.developedProduct = payload;
     },
 
+    copyDevelopedProductConfig: {
+      prepare(payload) {
+        return {
+          payload: {
+            registeredProductId: payload.registeredProductId,
+            params: payload.params,
+          },
+        };
+      },
+
+      reducer(state) {
+        state.status = status.loading();
+      },
+    },
+
+    setCopyDevelopedProductConfig(state, { payload }) {
+      const form = {
+        price: payload.price,
+        sizes: payload.size.map((size) => ({
+          _id: nanoid(),
+          size: {
+            ka: size.size,
+            en: size.size,
+            caption: size.size,
+            _id: size._id,
+          },
+          amount: size.amount,
+        })),
+        variants: payload.variants.map((variant) => ({
+          ...variant,
+          caption: variant.ka,
+        })),
+        description_ka: payload.description.ka,
+        description_en: payload.description.en,
+        isPublic: payload.isPublic,
+      };
+
+      state.form = {
+        ...initialState.form,
+        ...form,
+      };
+    },
+
     getDevelopeProductFormSugestions: {
       reducer(state) {
         state.status = status.loading();

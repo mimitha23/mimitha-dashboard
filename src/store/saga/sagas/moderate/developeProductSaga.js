@@ -12,6 +12,10 @@ export default function* createColorSaga() {
     developeProductHandlers.getDevelopedProduct
   );
   yield takeLatest(
+    developeProductActions.copyDevelopedProductConfig,
+    developeProductHandlers.copyDevelopedProductConfig
+  );
+  yield takeLatest(
     developeProductActions.updateDevelopedProduct,
     developeProductHandlers.updateDevelopedProduct
   );

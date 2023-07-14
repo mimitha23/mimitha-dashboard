@@ -1,12 +1,44 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { controllStatus as status } from "./helpers";
+
+const initialState = {
+  form: {
+    email: "",
+    password: "",
+  },
+
+  status: {
+    loading: false,
+    error: false,
+    message: "",
+  },
+};
 
 const authSlice = createSlice({
   name: "auth",
-  initialState: {},
+  initialState,
   reducers: {
-    login(state, { payload }) {},
+    setAuthForm(state, { payload: { key, value } }) {
+      state.form[key] = value;
+    },
+
+    login: {
+      prepare(paylaod) {
+        return {
+          payload: {},
+        };
+      },
+
+      reducer(state) {
+        state.status = status.loading();
+      },
+    },
+
+    resetForm(state) {
+      state.form = initialState.form;
+    },
   },
 });
 
 export default authSlice.reducer;
-export const { login } = authSlice.actions;
+export const authActions = authSlice.actions;
