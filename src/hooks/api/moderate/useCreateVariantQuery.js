@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { selectVariantForm } from "store/selectors/moderate/variantSelectors";
 import { variantActions } from "store/reducers/moderate/variantReducer";
 import { CreateVariantValidation } from "utils/validators/moderate";
-import { generateLowerCaseData } from "utils";
+import { generateLowerCaseData } from "functions";
 
 export default function useCreateVariantQuery() {
   const dispatch = useDispatch();

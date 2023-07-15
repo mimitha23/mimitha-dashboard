@@ -81,7 +81,7 @@ export default function AddDevelopedProduct() {
 
       <div className="add-developed--product__content">
         <div className="add-developed--product__form-wrapper">
-          <CopyDevelopedProductConfig />
+          {!developeForm.isUpdating && <CopyDevelopedProductConfig />}
           <Form>
             <InputText
               id="product-title_ka"

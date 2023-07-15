@@ -16,6 +16,8 @@ export default function* errorController({
   yield put(
     errorSetter({
       ...setterParams,
+      error: true,
+      loading: false,
       message: errorMessage,
     })
   );

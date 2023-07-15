@@ -1,7 +1,7 @@
-import { axiosPublicQuery, axiosFormDataQuery } from "services/axios";
+import { axiosPrivateQuery, axiosFormDataQuery } from "services/axios";
 
 export async function getRegisterProductFormSugestionsQuery() {
-  return await axiosPublicQuery.get(
+  return await axiosPrivateQuery.get(
     "/moderate/register-product/form-sugestions"
   );
 }
@@ -18,11 +18,11 @@ export async function updateRegisteredProductQuery(payload) {
 }
 
 export async function deleteRegisteredProductQuery(payload) {
-  return await axiosPublicQuery.delete(
+  return await axiosPrivateQuery.delete(
     `/moderate/register-product/${payload._id}`
   );
 }
 
 export async function getAllRegisteredProductsQuery() {
-  return await axiosPublicQuery.get("/moderate/register-product");
+  return await axiosPrivateQuery.get("/moderate/register-product");
 }

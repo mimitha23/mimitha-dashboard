@@ -1,8 +1,33 @@
+import { call, put } from "redux-saga/effects";
+import { errorController } from "./helpers";
+import { authActions } from "store/reducers/authReducer";
+import { authAPI } from "../api";
+
 export function* loginHandler({ payload }) {
   try {
-    yield;
-    console.log(payload);
+    const { data } = yield call(authAPI.loginQuery, payload);
+    yield put(authActions.resetForm());
+    yield put(authActions.setUser(data));
+    yield put(authActions.setSuccess());
   } catch (error) {
-    console.log(error);
+    yield errorController({
+      error,
+      location: "loginHandler",
+      errorSetter: authActions.setError,
+    });
+  }
+}
+
+export function* logoutHandler() {
+  try {
+    yield call(authAPI.logoutQuery);
+    yield put(authActions.setLogedoutUser());
+    yield put(authActions.setSuccess());
+  } catch (error) {
+    yield errorController({
+      error,
+      location: "logoutHandler",
+      errorSetter: authActions.setError,
+    });
   }
 }

@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { selectRegisterProductForm } from "store/selectors/moderate/registerProductSelectors";
 import { registerProductActions } from "store/reducers/moderate/registerProductReducer";
 import { RegisterProductValidation } from "utils/validators/moderate";
-import { generateLowerCaseData } from "utils";
+import { generateLowerCaseData } from "functions";
 
 export default function useRegisterProductQuery() {
   const dispatch = useDispatch();

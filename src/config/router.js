@@ -13,7 +13,7 @@ const router = [
   },
   {
     path: PATHS.main_navigation.moderate,
-    element: <Pages.ModeratePage />,
+    element: <Pages.ModeratePage roles={["ADMIN"]} />,
     children: [
       // Color
       {

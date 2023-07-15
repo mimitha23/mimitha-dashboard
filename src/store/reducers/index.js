@@ -1,4 +1,6 @@
 import { combineReducers } from "@reduxjs/toolkit";
+import { persistReducer } from "redux-persist";
+import storage from "redux-persist/lib/storage";
 
 import authReducer from "./authReducer";
 import filterReducer from "./filterSlice";
@@ -13,8 +15,14 @@ import {
   registerProductReducer,
 } from "./moderate";
 
+const persistedAuthReducer = generatePersistedReducer({
+  key: "mimitha_dashboard_user",
+  reducer: authReducer,
+  whitelist: ["user"],
+});
+
 const rootReducer = combineReducers({
-  auth: authReducer,
+  auth: persistedAuthReducer,
   filter: filterReducer,
   // moderate
   color: colorReducer,
@@ -27,3 +35,15 @@ const rootReducer = combineReducers({
 });
 
 export default rootReducer;
+
+function generatePersistedReducer({ key, whitelist = [], reducer }) {
+  return persistReducer(
+    {
+      key,
+      storage,
+      whitelist,
+      version: 1,
+    },
+    reducer
+  );
+}

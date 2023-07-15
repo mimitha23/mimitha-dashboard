@@ -5,7 +5,7 @@ import { useParams } from "react-router-dom";
 import { selectDevelopeProductFullForm } from "store/selectors/moderate/developeProductSelectors";
 import { developeProductActions } from "store/reducers/moderate/developeProductReducer";
 import { DevelopeProductValidation } from "utils/validators/moderate";
-import { generateLowerCaseData } from "utils";
+import { generateLowerCaseData } from "functions";
 
 export default function useDevelopeProductQuery() {
   const dispatch = useDispatch();

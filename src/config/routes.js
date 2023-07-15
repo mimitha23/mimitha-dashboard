@@ -110,11 +110,11 @@ export const MAIN_NAV_ROUTES = [
     caption: "მოდერაცია",
     path: PATHS.main_navigation.moderate,
   },
-  {
-    _id: nanoid(),
-    caption: "ავტორიზაცია",
-    path: PATHS.main_navigation.login,
-  },
+  // {
+  //   _id: nanoid(),
+  //   caption: "ავტორიზაცია",
+  //   path: PATHS.main_navigation.login,
+  // },
 ];
 
 export const MODERATE_SIDEBAR_ROUTES = [
@@ -154,3 +154,5 @@ export const MODERATE_SIDEBAR_ROUTES = [
     path: PATHS.moderate_sidebar.registeredProductsPage,
   },
 ];
+
+export const PUBLIC_ROUTES = [];

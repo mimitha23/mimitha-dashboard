@@ -1,11 +1,25 @@
 import { NavLink } from "react-router-dom";
-import * as Styled from "./Navigation.styled";
+import { useDispatch } from "react-redux";
+
+import { useIsAuthenticated } from "hooks/auth";
 import { MAIN_NAV_ROUTES } from "config/routes";
+import { authActions } from "store/reducers/authReducer";
+
+import { LogoutIcon } from "components/layouts/Icons";
+import * as Styled from "./Navigation.styled";
 
 import SwithTheme from "./SwithTheme";
 
 export default function Navigation() {
-  return (
+  const dispatch = useDispatch();
+
+  const { isAuthenticated } = useIsAuthenticated(true);
+
+  const handleLogout = () => {
+    dispatch(authActions.logout());
+  };
+
+  return isAuthenticated ? (
     <Styled.Navigation>
       <ul className="main-nav__list">
         {MAIN_NAV_ROUTES.map((route) => (
@@ -22,7 +36,15 @@ export default function Navigation() {
         ))}
       </ul>
 
-      <SwithTheme />
+      <div className="nav-actions__box">
+        <SwithTheme />
+
+        <button onClick={handleLogout}>
+          <LogoutIcon />
+        </button>
+      </div>
     </Styled.Navigation>
+  ) : (
+    <></>
   );
 }

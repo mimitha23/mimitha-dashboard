@@ -1,7 +1,7 @@
-import { axiosPublicQuery, axiosFormDataQuery } from "services/axios";
+import { axiosPrivateQuery, axiosFormDataQuery } from "services/axios";
 
 export async function getExistingVariantTypesQuery() {
-  return await axiosPublicQuery.get("/moderate/variant/types");
+  return await axiosPrivateQuery.get("/moderate/variant/types");
 }
 
 export async function createVariantQuery(payload) {
@@ -9,7 +9,7 @@ export async function createVariantQuery(payload) {
 }
 
 export async function getAllVariantQuery() {
-  return await axiosPublicQuery.get("/moderate/variant");
+  return await axiosPrivateQuery.get("/moderate/variant");
 }
 
 export async function updateVariantQuery(payload) {
@@ -20,5 +20,5 @@ export async function updateVariantQuery(payload) {
 }
 
 export async function deleteVariantQuery(payload) {
-  return await axiosPublicQuery.delete(`/moderate/variant/${payload._id}`);
+  return await axiosPrivateQuery.delete(`/moderate/variant/${payload._id}`);
 }

@@ -1,10 +1,18 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { controllStatus as status } from "./helpers";
+import { jwt } from "utils";
 
 const initialState = {
   form: {
     email: "",
     password: "",
+  },
+
+  user: {
+    _id: "",
+    fullname: "",
+    email: "",
+    // role: "",
   },
 
   status: {
@@ -25,7 +33,10 @@ const authSlice = createSlice({
     login: {
       prepare(paylaod) {
         return {
-          payload: {},
+          payload: {
+            email: paylaod.email,
+            password: paylaod.password,
+          },
         };
       },
 
@@ -34,6 +45,38 @@ const authSlice = createSlice({
       },
     },
 
+    setUser(state, { payload }) {
+      state.user = {
+        _id: payload.user._id,
+        email: payload.user.email,
+        fullname: payload.user.fullname,
+        // role: payload.user.role,
+      };
+
+      jwt.setJWT(payload.accessToken);
+    },
+
+    logout: {
+      reducer(state) {
+        state.status = status.loading();
+      },
+    },
+
+    setLogedoutUser(state) {
+      state.user = initialState.user;
+      jwt.removeJWT();
+    },
+
+    // REQUEST STATUS SETTERS
+    setSuccess(state) {
+      state.status = status.success();
+    },
+
+    setError(state, { payload }) {
+      state.status = status.error(payload.message);
+    },
+
+    // RESET
     resetForm(state) {
       state.form = initialState.form;
     },

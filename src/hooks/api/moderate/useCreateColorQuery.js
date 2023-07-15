@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { selectColorForm } from "store/selectors/moderate/colorSelectors";
 import { colorActions } from "store/reducers/moderate/colorReducer";
 import { CreateColorValidation } from "utils/validators/moderate";
-import { generateLowerCaseData } from "utils";
+import { generateLowerCaseData } from "functions";
 
 export default function useCreateColorQuery() {
   const dispatch = useDispatch();

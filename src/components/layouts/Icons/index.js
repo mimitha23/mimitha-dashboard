@@ -25,6 +25,7 @@ import {
   MdOutlineFilterList,
   MdOpenWith,
   MdDelete,
+  MdLogout,
   // MdOpenInNew,
   MdModeEditOutline,
 } from "react-icons/md";
@@ -55,6 +56,7 @@ const FilterIcon = MdOutlineFilterList;
 const FilterOffIcon = MdOutlineFilterListOff;
 // const InstagramIcon = FaInstagram;
 const LockIcon = HiOutlineLockClosed;
+const LogoutIcon = MdLogout;
 const MoonIcon = FaMoon;
 const MinusIcon = AiOutlineMinus;
 const OpenIcon = MdOpenWith;
@@ -85,6 +87,7 @@ export {
   FilterOffIcon,
   // InstagramIcon,
   LockIcon,
+  LogoutIcon,
   MoonIcon,
   MinusIcon,
   // MuteIcon,

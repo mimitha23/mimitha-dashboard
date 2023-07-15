@@ -1,7 +1,7 @@
 import axios from "axios";
 import decode from "jwt-decode";
 import { BASE_URL } from "config/env";
-import { JWT_MIMITHA_KEY } from "config/consts";
+import { jwt } from "utils";
 
 export const axiosPublicQuery = axios.create({
   withCredentials: true,
@@ -33,8 +33,12 @@ axiosPrivateQuery.interceptors.request.use(async (config) =>
   tokenExchange({ config })
 );
 
+axiosFormDataQuery.interceptors.request.use(async (config) =>
+  tokenExchange({ config })
+);
+
 function tokenExchange({ config }) {
-  const token = getJWT();
+  const token = jwt.getJWT();
 
   const decodedUser = token ? decode(token) : null;
 
@@ -48,24 +52,17 @@ function tokenExchange({ config }) {
       refreshTokenPromise = refresher()
         .then(({ data }) => data.accessToken)
         .catch((err) => {
-          if (err.response.status === 401)
-            localStorage.removeItem(JWT_MIMITHA_KEY);
+          if (err.response.status === 401) jwt.removeJWT();
           return "";
         })
         .finally(() => (refreshTokenPromise = null));
 
     return refreshTokenPromise.then((token) => {
-      localStorage.setItem(JWT_MIMITHA_KEY, JSON.stringify(token));
+      jwt.setJWT(token);
       config.headers.authorization = `Bearer ${token}`;
       return config;
     });
-  } else config.headers.authorization = `Bearer ${getJWT()}`;
+  } else config.headers.authorization = `Bearer ${jwt.getJWT()}`;
 
   return config;
-}
-
-function getJWT() {
-  return localStorage.getItem(JWT_MIMITHA_KEY)
-    ? JSON.parse(localStorage.getItem(JWT_MIMITHA_KEY))
-    : null;
 }

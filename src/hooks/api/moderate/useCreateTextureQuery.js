@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { selectTextureForm } from "store/selectors/moderate/textureSelectors";
 import { textureActions } from "store/reducers/moderate/textureReducer";
 import { CreateTextureValidation } from "utils/validators/moderate";
-import { generateLowerCaseData } from "utils";
+import { generateLowerCaseData } from "functions";
 
 export default function useCreateColorQuery() {
   const dispatch = useDispatch();

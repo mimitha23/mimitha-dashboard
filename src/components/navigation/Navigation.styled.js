@@ -24,4 +24,10 @@ export const Navigation = styled.nav`
   a {
     ${navLIstItemHover}
   }
+
+  .nav-actions__box {
+    display: flex;
+    align-items: center;
+    gap: 3rem;
+  }
 `;

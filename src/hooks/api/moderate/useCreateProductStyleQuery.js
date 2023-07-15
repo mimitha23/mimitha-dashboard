@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { selectProductStyleForm } from "store/selectors/moderate/productStyleSelectors";
 import { productStyleActions } from "store/reducers/moderate/productStyleReducer";
 import { CreateProductStyleValidation } from "utils/validators/moderate";
-import { generateLowerCaseData } from "utils";
+import { generateLowerCaseData } from "functions";
 
 export default function useCreateProductStyleQuery() {
   const dispatch = useDispatch();
