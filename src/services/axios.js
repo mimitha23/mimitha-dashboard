@@ -22,9 +22,9 @@ export const axiosFormDataQuery = axios.create({
 });
 
 const refresher = axios.create({
-  baseURL: `${BASE_URL}/auth/refresh`,
+  baseURL: `${BASE_URL}/auth/staff/refresh`,
   withCredentials: true,
-  method: "GET",
+  method: "POST",
 });
 
 let refreshTokenPromise;
@@ -62,7 +62,9 @@ function tokenExchange({ config }) {
       config.headers.authorization = `Bearer ${token}`;
       return config;
     });
-  } else config.headers.authorization = `Bearer ${jwt.getJWT()}`;
+  } else if (token) {
+    config.headers.authorization = `Bearer ${jwt.getJWT()}`;
+  }
 
   return config;
 }

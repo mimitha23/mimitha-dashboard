@@ -1,14 +1,16 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useNavigate, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import decode from "jwt-decode";
 import { jwt } from "utils";
 
+import { authActions } from "store/reducers/authReducer";
 import { PATHS, PUBLIC_ROUTES } from "config/routes";
 import { selectUser } from "store/selectors/authSelectors";
 
 export default function useIsAuthenticated(redirectUnauthorised = false) {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const { pathname } = useLocation();
 
@@ -22,7 +24,7 @@ export default function useIsAuthenticated(redirectUnauthorised = false) {
     setLoading(false);
 
     if (isAuthenticated) {
-      console.log("stop check");
+      dispatch(authActions.resetUser());
       setisAuthenticated(false);
       setUserRole("");
     }

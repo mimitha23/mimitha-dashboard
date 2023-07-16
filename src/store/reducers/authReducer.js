@@ -80,6 +80,11 @@ const authSlice = createSlice({
     resetForm(state) {
       state.form = initialState.form;
     },
+
+    resetUser(state) {
+      state.user = initialState.user;
+      jwt.removeJWT();
+    },
   },
 });
 

@@ -1,4 +1,8 @@
-import { axiosPrivateQuery, axiosFormDataQuery } from "services/axios";
+import {
+  axiosPrivateQuery,
+  axiosFormDataQuery,
+  axiosPublicQuery,
+} from "services/axios";
 
 export async function attachDevelopedProductQuery(payload) {
   return await axiosFormDataQuery.post(
@@ -15,7 +19,7 @@ export async function updateDevelopedProductQuery(payload) {
 }
 
 export async function getDevelopedProductQuery(payload) {
-  return await axiosPrivateQuery.get(
+  return await axiosPublicQuery.get(
     `/moderate/develope-product/${payload.registeredProductId}/products/${payload.productId}`
   );
 }
@@ -27,8 +31,8 @@ export async function copyDevelopedProductConfigQuery(payload) {
 }
 
 export async function getAllDevelopedProductsQuery({ registeredProductId }) {
-  return await axiosPrivateQuery.get(
-    `/moderate/develope-product/${registeredProductId}/products`
+  return await axiosPublicQuery.get(
+    `/products/${registeredProductId}/developed`
   );
 }
 
