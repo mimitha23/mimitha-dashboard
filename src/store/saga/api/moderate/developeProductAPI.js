@@ -31,8 +31,8 @@ export async function copyDevelopedProductConfigQuery(payload) {
 }
 
 export async function getAllDevelopedProductsQuery({ registeredProductId }) {
-  return await axiosPublicQuery.get(
-    `/products/${registeredProductId}/developed`
+  return await axiosPrivateQuery.get(
+    `/moderate/develope-product/${registeredProductId}/products`
   );
 }
 
