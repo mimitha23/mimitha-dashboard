@@ -1,4 +1,4 @@
-const controllStatus = {
+const controlStatus = {
   loading: () => ({
     loading: true,
     error: false,
@@ -21,4 +21,4 @@ const controllStatus = {
   }),
 };
 
-export default controllStatus;
+export default controlStatus;

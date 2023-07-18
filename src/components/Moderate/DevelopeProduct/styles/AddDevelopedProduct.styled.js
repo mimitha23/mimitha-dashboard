@@ -55,8 +55,7 @@ export const AddDevelopedProduct = styled.div`
     }
   }
 
-  .is-public__box {
-    grid-column: span 2;
+  .check__box {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -64,7 +63,7 @@ export const AddDevelopedProduct = styled.div`
     ${Form.label};
     ${Form.error};
 
-    .is-public__field {
+    .checkbox__field {
       display: flex;
       align-items: center;
       gap: 0.75rem;

@@ -1,8 +1,8 @@
 import { axiosPrivateQuery, axiosFormDataQuery } from "services/axios";
 
-export async function getRegisterProductFormSugestionsQuery() {
+export async function getRegisterProductFormSuggestionsQuery() {
   return await axiosPrivateQuery.get(
-    "/moderate/register-product/form-sugestions"
+    "/moderate/register-product/form-suggestions"
   );
 }
 

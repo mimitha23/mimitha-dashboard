@@ -1,1 +1,1 @@
-export { default as controllStatus } from "./controllStatus";
+export { default as controlStatus } from "./controlStatus";

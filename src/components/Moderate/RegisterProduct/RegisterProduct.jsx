@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   selectRegisterProductForm,
   selectRegisterProductStatus,
-  selectRegisterProductFormSugestions,
+  selectRegisterProductFormSuggestions,
 } from "store/selectors/moderate/registerProductSelectors";
 import { useRegisterProductQuery } from "hooks/api/moderate";
 import { registerProductActions } from "store/reducers/moderate/registerProductReducer";
@@ -38,13 +38,15 @@ export default function RegisterProduct() {
     thumbnail,
     newThumbnail,
     isUpdating,
+    category,
   } = useSelector(selectRegisterProductForm);
   const {
     gender: genders,
     productStyles,
     productTypes,
     seasons,
-  } = useSelector(selectRegisterProductFormSugestions);
+    categories,
+  } = useSelector(selectRegisterProductFormSuggestions);
   const status = useSelector(selectRegisterProductStatus);
 
   const setSelectable = useCallback(({ key, value }) => {
@@ -60,7 +62,7 @@ export default function RegisterProduct() {
   }, []);
 
   useEffect(() => {
-    dispatch(registerProductActions.getRegisterProductFormSugestions());
+    dispatch(registerProductActions.getRegisterProductFormSuggestions());
 
     return () => {
       dispatch(registerProductActions.resetState());
@@ -128,6 +130,19 @@ export default function RegisterProduct() {
           value={gender?.caption || ""}
           selectValue={selectSelectable}
           list={genders}
+        />
+
+        <InputFilterableSelect
+          id="category"
+          label="კატეგორია"
+          name="category"
+          placeholder="აირჩიეთ კატეგორია"
+          readOnly={true}
+          error={error.category.hasError}
+          message={error.category.message}
+          value={category?.caption || ""}
+          selectValue={selectSelectable}
+          list={categories}
         />
 
         <TextureField error={error.textures} />

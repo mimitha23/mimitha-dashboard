@@ -16,6 +16,10 @@ export const RegisterProduct = styled.div`
     margin-top: 3rem;
     align-content: center;
     align-items: start;
+
+    [data-input-filtrable-select]:has([name="category"]) {
+      grid-column: span 2;
+    }
   }
 
   & > .form [data-input-file] {

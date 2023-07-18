@@ -4,6 +4,7 @@ const selectedRegisterProductForm = ({ registerProduct }) => ({
   isEditable: registerProduct.form.isEditable,
   productTypes: registerProduct.form.productTypes,
   gender: registerProduct.form.gender,
+  category: registerProduct.form.category,
   productStyles: registerProduct.form.productStyles,
   seasons: registerProduct.form.seasons,
   warning: registerProduct.form.warning,
@@ -21,27 +22,28 @@ const selectedRegisterProductStatus = ({ registerProduct }) => ({
   message: registerProduct.status.message,
 });
 
-const selectedRegisterProductFormSugestions = ({ registerProduct }) => ({
-  productTypes: registerProduct.registerProductFormSugestions.productTypes,
-  productStyles: registerProduct.registerProductFormSugestions.productStyles,
-  seasons: registerProduct.registerProductFormSugestions.seasons,
-  gender: registerProduct.registerProductFormSugestions.gender,
-  textures: registerProduct.registerProductFormSugestions.textures,
+const selectedRegisterProductFormSuggestions = ({ registerProduct }) => ({
+  productTypes: registerProduct.registerProductFormSuggestions.productTypes,
+  productStyles: registerProduct.registerProductFormSuggestions.productStyles,
+  seasons: registerProduct.registerProductFormSuggestions.seasons,
+  gender: registerProduct.registerProductFormSuggestions.gender,
+  textures: registerProduct.registerProductFormSuggestions.textures,
+  categories: registerProduct.registerProductFormSuggestions.categories,
 });
 
 export const selectRegisterProductForm = createSelector(
   selectedRegisterProductForm,
-  (memorised) => memorised
+  (memorized) => memorized
 );
 
 export const selectRegisterProductStatus = createSelector(
   selectedRegisterProductStatus,
-  (memorised) => memorised
+  (memorized) => memorized
 );
 
-export const selectRegisterProductFormSugestions = createSelector(
-  selectedRegisterProductFormSugestions,
-  (memorised) => memorised
+export const selectRegisterProductFormSuggestions = createSelector(
+  selectedRegisterProductFormSuggestions,
+  (memorized) => memorized
 );
 
 export const selectAllRegisteredProducts = ({ registerProduct }) =>

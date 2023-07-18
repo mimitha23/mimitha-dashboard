@@ -4,8 +4,8 @@ import { registerProductHandlers } from "store/saga/handlers/moderate";
 
 export default function* createProductTypeSaga() {
   yield takeLatest(
-    registerProductActions.getRegisterProductFormSugestions,
-    registerProductHandlers.getRegisterProductFormSugestions
+    registerProductActions.getRegisterProductFormSuggestions,
+    registerProductHandlers.getRegisterProductFormSuggestions
   );
   yield takeLatest(
     registerProductActions.registerProduct,

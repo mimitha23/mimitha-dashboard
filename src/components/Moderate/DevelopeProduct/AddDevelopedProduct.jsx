@@ -156,8 +156,8 @@ export default function AddDevelopedProduct() {
               onChange={setDevelopedProduct}
             />
 
-            <div className="is-public__box">
-              <div className="is-public__field">
+            <div className="check__box">
+              <div className="checkbox__field">
                 <input
                   type="checkbox"
                   id="is-public"
@@ -169,6 +169,24 @@ export default function AddDevelopedProduct() {
                   }
                 />
                 <label htmlFor="is-public">Is Public</label>
+              </div>
+
+              {error.isPublic.hasError && <p>{error.isPublic.message}</p>}
+            </div>
+
+            <div className="check__box">
+              <div className="checkbox__field">
+                <input
+                  type="checkbox"
+                  id="is-featured"
+                  checked={developeForm.isPublic}
+                  // onChange={(e) =>
+                  //   dispatch(
+                  //     developeProductActions.setIsPublic(e.target.checked)
+                  //   )
+                  // }
+                />
+                <label htmlFor="is-public">Is Featured</label>
               </div>
 
               {error.isPublic.hasError && <p>{error.isPublic.message}</p>}

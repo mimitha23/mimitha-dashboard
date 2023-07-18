@@ -29,7 +29,10 @@ export default memo(function InputFilterableSelect({
   const dropdown_ref = useClickOutside(isTyping, () => setIsTyping(false));
 
   return (
-    <Styled.InputFilterableSelect ref={dropdown_ref}>
+    <Styled.InputFilterableSelect
+      ref={dropdown_ref}
+      data-input-filtrable-select
+    >
       {label && <label htmlFor={id}>{label}</label>}
 
       <input

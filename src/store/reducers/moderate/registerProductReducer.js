@@ -1,5 +1,5 @@
 import { createSlice, nanoid } from "@reduxjs/toolkit";
-import { controllStatus as status } from "../helpers";
+import { controlStatus as status } from "../helpers";
 
 const initialState = {
   form: {
@@ -12,6 +12,13 @@ const initialState = {
       caption: "",
     },
     gender: {
+      _id: "",
+      ka: "",
+      en: "",
+      query: "",
+      caption: "",
+    },
+    category: {
       _id: "",
       ka: "",
       en: "",
@@ -45,12 +52,13 @@ const initialState = {
   isUpdating: false,
   updatingRegisteredProductId: "",
 
-  registerProductFormSugestions: {
+  registerProductFormSuggestions: {
     productStyles: [],
     seasons: [],
     gender: [],
     productTypes: [],
     textures: [],
+    categories: [],
   },
 
   status: {
@@ -81,7 +89,7 @@ const registerProductSlice = createSlice({
     // season and style
     setMultipleSelectable(state, { payload: { key, value } }) {
       // console.log({ key, value });
-      const selectedValue = state.registerProductFormSugestions[key].find(
+      const selectedValue = state.registerProductFormSuggestions[key].find(
         (item) => item._id === value
       );
 
@@ -317,14 +325,14 @@ const registerProductSlice = createSlice({
       state.allRegisteredProducts = payload;
     },
 
-    getRegisterProductFormSugestions: {
+    getRegisterProductFormSuggestions: {
       reducer(state) {
         state.status = status.loading();
       },
     },
 
-    setRegisterProductFormSugestions(state, { payload }) {
-      const editedSugestions = {};
+    setRegisterProductFormSuggestions(state, { payload }) {
+      const editedSuggestions = {};
 
       Object.keys(payload).forEach((key) => {
         const editedList = payload[key].map((item) => ({
@@ -332,10 +340,10 @@ const registerProductSlice = createSlice({
           caption: item.ka,
         }));
 
-        editedSugestions[key] = editedList;
+        editedSuggestions[key] = editedList;
       });
 
-      state.registerProductFormSugestions = editedSugestions;
+      state.registerProductFormSuggestions = editedSuggestions;
     },
 
     // REQUEST STATUS SETTERS

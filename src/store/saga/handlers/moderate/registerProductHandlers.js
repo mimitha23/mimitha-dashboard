@@ -3,17 +3,17 @@ import { errorController } from "store/saga/handlers/helpers";
 import { registerProductActions } from "store/reducers/moderate/registerProductReducer";
 import { registerProductAPI } from "store/saga/api/moderate";
 
-export function* getRegisterProductFormSugestions() {
+export function* getRegisterProductFormSuggestions() {
   try {
     const { data } = yield call(
-      registerProductAPI.getRegisterProductFormSugestionsQuery
+      registerProductAPI.getRegisterProductFormSuggestionsQuery
     );
-    yield put(registerProductActions.setRegisterProductFormSugestions(data));
+    yield put(registerProductActions.setRegisterProductFormSuggestions(data));
     yield put(registerProductActions.setSuccess());
   } catch (error) {
     yield errorController({
       error,
-      location: "getRegisterProductFormSugestionsHandler",
+      location: "getRegisterProductFormSuggestionsHandler",
       errorSetter: registerProductActions.setError,
     });
   }

@@ -25,6 +25,11 @@ export default class RegisterProductValidation extends Validators {
         rules: [Rules.isEmptyObject],
       },
       {
+        key: "category",
+        validationType: validationType.isPrimitive,
+        rules: [Rules.isEmptyObject],
+      },
+      {
         key: "productStyles",
         validationType: validationType.isPrimitive,
         rules: [Rules.isEmptyArray],
@@ -77,6 +82,7 @@ export default class RegisterProductValidation extends Validators {
       productTypes: { hasError: false, message: "" },
       isEditable: { hasError: false, message: "" },
       gender: { hasError: false, message: "" },
+      category: { hasError: false, message: "" },
       productStyles: { hasError: false, message: "" },
       seasons: { hasError: false, message: "" },
       textures: { hasError: false, message: "", itemErrors: [] },

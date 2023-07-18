@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 
 import {
   selectRegisterProductForm,
-  selectRegisterProductFormSugestions,
+  selectRegisterProductFormSuggestions,
 } from "store/selectors/moderate/registerProductSelectors";
 import { registerProductActions } from "store/reducers/moderate/registerProductReducer";
 
@@ -18,8 +18,8 @@ export default memo(function TextureField({ error }) {
   const dispatch = useDispatch();
 
   const { textures: enteredTextures } = useSelector(selectRegisterProductForm);
-  const { textures: textureSugestions } = useSelector(
-    selectRegisterProductFormSugestions
+  const { textures: textureSuggestions } = useSelector(
+    selectRegisterProductFormSuggestions
   );
 
   const setTexture = useCallback(
@@ -62,7 +62,7 @@ export default memo(function TextureField({ error }) {
                 id="texture"
                 name="textures"
                 placeholder="აირჩიეთ ტექსტურა"
-                list={textureSugestions}
+                list={textureSuggestions}
                 error={extractedError.textures?.hasError}
                 message={extractedError.textures?.message}
                 value={texture.textures?.caption || ""}
