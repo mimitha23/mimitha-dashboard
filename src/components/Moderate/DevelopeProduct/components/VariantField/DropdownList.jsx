@@ -3,15 +3,15 @@ import { useDispatch, useSelector } from "react-redux";
 
 import {
   selectDevelopeProductForm,
-  selectDevelopeProductFormSugestions,
+  selectDevelopeProductFormSuggestions,
 } from "store/selectors/moderate/developeProductSelectors";
 import { developeProductActions } from "store/reducers/moderate/developeProductReducer";
 
 export default function DropdownList({ enteredVariant }) {
   const dispatch = useDispatch();
 
-  const { variants: variantSugestions } = useSelector(
-    selectDevelopeProductFormSugestions
+  const { variants: variantSuggestions } = useSelector(
+    selectDevelopeProductFormSuggestions
   );
   const { variants: enteredVariants } = useSelector(selectDevelopeProductForm);
 
@@ -24,7 +24,7 @@ export default function DropdownList({ enteredVariant }) {
   useEffect(() => {
     const timeoutId = setTimeout(() => {
       setFilteredDropdown(
-        variantSugestions.filter((variant) =>
+        variantSuggestions.filter((variant) =>
           enteredVariant
             ? variant.ka.includes(enteredVariant) ||
               variant.en.includes(enteredVariant) ||
@@ -37,7 +37,7 @@ export default function DropdownList({ enteredVariant }) {
     return () => {
       clearTimeout(timeoutId);
     };
-  }, [enteredVariant, variantSugestions]);
+  }, [enteredVariant, variantSuggestions]);
 
   return (
     <div className="select-variant__dropdown">

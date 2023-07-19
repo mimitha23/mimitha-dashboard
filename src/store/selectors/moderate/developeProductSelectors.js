@@ -1,10 +1,10 @@
 import { createSelector } from "@reduxjs/toolkit";
 
-// MEMORISED SELECTORS
-const selectedDevelopeProductFormSugestions = ({ developeProduct }) => ({
-  variants: developeProduct.developeProductFormSugestions.variants,
-  colors: developeProduct.developeProductFormSugestions.colors,
-  sizes: developeProduct.developeProductFormSugestions.sizes,
+// MEMORIZED SELECTORS
+const selectedDevelopeProductFormSuggestions = ({ developeProduct }) => ({
+  variants: developeProduct.developeProductFormSuggestions.variants,
+  colors: developeProduct.developeProductFormSuggestions.colors,
+  sizes: developeProduct.developeProductFormSuggestions.sizes,
 });
 
 //  Form including assets
@@ -18,6 +18,7 @@ const selectedDevelopeProductFullForm = ({ developeProduct }) => ({
   enteredVariant: developeProduct.form.enteredVariant,
   description_ka: developeProduct.form.description_ka,
   description_en: developeProduct.form.description_en,
+  isFeatured: developeProduct.form.isFeatured,
   isPublic: developeProduct.form.isPublic,
   isUpdating: developeProduct.isUpdating,
   updatingDevelopedProductId: developeProduct.updatingDevelopedProductId,
@@ -38,6 +39,7 @@ const selectedDevelopeProductForm = ({ developeProduct }) => ({
   description_ka: developeProduct.form.description_ka,
   description_en: developeProduct.form.description_en,
   isPublic: developeProduct.form.isPublic,
+  isFeatured: developeProduct.isFeatured,
   isUpdating: developeProduct.isUpdating,
   updatingDevelopedProductId: developeProduct.updatingDevelopedProductId,
 });
@@ -64,29 +66,29 @@ const selectedSingleDevelopeProductStatus = ({ developeProduct }) => ({
 });
 
 // SELECTORS
-export const selectDevelopeProductFormSugestions = createSelector(
-  selectedDevelopeProductFormSugestions,
-  (memorised) => memorised
+export const selectDevelopeProductFormSuggestions = createSelector(
+  selectedDevelopeProductFormSuggestions,
+  (memorized) => memorized
 );
 
 export const selectDevelopeProductFullForm = createSelector(
   selectedDevelopeProductFullForm,
-  (memorised) => memorised
+  (memorized) => memorized
 );
 
 export const selectDevelopeProductForm = createSelector(
   selectedDevelopeProductForm,
-  (memorised) => memorised
+  (memorized) => memorized
 );
 
 export const selectDevelopedProductAssets = createSelector(
   selectedDevelopeProductAssets,
-  (memorised) => memorised
+  (memorized) => memorized
 );
 
 export const selectAllDevelopedProducts = createSelector(
   selectedAllDevelopedProducts,
-  (memorised) => memorised
+  (memorized) => memorized
 );
 
 export const selectDevelopeProductStatus = createSelector(

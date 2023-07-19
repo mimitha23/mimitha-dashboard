@@ -45,6 +45,6 @@ export async function deleteDevelopedProductQuery({
   );
 }
 
-export async function getDevelopeProductFormSugestionsQuery() {
+export async function getDevelopeProductFormSuggestionsQuery() {
   return await axiosPrivateQuery.get("/moderate/develope-product/suggestions");
 }

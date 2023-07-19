@@ -7,7 +7,7 @@ import {
   selectDevelopeProductForm,
   selectDevelopeProductStatus,
   selectDevelopedProductAssets,
-  selectDevelopeProductFormSugestions,
+  selectDevelopeProductFormSuggestions,
 } from "store/selectors/moderate/developeProductSelectors";
 import { useDevelopeProductQuery } from "hooks/api/moderate";
 import { developeProductActions } from "store/reducers/moderate/developeProductReducer";
@@ -22,6 +22,7 @@ import {
   InputFilterableSelect,
   InputTextarea,
   LoadingSpinner,
+  InputCheckBox,
 } from "components/layouts";
 import DevelopedProductBlueprint from "./components/DevelopeProductBluePrint/DevelopedProductBlueprint";
 import AddVariantField from "./components/VariantField/AddVariantField";
@@ -38,7 +39,7 @@ export default function AddDevelopedProduct() {
   const status = useSelector(selectDevelopeProductStatus);
   const assets = useSelector(selectDevelopedProductAssets);
   const developeForm = useSelector(selectDevelopeProductForm);
-  const { colors, sizes } = useSelector(selectDevelopeProductFormSugestions);
+  const { colors, sizes } = useSelector(selectDevelopeProductFormSuggestions);
 
   const filesRef = useRef(null);
 
@@ -61,8 +62,31 @@ export default function AddDevelopedProduct() {
     dispatch(developeProductActions.selectColor({ value: color }));
   }
 
+  function setCheckbox(e) {
+    dispatch(
+      developeProductActions.setCheckbox({
+        key: e.target.name,
+        value: e.target.checked,
+      })
+    );
+  }
+
+  function onAddFile({ value }) {
+    dispatch(developeProductActions.setAssets(value));
+    filesRef.current.value = "";
+  }
+
+  function onRemoveFile(file) {
+    dispatch(developeProductActions.removeAsset(file));
+  }
+
+  function onSubmit(e) {
+    e.preventDefault();
+    developeProductQuery();
+  }
+
   useEffect(() => {
-    dispatch(developeProductActions.getDevelopeProductFormSugestions());
+    dispatch(developeProductActions.getDevelopeProductFormSuggestions());
 
     return () => {
       dispatch(developeProductActions.resetState());
@@ -156,41 +180,24 @@ export default function AddDevelopedProduct() {
               onChange={setDevelopedProduct}
             />
 
-            <div className="check__box">
-              <div className="checkbox__field">
-                <input
-                  type="checkbox"
-                  id="is-public"
-                  checked={developeForm.isPublic}
-                  onChange={(e) =>
-                    dispatch(
-                      developeProductActions.setIsPublic(e.target.checked)
-                    )
-                  }
-                />
-                <label htmlFor="is-public">Is Public</label>
-              </div>
+            <InputCheckBox
+              id="is-public"
+              name="isPublic"
+              checked={developeForm.isPublic}
+              error={error.isPublic}
+              onChange={setCheckbox}
+              label="არი საჯარო"
+            />
 
-              {error.isPublic.hasError && <p>{error.isPublic.message}</p>}
-            </div>
-
-            <div className="check__box">
-              <div className="checkbox__field">
-                <input
-                  type="checkbox"
-                  id="is-featured"
-                  checked={developeForm.isPublic}
-                  // onChange={(e) =>
-                  //   dispatch(
-                  //     developeProductActions.setIsPublic(e.target.checked)
-                  //   )
-                  // }
-                />
-                <label htmlFor="is-public">Is Featured</label>
-              </div>
-
-              {error.isPublic.hasError && <p>{error.isPublic.message}</p>}
-            </div>
+            <InputCheckBox
+              id="is-featured"
+              checked={developeForm.isFeatured}
+              name="isFeatured"
+              value={developeForm.isFeatured}
+              error={error.isFeatured}
+              onChange={setCheckbox}
+              label="is featured"
+            />
 
             <InputFile
               name="newAssets"
@@ -198,6 +205,8 @@ export default function AddDevelopedProduct() {
               fileRef={filesRef}
               file={assets.assets}
               multiple={true}
+              onChange={onAddFile}
+              onRemoveFile={onRemoveFile}
               message={
                 error.filesToUpload?.hasError
                   ? error.filesToUpload.message
@@ -208,22 +217,12 @@ export default function AddDevelopedProduct() {
               error={
                 error.filesToUpload?.hasError || error.filesToDelete?.hasError
               }
-              onChange={({ value }) => {
-                dispatch(developeProductActions.setAssets(value));
-                filesRef.current.value = "";
-              }}
-              onRemoveFile={(file) =>
-                dispatch(developeProductActions.removeAsset(file))
-              }
             />
 
             <Button
               caption={developeForm.isUpdating ? "განახლება" : "შექმნა"}
               disabled={status.loading}
-              onClick={(e) => {
-                e.preventDefault();
-                developeProductQuery();
-              }}
+              onClick={onSubmit}
             />
           </Form>
         </div>

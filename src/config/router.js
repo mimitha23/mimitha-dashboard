@@ -99,6 +99,20 @@ const router = [
     ],
   },
   {
+    path: PATHS.main_navigation.app,
+    element: <Pages.AppPage roles={["ADMIN"]} />,
+    children: [
+      {
+        path: PATHS.app_sidebar.createNavRoutePage.absolutePath,
+        element: <Pages.AddNavRoutePage />,
+      },
+      {
+        path: PATHS.app_sidebar.editNavPage.absolutePath,
+        element: <Pages.EditNavPage />,
+      },
+    ],
+  },
+  {
     path: PATHS.main_navigation.login,
     element: <Pages.LoginPage />,
   },

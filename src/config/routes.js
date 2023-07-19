@@ -4,8 +4,12 @@ const MAIN_NAVIGATION = {
   root: "/",
   home: "/home",
   moderate: "/moderate",
-  login: "/auth/login",
+  app: "/app",
 };
+
+///////////////
+// MODERATE //
+/////////////
 
 const MODERATE_SIDEBAR = {
   createColorPage: {
@@ -93,10 +97,28 @@ const MODERATE_SIDEBAR_NESTED = {
   },
 };
 
+//////////
+// APP //
+////////
+
+const APP_SIDEBAR = {
+  createNavRoutePage: {
+    relativePath: "create-nav-route",
+    absolutePath: `${MAIN_NAVIGATION.app}/create-nav-route`,
+  },
+  editNavPage: {
+    relativePath: "edit-nav",
+    absolutePath: `${MAIN_NAVIGATION.app}/edit-nav`,
+  },
+};
+
+// EXPORTS
+
 export const PATHS = {
   main_navigation: MAIN_NAVIGATION,
   moderate_sidebar: MODERATE_SIDEBAR,
   moderate_nested_routes: MODERATE_SIDEBAR_NESTED,
+  app_sidebar: APP_SIDEBAR,
 };
 
 export const MAIN_NAV_ROUTES = [
@@ -110,11 +132,11 @@ export const MAIN_NAV_ROUTES = [
     caption: "მოდერაცია",
     path: PATHS.main_navigation.moderate,
   },
-  // {
-  //   _id: nanoid(),
-  //   caption: "ავტორიზაცია",
-  //   path: PATHS.main_navigation.login,
-  // },
+  {
+    _id: nanoid(),
+    caption: "აპლიკაცია",
+    path: PATHS.main_navigation.app,
+  },
 ];
 
 export const MODERATE_SIDEBAR_ROUTES = [

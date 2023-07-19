@@ -29,12 +29,13 @@ const initialState = {
     description_ka: "",
     description_en: "",
     isPublic: false,
+    isFeatured: false,
     assets: [],
     filesToUpload: [],
     filesToDelete: [],
   },
 
-  developeProductFormSugestions: {
+  developeProductFormSuggestions: {
     variants: [],
     colors: [],
     sizes: [],
@@ -156,8 +157,8 @@ const developeProductSlice = createSlice({
     },
 
     // isPublic
-    setIsPublic(state, { payload }) {
-      state.form.isPublic = payload;
+    setCheckbox(state, { payload: { key, value } }) {
+      state.form[key] = value;
     },
 
     // assets
@@ -355,14 +356,14 @@ const developeProductSlice = createSlice({
       };
     },
 
-    getDevelopeProductFormSugestions: {
+    getDevelopeProductFormSuggestions: {
       reducer(state) {
         state.status = status.loading();
       },
     },
 
-    setDevelopeProductFormSugestions(state, { payload }) {
-      const editedSugestions = {};
+    setDevelopeProductFormSuggestions(state, { payload }) {
+      const editedSuggestions = {};
 
       Object.keys(payload).forEach((key) => {
         const editedList = payload[key].map((item) => ({
@@ -371,10 +372,10 @@ const developeProductSlice = createSlice({
           _id: item._id ? item._id : nanoid(),
         }));
 
-        editedSugestions[key] = editedList;
+        editedSuggestions[key] = editedList;
       });
 
-      state.developeProductFormSugestions = editedSugestions;
+      state.developeProductFormSuggestions = editedSuggestions;
     },
 
     // REQUEST STATUS SETTERS
@@ -427,6 +428,7 @@ function prepareDataForDB(payload) {
   const credentials = {
     product: payload.registeredProductId,
     isPublic: payload.isPublic,
+    isFeatured: payload.isFeatured,
     title: {
       ka: payload.title_ka,
       en: payload.title_en,

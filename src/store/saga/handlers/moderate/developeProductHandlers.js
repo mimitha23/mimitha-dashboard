@@ -104,17 +104,17 @@ export function* getAllDevelopedProducts({ payload }) {
   }
 }
 
-export function* getDevelopeProductFormSugestions() {
+export function* getDevelopeProductFormSuggestions() {
   try {
     const { data } = yield call(
-      developeProductAPI.getDevelopeProductFormSugestionsQuery
+      developeProductAPI.getDevelopeProductFormSuggestionsQuery
     );
-    yield put(developeProductActions.setDevelopeProductFormSugestions(data));
+    yield put(developeProductActions.setDevelopeProductFormSuggestions(data));
     yield put(developeProductActions.setSuccess());
   } catch (error) {
     yield errorController({
       error,
-      location: "getDevelopeProductFormSugestionsHandler",
+      location: "getDevelopeProductFormSuggestionsHandler",
       errorSetter: developeProductActions.setError,
     });
   }

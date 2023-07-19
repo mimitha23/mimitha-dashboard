@@ -51,3 +51,8 @@ export const DevelopedProductPage = lazy(() =>
 export const AddDevelopedProductPage = lazy(() =>
   import("pages/Moderate/AddDevelopedProductPage")
 );
+
+// APP
+export const AppPage = lazy(() => import("pages/App/AppPage"));
+export const AddNavRoutePage = lazy(() => import("pages/App/AddNavRoutePage"));
+export const EditNavPage = lazy(() => import("pages/App/EditNavPage"));

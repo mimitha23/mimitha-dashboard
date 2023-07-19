@@ -54,19 +54,4 @@ export const AddDevelopedProduct = styled.div`
       }
     }
   }
-
-  .check__box {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.5rem;
-    ${Form.label};
-    ${Form.error};
-
-    .checkbox__field {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-    }
-  }
 `;

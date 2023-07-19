@@ -28,7 +28,7 @@ export default function* createColorSaga() {
     developeProductHandlers.getAllDevelopedProducts
   );
   yield takeLatest(
-    developeProductActions.getDevelopeProductFormSugestions,
-    developeProductHandlers.getDevelopeProductFormSugestions
+    developeProductActions.getDevelopeProductFormSuggestions,
+    developeProductHandlers.getDevelopeProductFormSuggestions
   );
 }
