@@ -19,10 +19,10 @@ import {
   InputFilterableSelect,
   InputMultipleFilterableSelect,
   LoadingSpinner,
+  FormHeader,
 } from "components/layouts";
 import TextureField from "./components/TextureField";
 import WarningField from "./components/WarningField";
-import ModerateHeader from "../components/ModerateHeader";
 import * as Styled from "./styles/RegisterProduct.styled";
 
 export default function RegisterProduct() {
@@ -73,7 +73,7 @@ export default function RegisterProduct() {
 
   return (
     <Styled.RegisterProduct>
-      <ModerateHeader
+      <FormHeader
         title="დაარეგისტრირე პროდუქტი"
         linkCaption="ნახე ყველა რეგისტრირებული პროდუქტი"
         redirectPath={

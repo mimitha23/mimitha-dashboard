@@ -11,8 +11,13 @@ import { productStyleActions } from "store/reducers/moderate/productStyleReducer
 
 import { PATHS } from "config/routes";
 
-import { Form, InputText, Button, LoadingSpinner } from "components/layouts";
-import ModerateHeader from "../components/ModerateHeader";
+import {
+  Form,
+  InputText,
+  Button,
+  LoadingSpinner,
+  FormHeader,
+} from "components/layouts";
 import * as Styled from "./styles/CreateProductStyle.styled";
 
 export default function CreateProductStyle() {
@@ -41,7 +46,7 @@ export default function CreateProductStyle() {
 
   return (
     <Styled.CreateProductStyle>
-      <ModerateHeader
+      <FormHeader
         title="შექმენი პროდუქტის სტილი"
         linkCaption="ნახე პროდუქტის ყველა სტილი"
         redirectPath={PATHS.moderate_nested_routes.productStylesPage.relativePath()}

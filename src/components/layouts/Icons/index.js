@@ -20,6 +20,7 @@ import {
   MdOutlineArrowBackIosNew,
   MdOutlineArrowForwardIos,
   MdOutlineKeyboardArrowDown,
+  MdOutlineKeyboardArrowUp,
   MdOutlineWbSunny,
   MdOutlineFilterListOff,
   MdOutlineFilterList,
@@ -42,6 +43,7 @@ import {
 const ArrowLeftIcon = MdOutlineArrowBackIosNew;
 const ArrowRightIcon = MdOutlineArrowForwardIos;
 const ArrowBottomIcon = MdOutlineKeyboardArrowDown;
+const ArrowTopIcon = MdOutlineKeyboardArrowUp;
 // const BagIcon = BsFillHandbagFill;
 // const BurgerIcon = GiHamburgerMenu;
 const CloseXIcon = AiOutlineClose;
@@ -73,6 +75,7 @@ export {
   ArrowLeftIcon,
   ArrowRightIcon,
   ArrowBottomIcon,
+  ArrowTopIcon,
   // BagIcon,
   // BurgerIcon,
   CloseXIcon,

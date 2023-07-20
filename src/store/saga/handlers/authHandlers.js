@@ -1,7 +1,7 @@
 import { call, put } from "redux-saga/effects";
-import { errorController } from "./helpers";
+import { errorController } from "store/saga/handlers/helpers";
 import { authActions } from "store/reducers/authReducer";
-import { authAPI } from "../api";
+import { authAPI } from "store/saga/api";
 
 export function* loginHandler({ payload }) {
   try {

@@ -15,6 +15,8 @@ import {
   registerProductReducer,
 } from "./moderate";
 
+import { navRoutesReducer, navReducer } from "./app/navigation";
+
 const persistedAuthReducer = generatePersistedReducer({
   key: "mimitha_dashboard_user",
   reducer: authReducer,
@@ -32,6 +34,9 @@ const rootReducer = combineReducers({
   productStyle: productStyleReducer,
   registerProduct: registerProductReducer,
   developeProduct: developeProductReducer,
+  // app
+  navRoutes: navRoutesReducer,
+  nav: navReducer,
 });
 
 export default rootReducer;

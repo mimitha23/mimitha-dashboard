@@ -20,8 +20,8 @@ import {
   InputFilterableSelect,
   InputTextarea,
   LoadingSpinner,
+  FormHeader,
 } from "components/layouts";
-import ModerateHeader from "../components/ModerateHeader";
 import * as Styled from "./styles/CreateVariant.styled";
 
 export default function CreateVariant() {
@@ -62,7 +62,7 @@ export default function CreateVariant() {
 
   return (
     <Styled.CreateVariant>
-      <ModerateHeader
+      <FormHeader
         title="შექმენი ვარიანტი"
         linkCaption="ნახე ყველა ვარიანტი"
         redirectPath={PATHS.moderate_nested_routes.variantsPage.relativePath()}

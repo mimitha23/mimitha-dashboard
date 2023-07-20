@@ -5,6 +5,7 @@ const MAIN_NAVIGATION = {
   home: "/home",
   moderate: "/moderate",
   app: "/app",
+  login: "/auth/login",
 };
 
 ///////////////
@@ -112,6 +113,14 @@ const APP_SIDEBAR = {
   },
 };
 
+const APP_SIDEBAR_NESTED = {
+  routesPage: {
+    relativePath: () => `all-routes`,
+    absolutePath: () =>
+      `${APP_SIDEBAR.createNavRoutePage.absolutePath}/all-routes`,
+  },
+};
+
 // EXPORTS
 
 export const PATHS = {
@@ -119,6 +128,7 @@ export const PATHS = {
   moderate_sidebar: MODERATE_SIDEBAR,
   moderate_nested_routes: MODERATE_SIDEBAR_NESTED,
   app_sidebar: APP_SIDEBAR,
+  app_nested_routes: APP_SIDEBAR_NESTED,
 };
 
 export const MAIN_NAV_ROUTES = [

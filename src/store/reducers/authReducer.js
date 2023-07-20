@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { controlStatus as status } from "./helpers";
+import { controlStatus as status } from "store/reducers/helpers";
 import { jwt } from "utils";
 
 const initialState = {

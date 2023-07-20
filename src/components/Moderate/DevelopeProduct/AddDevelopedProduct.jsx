@@ -23,10 +23,10 @@ import {
   InputTextarea,
   LoadingSpinner,
   InputCheckBox,
+  FormHeader,
 } from "components/layouts";
 import DevelopedProductBlueprint from "./components/DevelopeProductBluePrint/DevelopedProductBlueprint";
 import AddVariantField from "./components/VariantField/AddVariantField";
-import ModerateHeader from "../components/ModerateHeader";
 import SizeField from "./components/SizeField/SizeField";
 import CopyDevelopedProductConfig from "./components/CopyDevelopedProductConfig/CopyDevelopedProductConfig";
 import * as Styled from "./styles/AddDevelopedProduct.styled";
@@ -95,7 +95,7 @@ export default function AddDevelopedProduct() {
 
   return (
     <Styled.AddDevelopedProduct>
-      <ModerateHeader
+      <FormHeader
         title="განავითარე პროდუქტი"
         linkCaption="ნახე ყველა მიმაგრებული პროდუქტი"
         redirectPath={PATHS.moderate_nested_routes.developedProductsPage.absolutePath(

@@ -1,5 +1,8 @@
+import {
+  controlStatus as status,
+  createQueryStr,
+} from "store/reducers/helpers";
 import { createSlice } from "@reduxjs/toolkit";
-import { controlStatus as status } from "../helpers";
 
 const initialState = {
   form: {
@@ -130,7 +133,7 @@ function prepareDataForDB(payload) {
   const credentials = {
     ka: payload.label_ka,
     en: payload.label_en,
-    query: payload.label_en.split(" ").join("_"),
+    query: createQueryStr(payload.label_en),
   };
 
   if (payload.isUpdating && payload.updatingProductTypeId)

@@ -7,11 +7,9 @@ import {
   selectVariantStatus,
 } from "store/selectors/moderate/variantSelectors";
 import { variantActions } from "store/reducers/moderate/variantReducer";
+import { useDebounceOnSearch } from "hooks/utils";
 
-import useDebounceOnSearch from "../hooks/useDebounceOnSearch";
-
-import { DeletionPopup, LoadingSpinner } from "components/layouts";
-import Search from "../components/Search";
+import { DeletionPopup, LoadingSpinner, Search } from "components/layouts";
 import VariantsList from "./components/VariantsList";
 import * as Styled from "./styles/Variants.styled";
 
@@ -56,7 +54,11 @@ export default function Variants() {
   return (
     <Styled.Variants>
       <div>
-        <Search value={search} onSearch={(e) => setSearch(e.target.value)} />
+        <Search
+          value={search}
+          onSearch={(e) => setSearch(e.target.value)}
+          placeholder="მოძებნე ვარიანტი..."
+        />
       </div>
 
       {!status.loading && (

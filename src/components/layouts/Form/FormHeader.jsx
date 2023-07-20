@@ -1,15 +1,15 @@
-import * as Styled from "./styles/ModerateHeader.styled";
 import { Link } from "react-router-dom";
+import * as Styled from "./FormHeader.styled";
 
-export default function ModerateHeader({ title, redirectPath, linkCaption }) {
+export default function FormHeader({ title, redirectPath, linkCaption }) {
   return (
-    <Styled.ModerateHeader>
+    <Styled.FormHeader>
       <h4 className="moderate-header__title">{title}</h4>
       {linkCaption && (
         <Link to={redirectPath} className="moderate-header__link">
           {linkCaption}
         </Link>
       )}
-    </Styled.ModerateHeader>
+    </Styled.FormHeader>
   );
 }

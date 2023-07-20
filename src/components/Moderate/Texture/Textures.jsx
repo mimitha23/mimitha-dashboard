@@ -7,11 +7,9 @@ import {
   selectTextureStatus,
 } from "store/selectors/moderate/textureSelectors";
 import { textureActions } from "store/reducers/moderate/textureReducer";
+import { useDebounceOnSearch } from "hooks/utils";
 
-import useDebounceOnSearch from "../hooks/useDebounceOnSearch";
-
-import { LoadingSpinner, DeletionPopup } from "components/layouts";
-import Search from "../components/Search";
+import { LoadingSpinner, DeletionPopup, Search } from "components/layouts";
 import TexturesList from "./components/TexturesList";
 import * as Styled from "./styles/Textures.styled";
 
@@ -53,7 +51,11 @@ export default function Textures() {
   return (
     <Styled.Textures>
       <div>
-        <Search value={search} onSearch={(e) => setSearch(e.target.value)} />
+        <Search
+          value={search}
+          onSearch={(e) => setSearch(e.target.value)}
+          placeholder="მოძებნე ტექსტურა..."
+        />
       </div>
 
       {!status.loading && (

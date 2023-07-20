@@ -7,12 +7,10 @@ import {
   selectColorStatus,
 } from "store/selectors/moderate/colorSelectors";
 import { colorActions } from "store/reducers/moderate/colorReducer";
+import { useDebounceOnSearch } from "hooks/utils";
 
-import useDebounceOnSearch from "../hooks/useDebounceOnSearch";
-
-import { LoadingSpinner, DeletionPopup } from "components/layouts";
+import { LoadingSpinner, DeletionPopup, Search } from "components/layouts";
 import ColorsList from "./components/ColorsList";
-import Search from "../components/Search";
 import * as Styled from "./styles/Colors.styled";
 
 export default function Colors() {
@@ -21,7 +19,6 @@ export default function Colors() {
   const status = useSelector(selectColorStatus);
 
   const [search, setSearch] = useState("");
-
   const [activeDeletion, setActiveDeletion] = useState("");
 
   const { filteredArray: filteredColors, setDefaultArray } =
@@ -54,7 +51,11 @@ export default function Colors() {
   return (
     <Styled.Colors>
       <div>
-        <Search value={search} onSearch={(e) => setSearch(e.target.value)} />
+        <Search
+          value={search}
+          onSearch={(e) => setSearch(e.target.value)}
+          placeholder="მოძებნე ფერი..."
+        />
       </div>
 
       {!status.loading && (

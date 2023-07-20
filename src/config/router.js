@@ -107,6 +107,10 @@ const router = [
         element: <Pages.AddNavRoutePage />,
       },
       {
+        path: PATHS.app_nested_routes.routesPage.absolutePath(),
+        element: <Pages.AllRoutesPage />,
+      },
+      {
         path: PATHS.app_sidebar.editNavPage.absolutePath,
         element: <Pages.EditNavPage />,
       },

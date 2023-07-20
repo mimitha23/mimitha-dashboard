@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const ModerateHeader = styled.header`
+export const FormHeader = styled.header`
   width: 100%;
   display: flex;
   justify-content: space-between;

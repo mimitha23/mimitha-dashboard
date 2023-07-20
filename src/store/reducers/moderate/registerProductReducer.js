@@ -1,5 +1,5 @@
 import { createSlice, nanoid } from "@reduxjs/toolkit";
-import { controlStatus as status } from "../helpers";
+import { controlStatus as status } from "store/reducers/helpers";
 
 const initialState = {
   form: {

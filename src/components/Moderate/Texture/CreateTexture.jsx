@@ -11,8 +11,13 @@ import { textureActions } from "store/reducers/moderate/textureReducer";
 
 import { PATHS } from "config/routes";
 
-import { Form, InputText, Button, LoadingSpinner } from "components/layouts";
-import ModerateHeader from "../components/ModerateHeader";
+import {
+  Form,
+  InputText,
+  Button,
+  LoadingSpinner,
+  FormHeader,
+} from "components/layouts";
 import * as Styled from "./styles/CreateTexture.styled";
 
 export default function CreateTexture() {
@@ -36,7 +41,7 @@ export default function CreateTexture() {
 
   return (
     <Styled.CreateTexture>
-      <ModerateHeader
+      <FormHeader
         title="შექმენი ტექსტურა"
         linkCaption="ნახე ყველა ტექსტურა"
         redirectPath={PATHS.moderate_nested_routes.texturesPage.relativePath()}

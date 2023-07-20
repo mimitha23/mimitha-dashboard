@@ -7,11 +7,9 @@ import {
   selectProductStyleStatus,
 } from "store/selectors/moderate/productStyleSelectors";
 import { productStyleActions } from "store/reducers/moderate/productStyleReducer";
+import { useDebounceOnSearch } from "hooks/utils";
 
-import useDebounceOnSearch from "../hooks/useDebounceOnSearch";
-
-import { DeletionPopup, LoadingSpinner } from "components/layouts";
-import Search from "../components/Search";
+import { LoadingSpinner, DeletionPopup, Search } from "components/layouts";
 import StylesList from "./components/StylesList";
 import * as Styled from "./styles/ProductStyles.styled";
 
@@ -30,7 +28,7 @@ export default function ProductStyles() {
       search,
       array: allProductStyles,
       filterHandler: (style) =>
-        style.label.ka.includes(search) || style.label.en.includes(search),
+        style.ka.includes(search) || style.en.includes(search),
     });
 
   function onDelete() {
@@ -53,7 +51,11 @@ export default function ProductStyles() {
   return (
     <Styled.ProductStyles>
       <div>
-        <Search value={search} onSearch={(e) => setSearch(e.target.value)} />
+        <Search
+          value={search}
+          onSearch={(e) => setSearch(e.target.value)}
+          placeholder="მოძებნე პროდუქტის სტილი..."
+        />
       </div>
 
       {!status.loading && (

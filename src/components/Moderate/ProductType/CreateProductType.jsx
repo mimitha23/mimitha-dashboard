@@ -11,9 +11,14 @@ import { productTypeActions } from "store/reducers/moderate/productTypeReducer";
 
 import { PATHS } from "config/routes";
 
+import {
+  Form,
+  InputText,
+  Button,
+  LoadingSpinner,
+  FormHeader,
+} from "components/layouts";
 import * as Styled from "./styles/CreateProductType.styled";
-import ModerateHeader from "../components/ModerateHeader";
-import { Form, InputText, Button, LoadingSpinner } from "components/layouts";
 
 export default function CreateProductType() {
   const dispatch = useDispatch();
@@ -39,7 +44,7 @@ export default function CreateProductType() {
 
   return (
     <Styled.CreateProductType>
-      <ModerateHeader
+      <FormHeader
         title="შექმენი პროდუქტის ტიპი"
         linkCaption="ნახე პროდუქტის ყველა ტიპი"
         redirectPath={PATHS.moderate_nested_routes.productTypesPage.relativePath()}
