@@ -12,6 +12,8 @@ export default function SubCategoryListItem({
   children,
   categoryId,
   subCategoryId,
+  onRemoveCategory,
+  onAddCategory,
 }) {
   const dispatch = useDispatch();
 
@@ -19,7 +21,7 @@ export default function SubCategoryListItem({
     selectNavSubCategoryTitle({ categoryId, subCategoryId })
   );
 
-  const [showRoutes, setShowRoutes] = useState(true);
+  const [showRoutes, setShowRoutes] = useState(false);
 
   function setTitle(e) {
     dispatch(
@@ -36,7 +38,7 @@ export default function SubCategoryListItem({
     <li className="edit-nav__blocks-list__item">
       <SubCategoryTitle onChange={setTitle} title={title} />
 
-      <ControlListButtons />
+      <ControlListButtons onRemove={onRemoveCategory} onAdd={onAddCategory} />
 
       <div className="routes-box">
         <button

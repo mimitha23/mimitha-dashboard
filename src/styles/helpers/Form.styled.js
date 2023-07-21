@@ -108,7 +108,12 @@ export const selectDropdownList = css`
     transition: all 0.2s ease;
     /* text-transform: capitalize; */
 
-    &:hover {
+    &.active {
+      background: ${({ theme }) => theme.colors.blue};
+      color: ${({ theme }) => theme.colors.white};
+    }
+
+    &:not(.active):hover {
       background: ${({ theme }) => theme.colors.blue};
       color: ${({ theme }) => theme.colors.white};
     }

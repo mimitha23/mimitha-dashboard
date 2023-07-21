@@ -4,4 +4,5 @@ import { navHandlers } from "store/saga/handlers/app/nav";
 
 export default function* navSaga() {
   yield takeLatest(navActions.getNav, navHandlers.getNav);
+  yield takeLatest(navActions.saveNav, navHandlers.saveNav);
 }

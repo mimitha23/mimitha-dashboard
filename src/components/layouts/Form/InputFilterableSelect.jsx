@@ -17,6 +17,7 @@ export default memo(function InputFilterableSelect({
   error,
   message,
   list = [],
+  selectedList,
   strictSelection = true,
 }) {
   const [isTyping, setIsTyping] = useState(false);
@@ -26,7 +27,10 @@ export default memo(function InputFilterableSelect({
     selectValue({ key: name, value: item });
   }
 
-  const dropdown_ref = useClickOutside(isTyping, () => setIsTyping(false));
+  const dropdown_ref = useClickOutside(isTyping, () => {
+    !value && selectValue({ key: name, value: null });
+    setIsTyping(false);
+  });
 
   return (
     <Styled.InputFilterableSelect
@@ -57,7 +61,15 @@ export default memo(function InputFilterableSelect({
               .map((item) => (
                 <li
                   key={item._id}
-                  className="filterable_dropdown-list--item"
+                  className={`filterable_dropdown-list--item ${
+                    selectedList &&
+                    Array.isArray(selectedList) &&
+                    selectedList.some(
+                      (selectedItem) => selectedItem._id === item._id
+                    )
+                      ? "active"
+                      : ""
+                  } ${item.caption === value ? "active" : ""}`}
                   onClick={() => handleDropdownItem(item)}
                 >
                   {item.caption}

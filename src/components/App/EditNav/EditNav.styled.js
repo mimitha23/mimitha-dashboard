@@ -61,7 +61,7 @@ export const EditNav = styled.div`
     &__item .edit-nav__blocks-list__item-title--box {
       display: flex;
       flex-direction: column;
-      gap: 1rem;
+      gap: 2rem;
 
       .edit-nav__blocks-list__item-title {
         display: flex;
@@ -101,6 +101,9 @@ export const EditNav = styled.div`
     &__list {
       margin-top: 1.5rem;
       margin-left: 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
 
       &-item {
         width: 34rem;
@@ -157,5 +160,10 @@ export const EditNav = styled.div`
       color: ${({ theme }) =>
         theme.mode === "DARK" ? theme.colors.dark_gray : theme.colors.white};
     }
+  }
+
+  .button-primary {
+    width: 38rem;
+    margin-top: 4rem;
   }
 `;

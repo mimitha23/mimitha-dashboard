@@ -15,10 +15,10 @@ const navReducer = createSlice({
   name: "mimitha-nav",
   initialState,
   reducers: {
-    addSubCategory(state, { payload: { blockId, placeAfterIndex } }) {
-      const blockIndex = state.nav.findIndex((block) => block._id === blockId);
+    addNavSubCategory(state, { payload: { categoryId, placeAfterIndex } }) {
+      const { categoryIndex } = findBlockIndex({ state, categoryId });
 
-      if (blockIndex < 0) return;
+      if (isNaN(categoryIndex)) return;
 
       const newSubCategoryBlock = {
         _id: nanoid(),
@@ -37,10 +37,20 @@ const navReducer = createSlice({
         ],
       };
 
-      state.nav[blockIndex].blocks.splice(
+      state.nav[categoryIndex].blocks.splice(
         placeAfterIndex,
         0,
         newSubCategoryBlock
+      );
+    },
+
+    removeNavSubCategory(state, { payload: { categoryId, subCategoryId } }) {
+      const { categoryIndex } = findBlockIndex({ state, categoryId });
+
+      if (isNaN(categoryIndex)) return;
+
+      state.nav[categoryIndex].blocks = state.nav[categoryIndex].blocks.filter(
+        (subCategory) => subCategory._id !== subCategoryId
       );
     },
 
@@ -48,23 +58,15 @@ const navReducer = createSlice({
       state,
       { payload: { categoryId, subCategoryId, routeId, value } }
     ) {
-      const categoryIndex = state.nav.findIndex(
-        (category) => category._id === categoryId
-      );
+      const { categoryIndex, routeIndex, subCategoryIndex } = findBlockIndex({
+        state,
+        categoryId,
+        subCategoryId,
+        routeId,
+      });
 
-      if (categoryIndex < 0) return;
-
-      const subCategoryIndex = state.nav[categoryIndex].blocks.findIndex(
-        (subCategory) => subCategory._id === subCategoryId
-      );
-
-      if (subCategoryIndex < 0) return;
-
-      const routeIndex = state.nav[categoryIndex].blocks[
-        subCategoryIndex
-      ].routes.findIndex((route) => route._id === routeId);
-
-      if (routeIndex < 0) return;
+      if (isNaN(categoryIndex) || isNaN(subCategoryIndex) || isNaN(routeIndex))
+        return;
 
       state.nav[categoryIndex].blocks[subCategoryIndex].routes[
         routeIndex
@@ -75,41 +77,95 @@ const navReducer = createSlice({
       state,
       { payload: { categoryId, subCategoryId, routeId, value } }
     ) {
-      const categoryIndex = state.nav.findIndex(
-        (category) => category._id === categoryId
-      );
+      const { categoryIndex, routeIndex, subCategoryIndex } = findBlockIndex({
+        state,
+        categoryId,
+        subCategoryId,
+        routeId,
+      });
 
-      if (categoryIndex < 0) return;
+      if (isNaN(categoryIndex) || isNaN(subCategoryIndex) || isNaN(routeIndex))
+        return;
 
-      const subCategoryIndex = state.nav[categoryIndex].blocks.findIndex(
-        (subCategory) => subCategory._id === subCategoryId
-      );
+      if (value === null) {
+        state.nav[categoryIndex].blocks[subCategoryIndex].routes[routeIndex] = {
+          ka: "",
+          en: "",
+          query: "",
+          caption: "",
+          _id: nanoid(),
+        };
 
-      if (subCategoryIndex < 0) return;
+        return;
+      }
 
-      const routeIndex = state.nav[categoryIndex].blocks[
+      const isSelectedValue = state.nav[categoryIndex].blocks[
         subCategoryIndex
-      ].routes.findIndex((route) => route._id === routeId);
+      ].routes.some((route) => route._id === value._id);
 
-      if (routeIndex < 0) return;
+      if (isSelectedValue) return;
 
       state.nav[categoryIndex].blocks[subCategoryIndex].routes[routeIndex] =
         value;
     },
 
+    addRoute(
+      state,
+      { payload: { categoryId, subCategoryId, placeAfterIndex } }
+    ) {
+      const { categoryIndex, subCategoryIndex } = findBlockIndex({
+        state,
+        categoryId,
+        subCategoryId,
+      });
+
+      if (isNaN(categoryIndex) || isNaN(subCategoryIndex)) return;
+
+      const newRoute = {
+        ka: "",
+        en: "",
+        query: "",
+        caption: "",
+        _id: nanoid(),
+      };
+
+      state.nav[categoryIndex].blocks[subCategoryIndex].routes.splice(
+        placeAfterIndex,
+        0,
+        newRoute
+      );
+    },
+
+    removeRoute(state, { payload: { categoryId, subCategoryId, routeId } }) {
+      const { categoryIndex, subCategoryIndex } = findBlockIndex({
+        state,
+        categoryId,
+        subCategoryId,
+      });
+
+      if (
+        isNaN(categoryIndex) ||
+        isNaN(subCategoryIndex) ||
+        state.nav[categoryIndex].blocks[subCategoryIndex].routes.length === 1
+      )
+        return;
+
+      state.nav[categoryIndex].blocks[subCategoryIndex].routes = state.nav[
+        categoryIndex
+      ].blocks[subCategoryIndex].routes.filter(
+        (route) => route._id !== routeId
+      );
+    },
+
     setTitle(state, { payload: { categoryId, subCategoryId, key, value } }) {
-      const categoryIndex = state.nav.findIndex(
-        (category) => category._id === categoryId
-      );
+      const { categoryIndex, subCategoryIndex } = findBlockIndex({
+        state,
+        categoryId,
+        subCategoryId,
+      });
 
-      if (categoryIndex < 0) return;
+      if (isNaN(categoryIndex) || isNaN(subCategoryIndex)) return;
 
-      const subCategoryIndex = state.nav[categoryIndex].blocks.findIndex(
-        (subCategory) => subCategory._id === subCategoryId
-      );
-
-      if (subCategoryIndex < 0) return;
-      console.log({ categoryId, subCategoryId, key, value });
       state.nav[categoryIndex].blocks[subCategoryIndex].title[key] = value;
     },
 
@@ -120,8 +176,29 @@ const navReducer = createSlice({
       },
     },
 
-    setNav(state, { payload }) {
-      state.nav = payload;
+    setNav(state, { payload: nav }) {
+      state.nav = nav.map((navCategory) => ({
+        ...navCategory,
+        blocks: navCategory.blocks.map((block) => ({
+          ...block,
+          routes: block.routes.map((route) => ({
+            ...route,
+            caption: route.ka,
+          })),
+        })),
+      }));
+    },
+
+    saveNav: {
+      prepare(payload) {
+        return {
+          payload: prepareDataForDB(payload),
+        };
+      },
+
+      reducer(state) {
+        state.status = status.loading();
+      },
     },
 
     // REQUEST STATUS SETTERS
@@ -144,3 +221,51 @@ const navReducer = createSlice({
 
 export default navReducer.reducer;
 export const navActions = navReducer.actions;
+
+function findBlockIndex({ state, categoryId, subCategoryId, routeId }) {
+  const categoryIndex = state.nav.findIndex(
+    (category) => category._id === categoryId
+  );
+
+  const subCategoryIndex =
+    subCategoryId && categoryIndex >= 0
+      ? state.nav[categoryIndex].blocks.findIndex(
+          (subCategory) => subCategory._id === subCategoryId
+        )
+      : NaN;
+
+  const routeIndex =
+    routeId && categoryIndex >= 0 && subCategoryIndex >= 0
+      ? state.nav[categoryIndex].blocks[subCategoryIndex].routes.findIndex(
+          (route) => route._id === routeId
+        )
+      : NaN;
+
+  return { categoryIndex, subCategoryIndex, routeIndex };
+}
+
+function prepareDataForDB(payload) {
+  const men = payload.find((nav) => nav.category === "men");
+  const women = payload.find((nav) => nav.category === "women");
+  const family = payload.find((nav) => nav.category === "family");
+  const adult = payload.find((nav) => nav.category === "adult");
+
+  function configureData(data) {
+    return {
+      ...data,
+      blocks: data.blocks.map((block) => ({
+        ...block,
+        routes: block.routes.map((route) => route._id),
+      })),
+    };
+  }
+
+  const credentials = {
+    men: configureData(men),
+    women: configureData(women),
+    family: configureData(family),
+    adult: configureData(adult),
+  };
+
+  return credentials;
+}
