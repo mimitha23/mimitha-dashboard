@@ -15,7 +15,7 @@ import {
   registerProductReducer,
 } from "./moderate";
 
-import { navRoutesReducer, navReducer } from "./app/navigation";
+import { navReducer } from "./app/navigation";
 
 const persistedAuthReducer = generatePersistedReducer({
   key: "mimitha_dashboard_user",
@@ -35,7 +35,6 @@ const rootReducer = combineReducers({
   registerProduct: registerProductReducer,
   developeProduct: developeProductReducer,
   // app
-  navRoutes: navRoutesReducer,
   nav: navReducer,
 });
 

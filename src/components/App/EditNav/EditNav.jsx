@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 
 import { selectNavStatus, selectNav } from "store/selectors/app/navSelectors";
 import { navActions } from "store/reducers/app/navigation/navReducer";
-import { navRoutesActions } from "store/reducers/app/navigation/navRoutesReducer";
+import { productTypeActions } from "store/reducers/moderate/productTypeReducer";
 
 import { LoadingSpinner, Button } from "components/layouts";
 import SubCategoryListItem from "./components/SubCategoryListItem";
@@ -39,11 +39,11 @@ export default function EditNav() {
 
   useEffect(() => {
     dispatch(navActions.getNav());
-    dispatch(navRoutesActions.getAllNavRoute());
+    dispatch(productTypeActions.getAllProductTypes());
 
     return () => {
       dispatch(navActions.resetState());
-      dispatch(navRoutesActions.resetAllNavRoutes());
+      dispatch(productTypeActions.resetAllProductTypes());
     };
   }, []);
 

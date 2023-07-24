@@ -19,10 +19,8 @@ export function* getNav() {
 
 export function* saveNav({ payload }) {
   try {
-    console.log(payload);
     const { data } = yield call(navAPI.saveNav, payload);
     yield put(navActions.setNav(data));
-    console.log(data);
     yield put(navActions.setSuccess());
   } catch (error) {
     yield errorController({

@@ -103,14 +103,6 @@ const router = [
     element: <Pages.AppPage roles={["ADMIN"]} />,
     children: [
       {
-        path: PATHS.app_sidebar.createNavRoutePage.absolutePath,
-        element: <Pages.AddNavRoutePage />,
-      },
-      {
-        path: PATHS.app_nested_routes.routesPage.absolutePath(),
-        element: <Pages.AllRoutesPage />,
-      },
-      {
         path: PATHS.app_sidebar.editNavPage.absolutePath,
         element: <Pages.EditNavPage />,
       },

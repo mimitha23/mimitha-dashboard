@@ -103,23 +103,13 @@ const MODERATE_SIDEBAR_NESTED = {
 ////////
 
 const APP_SIDEBAR = {
-  createNavRoutePage: {
-    relativePath: "create-nav-route",
-    absolutePath: `${MAIN_NAVIGATION.app}/create-nav-route`,
-  },
   editNavPage: {
     relativePath: "edit-nav",
     absolutePath: `${MAIN_NAVIGATION.app}/edit-nav`,
   },
 };
 
-const APP_SIDEBAR_NESTED = {
-  routesPage: {
-    relativePath: () => `all-routes`,
-    absolutePath: () =>
-      `${APP_SIDEBAR.createNavRoutePage.absolutePath}/all-routes`,
-  },
-};
+const APP_SIDEBAR_NESTED = {};
 
 // EXPORTS
 

@@ -14,6 +14,7 @@ export const RegisteredProducts = styled.div`
 
   .registered-products__filter-box {
     position: sticky;
+    z-index: 9;
     top: ${({ theme }) => theme.app.nav_h};
     background: ${({ theme }) => theme.colors.bg};
     padding: 1rem 0 2rem 0;

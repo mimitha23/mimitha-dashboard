@@ -72,7 +72,7 @@ export const WarningField = styled.div`
 
       &--label {
         text-align: start;
-        color: ${({ theme }) => theme.colors.white};
+        color: ${({ theme }) => theme.colors.text};
 
         span:first-child {
           text-transform: lowercase;

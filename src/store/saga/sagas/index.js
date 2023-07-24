@@ -10,5 +10,4 @@ export { default as registerProductSaga } from "./moderate/registerProductSaga";
 export { default as developeProductSaga } from "./moderate/developeProductSaga";
 
 // APP
-export { default as navRoutesSaga } from "./app/nav/navRoutesSaga";
 export { default as navSaga } from "./app/nav/navSaga";

@@ -39,7 +39,7 @@ const selectedDevelopeProductForm = ({ developeProduct }) => ({
   description_ka: developeProduct.form.description_ka,
   description_en: developeProduct.form.description_en,
   isPublic: developeProduct.form.isPublic,
-  isFeatured: developeProduct.isFeatured,
+  isFeatured: developeProduct.form.isFeatured,
   isUpdating: developeProduct.isUpdating,
   updatingDevelopedProductId: developeProduct.updatingDevelopedProductId,
 });

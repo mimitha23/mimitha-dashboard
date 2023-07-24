@@ -13,15 +13,27 @@ const selectedProductTypeStatus = ({ productType }) => ({
   message: productType.status.message,
 });
 
+const selectedProductTypesWithCaption = ({ productType }) =>
+  productType.allProductTypes.map((type) => ({
+    ...type,
+    caption: type.ka || "",
+  }));
+
+// EXPORTS
 export const selectAllProductTypes = ({ productType }) =>
   productType.allProductTypes;
 
 export const selectProductTypeForm = createSelector(
   selectedProductTypeForm,
-  (memorised) => memorised
+  (productTypeForm) => productTypeForm
 );
 
 export const selectProductTypeStatus = createSelector(
   selectedProductTypeStatus,
-  (memorised) => memorised
+  (status) => status
+);
+
+export const selectProductTypesWithCaption = createSelector(
+  selectedProductTypesWithCaption,
+  (productTypesWithCaption) => productTypesWithCaption
 );

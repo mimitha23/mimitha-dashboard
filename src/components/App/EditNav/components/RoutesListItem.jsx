@@ -1,8 +1,8 @@
 import { useSelector, useDispatch } from "react-redux";
 
 import { navActions } from "store/reducers/app/navigation/navReducer";
-import { selectAllNavRoutesWithCaption } from "store/selectors/app/navRoutesSelectors";
 import { selectSubCategoryRoutes } from "store/selectors/app/navSelectors";
+import { selectProductTypesWithCaption } from "store/selectors/moderate/productTypeSelectors";
 
 import ControlListButtons from "./ControlListButtons";
 import { InputFilterableSelect } from "components/layouts";
@@ -15,7 +15,7 @@ export default function RoutesListItem({
 }) {
   const dispatch = useDispatch();
 
-  const navRoutes = useSelector(selectAllNavRoutesWithCaption);
+  const productTypes = useSelector(selectProductTypesWithCaption);
   const selectedRoutes = useSelector(
     selectSubCategoryRoutes({ categoryId, subCategoryId })
   );
@@ -67,7 +67,7 @@ export default function RoutesListItem({
       <ControlListButtons onAdd={onAddRoute} onRemove={onRemoveRoute} />
       &mdash;&nbsp;&nbsp;
       <InputFilterableSelect
-        list={navRoutes}
+        list={productTypes}
         selectedList={selectedRoutes}
         id="1"
         name="route"
