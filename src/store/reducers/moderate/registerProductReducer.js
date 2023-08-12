@@ -352,7 +352,7 @@ const registerProductSlice = createSlice({
     },
 
     setError(state, { payload }) {
-      state.status = status.error();
+      state.status = status.error(payload.message);
     },
 
     // RESET

@@ -26,9 +26,17 @@ export default memo(function InputFilterableSelect({
     setIsTyping(false);
     selectValue({ key: name, value: item });
   }
-
   const dropdown_ref = useClickOutside(isTyping, () => {
-    !value && selectValue({ key: name, value: null });
+    let valueToAssign = null;
+
+    const existingValue = list.find((item) => item.caption === value);
+    if (!strictSelection && value && existingValue)
+      valueToAssign = existingValue;
+    if (!strictSelection && value && !existingValue)
+      valueToAssign = { caption: value };
+
+    // !value && selectValue({ key: name, value: valueToAssign });
+    selectValue({ key: name, value: valueToAssign });
     setIsTyping(false);
   });
 

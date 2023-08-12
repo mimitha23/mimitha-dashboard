@@ -16,7 +16,9 @@ export default function EnteredVariants() {
       {enteredVariants.map((variant) => (
         <li className="selected-variants__item" key={variant._id}>
           <span className="selected-variants__item-type">{variant.type}</span>
-          <span className="selected-variants__item-label">{variant.ka}</span>
+          <span className="selected-variants__item-label">
+            {variant.description_ka}
+          </span>
           <button
             className="selected-variants__item-close--btn"
             onClick={(e) => {

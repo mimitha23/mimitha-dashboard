@@ -17,6 +17,7 @@ import {
   Button,
   LoadingSpinner,
   FormHeader,
+  ErrorModal,
 } from "components/layouts";
 import * as Styled from "./styles/CreateTexture.styled";
 
@@ -79,6 +80,8 @@ export default function CreateTexture() {
           }}
         />
       </Form>
+
+      <ErrorModal status={status} />
 
       {status.loading && <LoadingSpinner />}
     </Styled.CreateTexture>

@@ -67,8 +67,8 @@ export default class DevelopeProductValidation extends Validators {
       },
       {
         key: "variants",
-        validationType: validationType.isPrimitivesArray,
-        rules: [Rules.isEmptyObject],
+        validationType: validationType.isPrimitive,
+        rules: [Rules.isEmptyArray],
       },
       {
         key: "sizes",

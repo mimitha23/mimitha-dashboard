@@ -17,6 +17,7 @@ import {
   Button,
   LoadingSpinner,
   FormHeader,
+  ErrorModal,
 } from "components/layouts";
 import * as Styled from "./styles/CreateProductStyle.styled";
 
@@ -84,6 +85,8 @@ export default function CreateProductStyle() {
           }}
         />
       </Form>
+
+      <ErrorModal status={status} />
 
       {status.loading && <LoadingSpinner />}
     </Styled.CreateProductStyle>

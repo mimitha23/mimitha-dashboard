@@ -21,6 +21,7 @@ import {
   InputTextarea,
   LoadingSpinner,
   FormHeader,
+  ErrorModal,
 } from "components/layouts";
 import * as Styled from "./styles/CreateVariant.styled";
 
@@ -35,7 +36,8 @@ export default function CreateVariant() {
     variantType,
     label_ka,
     label_en,
-    description,
+    description_ka,
+    description_en,
     icon,
     newIcon,
     isUpdating,
@@ -92,7 +94,7 @@ export default function CreateVariant() {
           id="variant-label"
           label="ვარიანტის იარლიყი (ka)"
           name="label_ka"
-          placeholder="ჯიბის გარეშე"
+          placeholder="ჯიბე"
           value={label_ka}
           onChange={handleSetVariant}
           message={error.label_ka.message}
@@ -103,7 +105,7 @@ export default function CreateVariant() {
           id="variant-label"
           label="ვარიანტის იარლიყი (en)"
           name="label_en"
-          placeholder="without pocket"
+          placeholder="pocket"
           value={label_en}
           onChange={handleSetVariant}
           message={error.label_en.message}
@@ -112,13 +114,24 @@ export default function CreateVariant() {
 
         <InputTextarea
           id="variant-description"
-          label="ვარიანტის აღწერა"
-          name="description"
+          label="ვარიანტის აღწერა (ka)"
+          name="description_ka"
           placeholder="აღწერე ვარიანტი..."
-          value={description}
+          value={description_ka}
           onChange={handleSetVariant}
-          message={error.description.message}
-          error={error.description.hasError}
+          message={error.description_ka.message}
+          error={error.description_ka.hasError}
+        />
+
+        <InputTextarea
+          id="variant-description"
+          label="ვარიანტის აღწერა (en)"
+          name="description_en"
+          placeholder="აღწერე ვარიანტი..."
+          value={description_en}
+          onChange={handleSetVariant}
+          message={error.description_en.message}
+          error={error.description_en.hasError}
         />
 
         <InputFile
@@ -148,6 +161,8 @@ export default function CreateVariant() {
           }}
         />
       </Form>
+
+      <ErrorModal status={status} />
 
       {status.loading && <LoadingSpinner />}
     </Styled.CreateVariant>

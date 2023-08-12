@@ -42,7 +42,7 @@ export default function DevelopedProduct() {
     return () => {
       dispatch(developeProductActions.resetDevelopedProduct());
     };
-  }, []);
+  }, [registeredProductId, developedProductId]);
 
   return (
     <Styled.DevelopedProduct>

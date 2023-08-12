@@ -39,16 +39,16 @@ export default function VariantsList({ filteredVariants, setActiveDeletion }) {
               <p>
                 <span>ka:</span>
                 &nbsp;
-                <span>{variant.ka}</span>
+                <span>{variant.label_ka}</span>
               </p>
               <p>
                 <span>en:</span>
                 &nbsp;
-                <span>{variant.en}</span>
+                <span>{variant.label_en}</span>
               </p>
             </div>
 
-            <LineClampedDescription clamp={2} text={variant.description} />
+            <LineClampedDescription clamp={2} text={variant.description_ka} />
 
             <EditAndDeleteButtons
               onEdit={() => onEdit(variant)}

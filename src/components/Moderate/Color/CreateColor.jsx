@@ -18,6 +18,7 @@ import {
   Button,
   LoadingSpinner,
   FormHeader,
+  ErrorModal,
 } from "components/layouts";
 import * as Styled from "./styles/CreateColor.styled";
 
@@ -92,6 +93,8 @@ export default function CreateColor() {
             createColorQuery();
           }}
         />
+
+        <ErrorModal status={status} />
 
         {status.loading && <LoadingSpinner />}
       </Form>

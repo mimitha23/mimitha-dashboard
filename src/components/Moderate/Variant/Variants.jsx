@@ -28,10 +28,11 @@ export default function Variants() {
       search,
       array: allVariants,
       filterHandler: (variant) =>
-        variant.ka.includes(search) ||
-        variant.en.includes(search) ||
         variant.type.includes(search) ||
-        variant.description.includes(search),
+        variant.label_ka.includes(search) ||
+        variant.label_en.includes(search) ||
+        variant.description_ka.includes(search) ||
+        variant.description_en.includes(search),
     });
 
   function onDelete() {

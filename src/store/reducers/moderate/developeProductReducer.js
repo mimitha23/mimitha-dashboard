@@ -379,20 +379,20 @@ const developeProductSlice = createSlice({
     },
 
     // REQUEST STATUS SETTERS
-    setSuccess(state, { payload }) {
+    setSuccess(state) {
       state.status = status.success();
     },
 
     setError(state, { payload }) {
-      state.status = status.error();
+      state.status = status.error(payload.message);
     },
 
-    setSingleProductSuccess(state, { payload }) {
+    setSingleProductSuccess(state) {
       state.singleProductStatus = status.success();
     },
 
     setSingleProductError(state, { payload }) {
-      state.singleProductStatus = status.error();
+      state.singleProductStatus = status.error(payload.message);
     },
 
     // RESET

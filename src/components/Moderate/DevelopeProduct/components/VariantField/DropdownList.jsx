@@ -53,7 +53,7 @@ export default function DropdownList({ enteredVariant }) {
             }`}
           >
             <span>{variant.type}</span>
-            <span>{variant.ka}</span>
+            <span>{variant.description_ka}</span>
           </li>
         ))}
       </ul>

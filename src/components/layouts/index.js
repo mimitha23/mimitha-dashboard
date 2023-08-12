@@ -17,3 +17,5 @@ export { default as DeletionPopup } from "./DeletionPopup/DeletionPopup";
 export { default as LineClampedDescription } from "./LineClampedDescription/LineClampedDescription";
 export { default as EditAndDeleteButtons } from "./EditAndDeleteButtons/EditAndDeleteButtons";
 export { default as Search } from "./Search/Search";
+export { default as ModalWindow } from "./ModalWindow/ModalWindow";
+export { default as ErrorModal } from "./ErrorModal/ErrorModal";

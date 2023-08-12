@@ -42,9 +42,14 @@ export default class CreateVariantValidation extends Validators {
         ],
       },
       {
-        key: "description",
+        key: "description_ka",
         validationType: validationType.isPrimitive,
-        rules: [Rules.notIsEmpty],
+        rules: [Rules.notIsEmpty, Rules.isGeorgianLetters],
+      },
+      {
+        key: "description_en",
+        validationType: validationType.isPrimitive,
+        rules: [Rules.notIsEmpty, Rules.isLatinLetters],
       },
     ];
 
@@ -53,7 +58,8 @@ export default class CreateVariantValidation extends Validators {
       variantType: { hasError: false, message: "", itemErrors: [] },
       label_ka: { hasError: false, message: "" },
       label_en: { hasError: false, message: "" },
-      description: { hasError: false, message: "" },
+      description_ka: { hasError: false, message: "" },
+      description_en: { hasError: false, message: "" },
       icon: { hasError: false, message: "" },
       newIcon: { hasError: false, message: "" },
     };

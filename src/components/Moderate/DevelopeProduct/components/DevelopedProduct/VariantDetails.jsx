@@ -43,10 +43,10 @@ export default function VariantDetails({ variants }) {
               </div>
               <div className="variant-details__list-item--label">
                 <span>იარლიყი:</span>
-                <span>{variant.ka}</span>
+                <span>{variant.label_ka}</span>
               </div>
               <p className="variant-details__list-item--description">
-                {variant.description}
+                {variant.description_ka}
               </p>
               <EditAndDeleteButtons onEdit={() => onEdit(variant)} />
             </li>

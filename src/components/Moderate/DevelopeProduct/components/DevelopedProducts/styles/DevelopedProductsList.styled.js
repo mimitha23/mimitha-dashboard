@@ -12,5 +12,6 @@ export const DevelopedProductsList = styled.div`
     grid-auto-rows: 32rem;
     justify-content: space-between;
     gap: 3rem 1rem;
+    margin-top: 3rem;
   }
 `;

@@ -4,6 +4,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 import { PATHS } from "config/routes";
+
 import { developeProductActions } from "store/reducers/moderate/developeProductReducer";
 import { selectDevelopeProductStatus } from "store/selectors/moderate/developeProductSelectors";
 
@@ -77,7 +78,9 @@ export default function DevelopedProducts({ children }) {
           <DevelopedProductsList
             onDelete={(id) => setProductToDeleteId(id)}
             onEdit={onEdit}
+            status={status}
           />
+
           {developedProductId && (
             <aside className="developed-products__aside">{children}</aside>
           )}

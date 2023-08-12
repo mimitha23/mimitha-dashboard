@@ -4,14 +4,15 @@ import { controlStatus as status } from "store/reducers/helpers";
 const initialState = {
   form: {
     variantType: {
-      ka: "",
-      en: "",
+      label_ka: "",
+      label_en: "",
       caption: "",
       _id: "",
     },
     label_ka: "",
     label_en: "",
-    description: "",
+    description_ka: "",
+    description_en: "",
     icon: null,
     newIcon: null,
   },
@@ -48,6 +49,11 @@ const variantSlice = createSlice({
       }
 
       state.form.variantType = variant;
+
+      if (variant._id && variant.label_ka && variant.label_en) {
+        state.form.label_en = variant.label_en;
+        state.form.label_ka = variant.label_ka;
+      }
     },
 
     setIcon(state, { payload }) {
@@ -63,8 +69,10 @@ const variantSlice = createSlice({
 
     setExistingVariantTypes(state, { payload }) {
       state.existingVariantTypes = payload.map((type) => ({
-        _id: nanoid(),
-        caption: type,
+        _id: type._id,
+        caption: type.type,
+        label_ka: type.label_ka,
+        label_en: type.label_en,
       }));
     },
 
@@ -83,9 +91,10 @@ const variantSlice = createSlice({
     setVariantDefaults(state, { payload }) {
       const form = {
         variantType: { _id: nanoid(), caption: payload.type },
-        label_ka: payload.ka,
-        label_en: payload.en,
-        description: payload.description,
+        label_ka: payload.label_ka,
+        label_en: payload.label_en,
+        description_ka: payload.description_ka,
+        description_en: payload.description_en,
         icon: payload.icon,
       };
 
@@ -141,7 +150,7 @@ const variantSlice = createSlice({
     },
 
     setError(state, { payload }) {
-      state.status = status.error();
+      state.status = status.error(payload.message);
     },
 
     // RESET
@@ -172,9 +181,10 @@ export const variantActions = variantSlice.actions;
 function prepareDataForDB(payload) {
   const credentials = {
     type: payload.variantType.caption,
-    description: payload.description,
-    ka: payload.label_ka,
-    en: payload.label_en,
+    description_ka: payload.description_ka,
+    description_en: payload.description_en,
+    label_ka: payload.label_ka,
+    label_en: payload.label_en,
   };
 
   if (payload.icon) credentials.icon = payload.icon;

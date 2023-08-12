@@ -20,6 +20,7 @@ import {
   InputMultipleFilterableSelect,
   LoadingSpinner,
   FormHeader,
+  ErrorModal,
 } from "components/layouts";
 import TextureField from "./components/TextureField";
 import WarningField from "./components/WarningField";
@@ -192,6 +193,8 @@ export default function RegisterProduct() {
           }}
         />
       </Form>
+
+      <ErrorModal status={status} />
 
       {status.loading && <LoadingSpinner />}
     </Styled.RegisterProduct>

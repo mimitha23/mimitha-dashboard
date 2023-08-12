@@ -21,7 +21,7 @@ export default function useDevelopeProductQuery() {
 
   function developeProductQuery() {
     if (!registeredProductId) return;
-
+    // console.log(credentials);
     const { error: validation } =
       developeProductValidation.validate(credentials);
 

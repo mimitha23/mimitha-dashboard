@@ -24,6 +24,7 @@ import {
   LoadingSpinner,
   InputCheckBox,
   FormHeader,
+  ErrorModal,
 } from "components/layouts";
 import DevelopedProductBlueprint from "./components/DevelopeProductBluePrint/DevelopedProductBlueprint";
 import AddVariantField from "./components/VariantField/AddVariantField";
@@ -229,6 +230,8 @@ export default function AddDevelopedProduct() {
 
         <DevelopedProductBlueprint />
       </div>
+
+      <ErrorModal status={status} />
 
       {status.loading && <LoadingSpinner />}
     </Styled.AddDevelopedProduct>
