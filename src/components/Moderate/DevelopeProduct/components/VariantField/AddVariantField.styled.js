@@ -55,15 +55,15 @@ export const AddVariantField = styled.div`
   .select-variant__dropdown {
     position: absolute;
     z-index: 9;
-    background: ${({ theme }) => theme.colors.text};
-    color: ${({ theme }) => theme.colors.bg};
+    background: ${({ theme }) => theme.colors.bg};
+    color: ${({ theme }) => theme.colors.text};
     top: calc(100% + 1rem);
     left: 0;
     right: 0;
     top: 7.5rem;
     padding: 1rem;
     border-radius: 0.5rem;
-    box-shadow: ${({ theme }) => theme.shadow.radial_sm_dark};
+    box-shadow: ${({ theme }) => theme.shadow.radial_lg_dark};
 
     &-list {
       margin-top: 0.5rem;
