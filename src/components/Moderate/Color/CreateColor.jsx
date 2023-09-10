@@ -1,39 +1,41 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useEffect, useCallback } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import {
-  selectColorForm,
-  selectColorStatus,
-} from "store/selectors/moderate/colorSelectors";
 import { useCreateColorQuery } from "hooks/api/moderate";
 import { colorActions } from "store/reducers/moderate/colorReducer";
+import * as colorSelectors from "store/selectors/moderate/colorSelectors";
 
 import { PATHS } from "config/routes";
 import { isValidHexColor } from "functions";
 
-import {
-  Form,
-  InputText,
-  Button,
-  LoadingSpinner,
-  FormHeader,
-  ErrorModal,
-} from "components/layouts";
+import { useForm, Controller } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { createColorValidation } from "utils/zod/moderate";
+
+import * as Layouts from "components/layouts";
 import * as Styled from "./styles/CreateColor.styled";
 
 export default function CreateColor() {
   const dispatch = useDispatch();
-  const { createColorQuery, error } = useCreateColorQuery();
-  const { color_ka, color_en, color_hex, isUpdating } =
-    useSelector(selectColorForm);
-  const status = useSelector(selectColorStatus);
 
-  const handleSetColor = useCallback((e) => {
-    dispatch(
-      colorActions.setColor({ key: e.target.name, value: e.target.value })
-    );
-  }, []);
+  const status = useSelector(colorSelectors.selectColorStatus);
+  const { createColorQuery } = useCreateColorQuery();
+
+  const { color_ka, color_en, color_hex, isUpdating } = useSelector(
+    colorSelectors.selectColorForm
+  );
+
+  const form = useForm({
+    resolver: zodResolver(createColorValidation),
+    defaultValues: {
+      color_ka: color_ka || "",
+      color_en: color_en || "",
+      color_hex: color_hex || "",
+    },
+  });
+
+  const onSubmit = (values) => createColorQuery({ args: values, isUpdating });
 
   useEffect(() => {
     return () => {
@@ -42,62 +44,78 @@ export default function CreateColor() {
   }, []);
 
   return (
-    <Styled.CreateColor colorinhex={color_hex}>
-      <FormHeader
+    <Styled.CreateColor>
+      <Layouts.FormHeader
         title="შექმენი ფერი"
         linkCaption="ნახე ყველა ფერი"
         redirectPath={PATHS.moderate_nested_routes.colorsPage.relativePath()}
       />
 
-      <Form>
-        <InputText
-          id="color-label--ka"
-          label="ფერი (ka)"
+      <Layouts.Form onSubmit={form.handleSubmit(onSubmit)}>
+        <Controller
           name="color_ka"
-          placeholder="მწვანე"
-          error={error.color_ka.hasError}
-          message={error.color_ka.message}
-          value={color_ka}
-          onChange={handleSetColor}
+          control={form.control}
+          render={({ field, fieldState: { error } }) => (
+            <Layouts.InputText
+              id="color-label--ka"
+              label="ფერი (ka)"
+              placeholder="მწვანე"
+              error={error ? true : false}
+              message={error?.message}
+              fieldProps={{ ...field }}
+            />
+          )}
         />
 
-        <InputText
-          id="color-label--en"
-          label="ფერი (en)"
+        <Controller
           name="color_en"
-          placeholder="green"
-          error={error.color_en.hasError}
-          message={error.color_en.message}
-          value={color_en}
-          onChange={handleSetColor}
+          control={form.control}
+          render={({ field, fieldState: { error } }) => (
+            <Layouts.InputText
+              id="color-label--en"
+              label="ფერი (en)"
+              placeholder="green"
+              error={error ? true : false}
+              message={error?.message}
+              fieldProps={{ ...field }}
+            />
+          )}
         />
 
-        <InputText
-          id="color-hex"
-          label="ფერი hex in decimal ფორმატში"
+        <Controller
           name="color_hex"
-          placeholder="#26E066"
-          error={error.color_hex.hasError}
-          message={error.color_hex.message}
-          value={color_hex}
-          onChange={handleSetColor}
+          control={form.control}
+          render={({ field, fieldState: { error } }) => (
+            <>
+              <Layouts.InputText
+                id="color-hex"
+                label="ფერი hex in decimal ფორმატში"
+                placeholder="#26E066"
+                error={error ? true : false}
+                message={error?.message}
+                fieldProps={{ ...field }}
+              />
+
+              {isValidHexColor(field.value) && (
+                <div
+                  className="picked-color"
+                  style={{ background: field.value }}
+                />
+              )}
+            </>
+          )}
         />
 
-        {isValidHexColor(color_hex) && <div className="picked-color"></div>}
-
-        <Button
-          caption={isUpdating ? "განახლება" : "შექმნა"}
+        <Layouts.Button
+          type="submit"
           disabled={status.loading}
-          onClick={(e) => {
-            e.preventDefault();
-            createColorQuery();
-          }}
+          caption={isUpdating ? "განახლება" : "შექმნა"}
         />
 
-        <ErrorModal status={status} />
+        <Layouts.ErrorModal status={status} />
 
-        {status.loading && <LoadingSpinner />}
-      </Form>
+        {status.loading && <Layouts.LoadingSpinner />}
+      </Layouts.Form>
     </Styled.CreateColor>
   );
 }

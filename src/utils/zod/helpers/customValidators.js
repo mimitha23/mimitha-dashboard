@@ -1,0 +1,40 @@
+import { regex } from "./regex";
+
+export const customValidators = {
+  isGeorgianLetters: {
+    validator: (value) => regex.is_georgian_letters.test(value),
+    message: (key) => `${key} უნდა შეიყვანოთ მხოლოდ ქართული ასოებით.`,
+  },
+  isOnlyGeorgianLetters: {
+    validator: (value) => regex.is_only_georgian_letters.test(value),
+    message: (key) =>
+      `${key} უნდა შეიყვანოთ მხოლოდ ქართული ასოებით, დაშორებისა და სიმბოლოების გარეშე.`,
+  },
+  isLatinLetters: {
+    validator: (value) => regex.is_latin_letters.test(value),
+    message: (key) => `${key} უნდა შეიყვანოთ მხოლოდ ლათინური ასოებით.`,
+  },
+  isOnlyLatinLetters: {
+    validator: (value) => regex.is_only_latin_letters.test(value),
+    message: (key) =>
+      `${key} უნდა შეიყვანოთ მხოლოდ ლათინური ასოებით, დაშორებისა და სიმბოლოების გარეშე.`,
+  },
+  isValidHexColor: {
+    validator: (value) => regex.is_valid_hex_color.test(value),
+    message: (key) => `${key} უნდა იყოს ვალიდური hex ფერი. მაგ:#26e066.`,
+  },
+  isImageFile: {
+    validator: (value) => value instanceof File && value.type.includes("image"),
+    message: (key) =>
+      `გთხოვთ მიუთითოთ ${key}. ${key} უნდა წარმოადგენდეს ფოტოს (JPP, JPEG, PNG, WEBP, SVG და ა.შ).`,
+  },
+  hasWhiteSpaceInSequence: {
+    validator: (value) =>
+      !regex.has_two_or_more_white_space_in_sequence.test(value),
+    message: (key) => `${key} შეიცავს 2 ან მეტ შორისს თანმიმდევრობით.`,
+  },
+  isValidBase64Str: {
+    validator: (value) => regex.is_base_64_str.test(value),
+    message: (key) => `${key} უნდა წარმოადგენდეს ვალიდურ ფაილს.`,
+  },
+};

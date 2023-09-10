@@ -1,35 +1,15 @@
-import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
-import { selectColorForm } from "store/selectors/moderate/colorSelectors";
 import { colorActions } from "store/reducers/moderate/colorReducer";
-import { CreateColorValidation } from "utils/validators/moderate";
-import { generateLowerCaseData } from "functions";
 
 export default function useCreateColorQuery() {
   const dispatch = useDispatch();
-  const credentials = useSelector(selectColorForm);
 
-  const colorValidation = new CreateColorValidation();
-
-  const [error, setError] = useState(colorValidation.error);
-
-  function createColorQuery() {
-    const { error: validation } = colorValidation.validate(credentials);
-
-    setError((prev) => ({ ...prev, ...validation }));
-
-    if (validation.hasError) return;
-
-    const checkedData = generateLowerCaseData(credentials, [
-      "isUpdating",
-      "updatingColorId",
-    ]);
-
-    credentials.isUpdating
-      ? dispatch(colorActions.updateColor(checkedData))
-      : dispatch(colorActions.createColor(checkedData));
+  function createColorQuery({ args, isUpdating }) {
+    isUpdating
+      ? dispatch(colorActions.updateColor(args))
+      : dispatch(colorActions.createColor(args));
   }
 
-  return { createColorQuery, error };
+  return { createColorQuery };
 }

@@ -1,29 +1,29 @@
-import { memo } from "react";
+import { forwardRef } from "react";
 import * as Styled from "./Form.styled";
 
-export default memo(function InputTextarea({
-  id,
-  name,
-  label,
-  type = "text",
-  value,
-  placeholder,
-  message,
-  error = false,
-  onChange = () => {},
-  anotation,
-}) {
+function InputTextarea(
+  {
+    id,
+    label,
+    type = "text",
+    placeholder,
+    error = false,
+    message,
+    anotation,
+    fieldProps,
+  },
+  ref
+) {
   return (
     <Styled.InputTextarea className="form__input-text form__input--textarea">
       <label htmlFor={id}>{label}</label>
       <textarea
         id={id}
         type={type}
-        name={name}
-        className={`form__input-textarea ${error ? "error" : ""}`}
+        ref={ref}
+        {...fieldProps}
         placeholder={placeholder}
-        onChange={onChange}
-        value={value}
+        className={`form__input-textarea ${error ? "error" : ""}`}
       />
 
       {anotation && (
@@ -33,4 +33,6 @@ export default memo(function InputTextarea({
       {error && <p className="form__input-error--message">{message}</p>}
     </Styled.InputTextarea>
   );
-});
+}
+
+export default forwardRef(InputTextarea);

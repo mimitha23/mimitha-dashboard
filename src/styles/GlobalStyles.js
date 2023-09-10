@@ -16,7 +16,8 @@ export const AppStyles = createGlobalStyle`
 
   body {
     font-size: 1.6rem;
-    font-family: 'Roboto', sans-serif;
+    /* font-family: 'Roboto', sans-serif; */
+    font-family: 'Noto Sans Georgian', sans-serif;
     color: ${({ theme }) => theme.colors.text};
     background: ${({ theme }) => theme.colors.bg};
     ${scrollbar};

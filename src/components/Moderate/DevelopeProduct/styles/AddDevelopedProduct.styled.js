@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { moderateContentBox, Form } from "styles/helpers";
+import { moderateContentBox } from "styles/helpers";
 
 export const AddDevelopedProduct = styled.div`
   ${moderateContentBox};
@@ -9,6 +9,7 @@ export const AddDevelopedProduct = styled.div`
   .add-developed--product__content {
     width: 100%;
     display: flex;
+    align-items: flex-start;
     gap: 2rem;
     margin-top: 2rem;
   }

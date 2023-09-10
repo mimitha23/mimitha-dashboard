@@ -1,14 +1,17 @@
 import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import {
+  //  useDispatch,
+  useSelector,
+} from "react-redux";
 import { useParams } from "react-router-dom";
 
 import { selectDevelopeProductFullForm } from "store/selectors/moderate/developeProductSelectors";
-import { developeProductActions } from "store/reducers/moderate/developeProductReducer";
+// import { developeProductActions } from "store/reducers/moderate/developeProductReducer";
 import { DevelopeProductValidation } from "utils/validators/moderate";
 import { generateLowerCaseData } from "functions";
 
 export default function useDevelopeProductQuery() {
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const credentials = useSelector(selectDevelopeProductFullForm);
 
   const { registeredProductId } = useParams();
@@ -35,20 +38,20 @@ export default function useDevelopeProductQuery() {
       "filesToUpload",
       "updatingDevelopedProductId",
     ]);
-
-    credentials.isUpdating
-      ? dispatch(
-          developeProductActions.updateDevelopedProduct({
-            ...checkedData,
-            registeredProductId,
-          })
-        )
-      : dispatch(
-          developeProductActions.attachDevelopedProduct({
-            ...checkedData,
-            registeredProductId,
-          })
-        );
+    console.log(checkedData);
+    // credentials.isUpdating
+    //   ? dispatch(
+    //       developeProductActions.updateDevelopedProduct({
+    //         ...checkedData,
+    //         registeredProductId,
+    //       })
+    //     )
+    //   : dispatch(
+    //       developeProductActions.attachDevelopedProduct({
+    //         ...checkedData,
+    //         registeredProductId,
+    //       })
+    //     );
   }
 
   return { developeProductQuery, error };

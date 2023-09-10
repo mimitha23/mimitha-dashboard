@@ -24,10 +24,6 @@ const colorSlice = createSlice({
   name: "color",
   initialState,
   reducers: {
-    setColor(state, { payload: { key, value } }) {
-      state.form[key] = value;
-    },
-
     // API
     createColor: {
       prepare(payload) {

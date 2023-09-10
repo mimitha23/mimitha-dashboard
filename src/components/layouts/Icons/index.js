@@ -40,6 +40,8 @@ import {
   // FaShoppingCart,
 } from "react-icons/fa";
 
+import { FcCheckmark } from "react-icons/fc";
+
 const ArrowLeftIcon = MdOutlineArrowBackIosNew;
 const ArrowRightIcon = MdOutlineArrowForwardIos;
 const ArrowBottomIcon = MdOutlineKeyboardArrowDown;
@@ -47,6 +49,7 @@ const ArrowTopIcon = MdOutlineKeyboardArrowUp;
 // const BagIcon = BsFillHandbagFill;
 // const BurgerIcon = GiHamburgerMenu;
 const CloseXIcon = AiOutlineClose;
+const CheckedIcon = FcCheckmark;
 const DeleteIcon = MdDelete;
 // const DollarIcon = FaDollarSign;
 const EditIcon = MdModeEditOutline;
@@ -79,6 +82,7 @@ export {
   // BagIcon,
   // BurgerIcon,
   CloseXIcon,
+  CheckedIcon,
   DeleteIcon,
   // DollarIcon,
   EditIcon,

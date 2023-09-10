@@ -1,32 +1,34 @@
-import { memo } from "react";
+import { forwardRef } from "react";
 import * as Styled from "./Form.styled";
 
-export default memo(function InputText({
-  id,
-  name,
-  label,
-  type = "text",
-  value,
-  placeholder,
-  message,
-  error = false,
-  onChange = () => {},
-  anotation,
-}) {
+function InputText(
+  {
+    id,
+    label,
+    type = "text",
+    placeholder,
+    error = false,
+    message,
+    anotation,
+    fieldProps,
+  },
+  ref
+) {
   return (
     <Styled.Input data-input>
       {label && <label htmlFor={id}>{label}</label>}
       <input
         id={id}
         type={type}
-        name={name}
-        className={`form__input-field ${error ? "error" : ""}`}
+        ref={ref}
+        {...fieldProps}
         placeholder={placeholder}
-        onChange={onChange}
-        value={value}
+        className={`form__input-field ${error ? "error" : ""}`}
       />
       {anotation && <blockquote>{anotation}</blockquote>}
       {error && <p>{message}</p>}
     </Styled.Input>
   );
-});
+}
+
+export default forwardRef(InputText);

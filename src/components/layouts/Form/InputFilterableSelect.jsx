@@ -1,42 +1,48 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useState, memo } from "react";
+import { useState, forwardRef } from "react";
 
 import * as Styled from "./Form.styled";
 import { useClickOutside } from "hooks/utils";
 
-export default memo(function InputFilterableSelect({
-  id,
-  label,
-  name,
-  placeholder,
-  anotation,
-  readOnly = false,
-  value,
-  setValue,
-  selectValue,
-  error,
-  message,
-  list = [],
-  selectedList,
-  strictSelection = true,
-}) {
+function InputFilterableSelect(
+  {
+    id,
+    label,
+    placeholder,
+    anotation,
+    readOnly = false,
+    selectValue,
+    error,
+    message,
+    inputValue,
+    list = [],
+    selectedList,
+    strictSelection = true,
+    fieldProps,
+  },
+  ref
+) {
+  console.log(fieldProps);
   const [isTyping, setIsTyping] = useState(false);
 
   function handleDropdownItem(item) {
     setIsTyping(false);
-    selectValue({ key: name, value: item });
+    selectValue(item);
   }
+
   const dropdown_ref = useClickOutside(isTyping, () => {
     let valueToAssign = null;
 
-    const existingValue = list.find((item) => item.caption === value);
-    if (!strictSelection && value && existingValue)
-      valueToAssign = existingValue;
-    if (!strictSelection && value && !existingValue)
-      valueToAssign = { caption: value };
+    const existingValue = list.find((item) => item.caption === inputValue);
 
-    // !value && selectValue({ key: name, value: valueToAssign });
-    selectValue({ key: name, value: valueToAssign });
+    if (!strictSelection && inputValue && existingValue)
+      valueToAssign = existingValue;
+
+    if (!strictSelection && inputValue && !existingValue)
+      valueToAssign = { caption: inputValue };
+
+    selectValue(valueToAssign);
+
     setIsTyping(false);
   });
 
@@ -49,14 +55,14 @@ export default memo(function InputFilterableSelect({
 
       <input
         id={id}
+        ref={ref}
         type="text"
-        name={name}
-        className={`form__input-field  ${error ? "error" : ""}`}
-        placeholder={placeholder}
-        onChange={(e) => setValue({ key: name, value: e.target.value })}
-        value={value}
-        onFocus={() => setIsTyping(true)}
         readOnly={readOnly}
+        placeholder={placeholder}
+        onFocus={() => setIsTyping(true)}
+        {...fieldProps}
+        value={inputValue}
+        className={`form__input-field  ${error ? "error" : ""}`}
       />
 
       {isTyping && (
@@ -64,7 +70,9 @@ export default memo(function InputFilterableSelect({
           <ul className="filterable_dropdown-list">
             {list
               .filter((item) =>
-                value === "" || readOnly ? item : item.caption.includes(value)
+                inputValue === "" || readOnly
+                  ? item
+                  : item.caption.includes(inputValue)
               )
               .map((item) => (
                 <li
@@ -77,7 +85,7 @@ export default memo(function InputFilterableSelect({
                     )
                       ? "active"
                       : ""
-                  } ${item.caption === value ? "active" : ""}`}
+                  } ${item.caption === inputValue ? "active" : ""}`}
                   onClick={() => handleDropdownItem(item)}
                 >
                   {item.caption}
@@ -92,4 +100,6 @@ export default memo(function InputFilterableSelect({
       {error && <p>{message}</p>}
     </Styled.InputFilterableSelect>
   );
-});
+}
+
+export default forwardRef(InputFilterableSelect);

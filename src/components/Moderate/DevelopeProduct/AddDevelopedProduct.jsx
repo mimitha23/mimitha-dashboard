@@ -3,29 +3,14 @@ import { useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
-import {
-  selectDevelopeProductForm,
-  selectDevelopeProductStatus,
-  selectDevelopedProductAssets,
-  selectDevelopeProductFormSuggestions,
-} from "store/selectors/moderate/developeProductSelectors";
+import * as developeProductSelectors from "store/selectors/moderate/developeProductSelectors";
+
 import { useDevelopeProductQuery } from "hooks/api/moderate";
 import { developeProductActions } from "store/reducers/moderate/developeProductReducer";
 
 import { PATHS } from "config/routes";
 
-import {
-  Form,
-  InputText,
-  Button,
-  InputFile,
-  InputFilterableSelect,
-  InputTextarea,
-  LoadingSpinner,
-  InputCheckBox,
-  FormHeader,
-  ErrorModal,
-} from "components/layouts";
+import * as Layouts from "components/layouts";
 import DevelopedProductBlueprint from "./components/DevelopeProductBluePrint/DevelopedProductBlueprint";
 import AddVariantField from "./components/VariantField/AddVariantField";
 import SizeField from "./components/SizeField/SizeField";
@@ -37,10 +22,21 @@ export default function AddDevelopedProduct() {
 
   const { registeredProductId } = useParams();
 
-  const status = useSelector(selectDevelopeProductStatus);
-  const assets = useSelector(selectDevelopedProductAssets);
-  const developeForm = useSelector(selectDevelopeProductForm);
-  const { colors, sizes } = useSelector(selectDevelopeProductFormSuggestions);
+  const status = useSelector(
+    developeProductSelectors.selectDevelopeProductStatus
+  );
+
+  const assets = useSelector(
+    developeProductSelectors.selectDevelopedProductAssets
+  );
+
+  const developeForm = useSelector(
+    developeProductSelectors.selectDevelopeProductForm
+  );
+
+  const { colors, sizes } = useSelector(
+    developeProductSelectors.selectDevelopeProductFormSuggestions
+  );
 
   const filesRef = useRef(null);
 
@@ -96,7 +92,7 @@ export default function AddDevelopedProduct() {
 
   return (
     <Styled.AddDevelopedProduct>
-      <FormHeader
+      <Layouts.FormHeader
         title="განავითარე პროდუქტი"
         linkCaption="ნახე ყველა მიმაგრებული პროდუქტი"
         redirectPath={PATHS.moderate_nested_routes.developedProductsPage.absolutePath(
@@ -107,8 +103,8 @@ export default function AddDevelopedProduct() {
       <div className="add-developed--product__content">
         <div className="add-developed--product__form-wrapper">
           {!developeForm.isUpdating && <CopyDevelopedProductConfig />}
-          <Form>
-            <InputText
+          <Layouts.Form>
+            <Layouts.InputText
               id="product-title_ka"
               label="პროდუქტის სათაური (ka)"
               name="title_ka"
@@ -119,7 +115,7 @@ export default function AddDevelopedProduct() {
               onChange={setDevelopedProduct}
             />
 
-            <InputText
+            <Layouts.InputText
               id="product-title_en"
               label="პროდუქტის სათაური (en)"
               placeholder="black hoody with pocket"
@@ -130,7 +126,7 @@ export default function AddDevelopedProduct() {
               onChange={setDevelopedProduct}
             />
 
-            <InputText
+            <Layouts.InputText
               id="product-price"
               label="პროდუქტის ფასი"
               name="price"
@@ -142,7 +138,7 @@ export default function AddDevelopedProduct() {
               onChange={setDevelopedProduct}
             />
 
-            <InputFilterableSelect
+            <Layouts.InputFilterableSelect
               id="color"
               label="ფერი"
               name="color"
@@ -159,7 +155,7 @@ export default function AddDevelopedProduct() {
 
             <AddVariantField error={error.variants} />
 
-            <InputTextarea
+            <Layouts.InputTextarea
               id="product-description--ka"
               label="პროდუქტის აღწერა (ka)"
               name="description_ka"
@@ -170,7 +166,7 @@ export default function AddDevelopedProduct() {
               onChange={setDevelopedProduct}
             />
 
-            <InputTextarea
+            <Layouts.InputTextarea
               id="product-description--en"
               label="პროდუქტის აღწერა (en)"
               name="description_en"
@@ -181,7 +177,7 @@ export default function AddDevelopedProduct() {
               onChange={setDevelopedProduct}
             />
 
-            <InputCheckBox
+            <Layouts.InputCheckBox
               id="is-public"
               name="isPublic"
               checked={developeForm.isPublic}
@@ -190,7 +186,7 @@ export default function AddDevelopedProduct() {
               label="არი საჯარო"
             />
 
-            <InputCheckBox
+            <Layouts.InputCheckBox
               id="is-featured"
               checked={developeForm.isFeatured}
               name="isFeatured"
@@ -200,7 +196,7 @@ export default function AddDevelopedProduct() {
               label="is featured"
             />
 
-            <InputFile
+            <Layouts.InputFile
               name="newAssets"
               label="დაამატეთ პროდუქტის მედია ფაილები"
               fileRef={filesRef}
@@ -220,20 +216,20 @@ export default function AddDevelopedProduct() {
               }
             />
 
-            <Button
+            <Layouts.Button
               caption={developeForm.isUpdating ? "განახლება" : "შექმნა"}
               disabled={status.loading}
               onClick={onSubmit}
             />
-          </Form>
+          </Layouts.Form>
         </div>
 
         <DevelopedProductBlueprint />
       </div>
 
-      <ErrorModal status={status} />
+      <Layouts.ErrorModal status={status} />
 
-      {status.loading && <LoadingSpinner />}
+      {status.loading && <Layouts.LoadingSpinner />}
     </Styled.AddDevelopedProduct>
   );
 }

@@ -34,10 +34,6 @@ const variantSlice = createSlice({
   name: "variant",
   initialState,
   reducers: {
-    setVariant(state, { payload: { key, value } }) {
-      state.form[key] = value;
-    },
-
     setVariantType(state, { payload: value }) {
       state.form.variantType.caption = value;
     },
