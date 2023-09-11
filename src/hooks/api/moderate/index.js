@@ -1,7 +1,7 @@
-export { default as useCreateColorQuery } from "./useCreateColorQuery";
-export { default as useCreateVariantQuery } from "./useCreateVariantQuery";
-export { default as useCreateProductTypeQuery } from "./useCreateProductTypeQuery";
-export { default as useCreateProductStyleQuery } from "./useCreateProductStyleQuery";
+export { default as useColorMutationQuery } from "./useColorMutationQuery";
+export { default as useVariantMutationQuery } from "./useVariantMutationQuery";
+export { default as useProductTypeMutationQuery } from "./useProductTypeMutationQuery";
+export { default as useProductStyleMutationQuery } from "./useProductStyleMutationQuery";
+export { default as useTextureMutationQuery } from "./useTextureMutationQuery";
 export { default as useRegisterProductQuery } from "./useRegisterProductQuery";
-export { default as useCreateTextureQuery } from "./useCreateTextureQuery";
 export { default as useDevelopeProductQuery } from "./useDevelopeProductQuery";

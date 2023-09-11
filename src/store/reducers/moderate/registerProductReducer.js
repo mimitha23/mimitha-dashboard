@@ -72,20 +72,6 @@ const registerProductSlice = createSlice({
   name: "registered-products",
   initialState,
   reducers: {
-    // productType and gender
-    setSelectable(state, { payload: { key, value } }) {
-      state.form[key].caption = value;
-    },
-
-    selectSelectable(state, { payload: { key, value } }) {
-      if (value === null) {
-        state.form[key] = initialState.form[key];
-        return;
-      }
-
-      state.form[key] = value;
-    },
-
     // season and style
     setMultipleSelectable(state, { payload: { key, value } }) {
       // console.log({ key, value });
@@ -102,11 +88,6 @@ const registerProductSlice = createSlice({
       state.form[key] = isSelectedValue
         ? state.form[key].filter((v) => v._id !== selectedValue._id)
         : [{ ...selectedValue }, ...state.form[key]];
-    },
-
-    // isEditable
-    setIsEditable(state, { payload }) {
-      state.form.isEditable = payload;
     },
 
     // texture actions
@@ -234,9 +215,9 @@ const registerProductSlice = createSlice({
 
     // API
     registerProduct: {
-      prepare(payload) {
+      prepare({ data }) {
         return {
-          payload: prepareDataForDB(payload),
+          payload: prepareDataForDB({ data }),
         };
       },
 
@@ -286,9 +267,9 @@ const registerProductSlice = createSlice({
     },
 
     updateRegisteredProduct: {
-      prepare(payload) {
+      prepare({ data, updatingRegisteredProductId }) {
         return {
-          payload: prepareDataForDB(payload),
+          payload: prepareDataForDB({ data, updatingRegisteredProductId }),
         };
       },
 
@@ -347,8 +328,8 @@ const registerProductSlice = createSlice({
     },
 
     // REQUEST STATUS SETTERS
-    setSuccess(state) {
-      state.status = status.success();
+    setStatusSuccess(state, { payload }) {
+      state.status = status.success(payload);
     },
 
     setError(state, { payload }) {
@@ -380,55 +361,57 @@ const registerProductSlice = createSlice({
 export default registerProductSlice.reducer;
 export const registerProductActions = registerProductSlice.actions;
 
-function prepareDataForDB(payload) {
+function prepareDataForDB({ data, updatingRegisteredProductId }) {
   const credentials = {
-    isEditable: payload.isEditable,
-    productType: {
-      query: payload.productTypes.query,
-      ka: payload.productTypes.ka,
-      en: payload.productTypes.en,
-      _id: payload.productTypes._id,
+    data: {
+      isEditable: data.isEditable,
+      productType: {
+        ka: data.productTypes.ka,
+        en: data.productTypes.en,
+        query: data.productTypes.query,
+        _id: data.productTypes._id,
+      },
+      gender: {
+        query: data.gender.query,
+        ka: data.gender.ka,
+        en: data.gender.en,
+      },
+      category: {
+        query: data.category.query,
+        ka: data.category.ka,
+        en: data.category.en,
+        _id: data.category._id,
+      },
+      styles: data.productStyles.map((style) => ({
+        query: style.query,
+        ka: style.ka,
+        en: style.en,
+        _id: style._id,
+      })),
+      seasons: data.seasons.map((season) => ({
+        ka: season.ka,
+        en: season.en,
+        query: season.query,
+        _id: season._id,
+      })),
+      textures: data.textures.map((texture) => ({
+        percentage: texture.percentage,
+        ka: texture.textures.ka,
+        en: texture.textures.en,
+        _id: texture.textures._id,
+      })),
+      warnings: data.warnings.map((warning) => ({
+        ka: warning.ka,
+        en: warning.en,
+      })),
     },
-    category: {
-      query: payload.category.query,
-      ka: payload.category.ka,
-      en: payload.category.en,
-      _id: payload.category._id,
-    },
-    styles: payload.productStyles.map((style) => ({
-      query: style.query,
-      ka: style.ka,
-      en: style.en,
-      _id: style._id,
-    })),
-    seasons: payload.seasons.map((season) => ({
-      ka: season.ka,
-      en: season.en,
-      query: season.query,
-      _id: season._id,
-    })),
-    gender: {
-      query: payload.gender.query,
-      ka: payload.gender.ka,
-      en: payload.gender.en,
-    },
-    textures: payload.textures.map((texture) => ({
-      percentage: texture.percentage,
-      ka: texture.textures.ka,
-      en: texture.textures.en,
-      _id: texture.textures._id,
-    })),
-    warnings: payload.warnings.map((warning) => ({
-      ka: warning.ka,
-      en: warning.en,
-    })),
   };
 
-  if (payload.thumbnail) credentials.thumbnail = payload.thumbnail;
-  if (payload.newThumbnail) credentials.media = payload.newThumbnail;
+  if (data.thumbnail) credentials.data.thumbnail = data.thumbnail;
+  if (data.newThumbnail) credentials.data.media = data.newThumbnail;
 
-  if (payload.isUpdating && payload.updatingRegisteredProductId)
-    credentials._id = payload.updatingRegisteredProductId;
+  if (updatingRegisteredProductId)
+    credentials.updatingRegisteredProductId = updatingRegisteredProductId;
 
   return credentials;
 }

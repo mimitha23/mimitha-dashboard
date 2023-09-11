@@ -66,13 +66,6 @@ function InputFile(
         multiple={multiple}
         id="form-file--upload"
         {...fieldProps}
-        // name={name}
-        // onChange={(e) =>
-        //   onChange({
-        //     key: e.target.name,
-        //     value: multiple ? e.target.files : e.target.files[0],
-        //   })
-        // }
       />
 
       {anotation && <blockquote>{anotation}</blockquote>}

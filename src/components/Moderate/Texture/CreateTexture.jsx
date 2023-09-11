@@ -1,89 +1,62 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import { useEffect, useCallback } from "react";
-import { useDispatch, useSelector } from "react-redux";
-
-import {
-  selectTextureForm,
-  selectTextureStatus,
-} from "store/selectors/moderate/textureSelectors";
-import { useCreateTextureQuery } from "hooks/api/moderate";
-import { textureActions } from "store/reducers/moderate/textureReducer";
-
 import { PATHS } from "config/routes";
+import { Controller } from "react-hook-form";
+import { useTextureMutationQuery } from "hooks/api/moderate";
 
-import {
-  Form,
-  InputText,
-  Button,
-  LoadingSpinner,
-  FormHeader,
-  ErrorModal,
-} from "components/layouts";
+import * as Layouts from "components/layouts";
 import * as Styled from "./styles/CreateTexture.styled";
 
 export default function CreateTexture() {
-  const dispatch = useDispatch();
-  const status = useSelector(selectTextureStatus);
-  const { label_ka, label_en, isUpdating } = useSelector(selectTextureForm);
-
-  const { createTextureQuery, error } = useCreateTextureQuery();
-
-  const handleSetTexture = useCallback((e) => {
-    dispatch(
-      textureActions.setTexture({ key: e.target.name, value: e.target.value })
-    );
-  }, []);
-
-  useEffect(() => {
-    return () => {
-      dispatch(textureActions.resetState());
-    };
-  }, []);
+  const { form, isUpdating, onSubmit, status } = useTextureMutationQuery();
 
   return (
     <Styled.CreateTexture>
-      <FormHeader
+      <Layouts.FormHeader
         title="შექმენი ტექსტურა"
         linkCaption="ნახე ყველა ტექსტურა"
         redirectPath={PATHS.moderate_nested_routes.texturesPage.relativePath()}
       />
 
-      <Form>
-        <InputText
-          id="texture-label--ka"
-          label="ტექსტურა (ka)"
+      <Layouts.Form onSubmit={form.handleSubmit(onSubmit)}>
+        <Controller
           name="label_ka"
-          placeholder="ბამბა"
-          error={error.label_ka.hasError}
-          message={error.label_ka.message}
-          value={label_ka}
-          onChange={handleSetTexture}
+          control={form.control}
+          render={({ field, fieldState: { error } }) => (
+            <Layouts.InputText
+              id="texture-label--ka"
+              label="ტექსტურა (ka)"
+              placeholder="ბამბა"
+              error={error ? true : false}
+              message={error?.message}
+              fieldProps={{ ...field }}
+            />
+          )}
         />
 
-        <InputText
-          id="texture-label--en"
-          label="ტექსტურა (en)"
+        <Controller
           name="label_en"
-          placeholder="cotton"
-          error={error.label_en.hasError}
-          message={error.label_en.message}
-          value={label_en}
-          onChange={handleSetTexture}
+          control={form.control}
+          render={({ field, fieldState: { error } }) => (
+            <Layouts.InputText
+              id="texture-label--en"
+              label="ტექსტურა (en)"
+              placeholder="cotton"
+              error={error ? true : false}
+              message={error?.message}
+              fieldProps={{ ...field }}
+            />
+          )}
         />
 
-        <Button
-          caption={isUpdating ? "განახლება" : "შექმნა"}
+        <Layouts.Button
+          type="submit"
           disabled={status.loading}
-          onClick={(e) => {
-            e.preventDefault();
-            createTextureQuery();
-          }}
+          caption={isUpdating ? "განახლება" : "შექმნა"}
         />
-      </Form>
+      </Layouts.Form>
 
-      <ErrorModal status={status} />
+      <Layouts.ErrorModal status={status} />
 
-      {status.loading && <LoadingSpinner />}
+      {status.loading && <Layouts.LoadingSpinner />}
     </Styled.CreateTexture>
   );
 }

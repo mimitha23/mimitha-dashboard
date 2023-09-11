@@ -14,8 +14,8 @@ export async function getAllVariantQuery() {
 
 export async function updateVariantQuery(payload) {
   return await axiosFormDataQuery.put(
-    `/moderate/variant/${payload._id}`,
-    payload
+    `/moderate/variant/${payload.updatingVariantId}`,
+    payload.data
   );
 }
 

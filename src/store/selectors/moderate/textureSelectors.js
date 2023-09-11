@@ -8,6 +8,7 @@ const selectedTextureForm = ({ texture }) => ({
 });
 
 const selectedTextureStatus = ({ texture }) => ({
+  stage: texture.status.stage,
   loading: texture.status.loading,
   error: texture.status.error,
   message: texture.status.message,

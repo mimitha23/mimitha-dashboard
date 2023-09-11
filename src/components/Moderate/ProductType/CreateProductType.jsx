@@ -1,92 +1,63 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useCallback, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-
-import {
-  selectProductTypeForm,
-  selectProductTypeStatus,
-} from "store/selectors/moderate/productTypeSelectors";
-import { useCreateProductTypeQuery } from "hooks/api/moderate";
-import { productTypeActions } from "store/reducers/moderate/productTypeReducer";
-
 import { PATHS } from "config/routes";
+import { Controller } from "react-hook-form";
+import { useProductTypeMutationQuery } from "hooks/api/moderate";
 
-import {
-  Form,
-  InputText,
-  Button,
-  LoadingSpinner,
-  FormHeader,
-  ErrorModal,
-} from "components/layouts";
+import * as Layouts from "components/layouts";
 import * as Styled from "./styles/CreateProductType.styled";
 
 export default function CreateProductType() {
-  const dispatch = useDispatch();
-  const { label_ka, label_en, isUpdating } = useSelector(selectProductTypeForm);
-  const status = useSelector(selectProductTypeStatus);
-
-  const { createProductTypeQuery, error } = useCreateProductTypeQuery();
-
-  const handleSetProductType = useCallback((e) => {
-    dispatch(
-      productTypeActions.setProductType({
-        key: e.target.name,
-        value: e.target.value,
-      })
-    );
-  }, []);
-
-  useEffect(() => {
-    return () => {
-      dispatch(productTypeActions.resetState());
-    };
-  }, []);
+  const { form, isUpdating, onSubmit, status } = useProductTypeMutationQuery();
 
   return (
     <Styled.CreateProductType>
-      <FormHeader
+      <Layouts.FormHeader
         title="შექმენი პროდუქტის ტიპი"
         linkCaption="ნახე პროდუქტის ყველა ტიპი"
         redirectPath={PATHS.moderate_nested_routes.productTypesPage.relativePath()}
       />
 
-      <Form>
-        <InputText
-          id="product-label-ka"
-          label="პროდუქტის ტიპის იარლიყი (ka)"
+      <Layouts.Form onSubmit={form.handleSubmit(onSubmit)}>
+        <Controller
           name="label_ka"
-          placeholder="კარგო შარვალი"
-          error={error.label_ka.hasError}
-          message={error.label_ka.message}
-          value={label_ka}
-          onChange={handleSetProductType}
+          control={form.control}
+          render={({ field, fieldState: { error } }) => (
+            <Layouts.InputText
+              id="product-label-ka"
+              label="პროდუქტის ტიპის იარლიყი (ka)"
+              placeholder="კარგო შარვალი"
+              error={error ? true : false}
+              message={error?.message}
+              fieldProps={{ ...field }}
+            />
+          )}
         />
 
-        <InputText
-          id="product-label-en"
-          label="პროდუქტის ტიპის იარლიყი (en)"
+        <Controller
           name="label_en"
-          placeholder="cargo trousers"
-          error={error.label_en.hasError}
-          message={error.label_en.message}
-          value={label_en}
-          onChange={handleSetProductType}
+          control={form.control}
+          render={({ field, fieldState: { error } }) => (
+            <Layouts.InputText
+              id="product-label-en"
+              label="პროდუქტის ტიპის იარლიყი (en)"
+              placeholder="cargo trousers"
+              error={error ? true : false}
+              message={error?.message}
+              fieldProps={{ ...field }}
+            />
+          )}
         />
 
-        <Button
-          caption={isUpdating ? "განახლება" : "შექმნა"}
+        <Layouts.Button
+          type="submit"
           disabled={status.loading}
-          onClick={(e) => {
-            e.preventDefault();
-            createProductTypeQuery();
-          }}
+          caption={isUpdating ? "განახლება" : "შექმნა"}
         />
-      </Form>
+      </Layouts.Form>
 
-      <ErrorModal status={status} />
+      <Layouts.ErrorModal status={status} />
 
-      {status.loading && <LoadingSpinner />}
+      {status.loading && <Layouts.LoadingSpinner />}
     </Styled.CreateProductType>
   );
 }

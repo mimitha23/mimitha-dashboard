@@ -10,8 +10,8 @@ export async function getAllProductTypeQuery() {
 
 export async function updateProductTypeQuery(payload) {
   return await axiosPrivateQuery.put(
-    `/moderate/product-type/${payload._id}`,
-    payload
+    `/moderate/product-type/${payload.updatingProductTypeId}`,
+    payload.data
   );
 }
 

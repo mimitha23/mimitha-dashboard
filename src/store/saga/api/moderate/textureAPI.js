@@ -10,8 +10,8 @@ export async function getAllTextureQuery() {
 
 export async function updateTextureQuery(payload) {
   return await axiosPrivateQuery.put(
-    `/moderate/texture/${payload._id}`,
-    payload
+    `/moderate/texture/${payload.updatingTextureId}`,
+    payload.data
   );
 }
 

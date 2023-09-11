@@ -1,7 +1,8 @@
 import { call, put } from "redux-saga/effects";
-import { errorController } from "store/saga/handlers/helpers";
-import { registerProductActions } from "store/reducers/moderate/registerProductReducer";
 import { registerProductAPI } from "store/saga/api/moderate";
+import { errorController } from "store/saga/handlers/helpers";
+import { REQUEST_STATUS_STAGE } from "store/reducers/helpers/controlStatus";
+import { registerProductActions } from "store/reducers/moderate/registerProductReducer";
 
 export function* getRegisterProductFormSuggestions() {
   try {
@@ -9,7 +10,7 @@ export function* getRegisterProductFormSuggestions() {
       registerProductAPI.getRegisterProductFormSuggestionsQuery
     );
     yield put(registerProductActions.setRegisterProductFormSuggestions(data));
-    yield put(registerProductActions.setSuccess());
+    yield put(registerProductActions.setStatusSuccess());
   } catch (error) {
     yield errorController({
       error,
@@ -22,8 +23,9 @@ export function* getRegisterProductFormSuggestions() {
 export function* registerProduct({ payload }) {
   try {
     yield call(registerProductAPI.registerProductQuery, payload);
-    yield put(registerProductActions.resetFormState());
-    yield put(registerProductActions.setSuccess());
+    yield put(
+      registerProductActions.setStatusSuccess(REQUEST_STATUS_STAGE.SUCCESS)
+    );
   } catch (error) {
     yield errorController({
       error,
@@ -37,7 +39,9 @@ export function* updateRegisteredProduct({ payload }) {
   try {
     yield call(registerProductAPI.updateRegisteredProductQuery, payload);
     yield put(registerProductActions.resetFormState());
-    yield put(registerProductActions.setSuccess());
+    yield put(
+      registerProductActions.setStatusSuccess(REQUEST_STATUS_STAGE.SUCCESS)
+    );
   } catch (error) {
     yield errorController({
       error,
@@ -51,7 +55,7 @@ export function* deleteRegisteredProduct({ payload }) {
   try {
     yield call(registerProductAPI.deleteRegisteredProductQuery, payload);
     yield put(registerProductActions.setDeletedRegisteredProduct(payload._id));
-    yield put(registerProductActions.setSuccess());
+    yield put(registerProductActions.setStatusSuccess());
   } catch (error) {
     yield errorController({
       error,
@@ -67,7 +71,7 @@ export function* getAllRegisteredProducts() {
       registerProductAPI.getAllRegisteredProductsQuery
     );
     yield put(registerProductActions.setAllRegisteredProducts(data));
-    yield put(registerProductActions.setSuccess());
+    yield put(registerProductActions.setStatusSuccess());
   } catch (error) {
     yield errorController({
       error,

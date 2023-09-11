@@ -13,6 +13,7 @@ const selectedVariantForm = ({ variant }) => ({
 });
 
 const selectedVariantStatus = ({ variant }) => ({
+  stage: variant.status.stage,
   loading: variant.status.loading,
   error: variant.status.error,
   message: variant.status.message,

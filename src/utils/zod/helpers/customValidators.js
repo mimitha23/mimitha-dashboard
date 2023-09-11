@@ -14,6 +14,10 @@ export const customValidators = {
     validator: (value) => regex.is_latin_letters.test(value),
     message: (key) => `${key} უნდა შეიყვანოთ მხოლოდ ლათინური ასოებით.`,
   },
+  isValidQueryStr: {
+    validator: (value) => regex.is_valid_query_str.test(value),
+    message: (key) => `${key} უნდა იყოს ვალიდური query.`,
+  },
   isOnlyLatinLetters: {
     validator: (value) => regex.is_only_latin_letters.test(value),
     message: (key) =>
@@ -33,8 +37,32 @@ export const customValidators = {
       !regex.has_two_or_more_white_space_in_sequence.test(value),
     message: (key) => `${key} შეიცავს 2 ან მეტ შორისს თანმიმდევრობით.`,
   },
-  isValidBase64Str: {
-    validator: (value) => regex.is_base_64_str.test(value),
+  isOptionalURL: {
+    validator: (value) => (value ? regex.is_valid_url.test(value) : true),
+    message: (key) => `${key} უნდა წარმოადგენდეს ვალიდურ ბმულს.`,
+  },
+  isValidBase64ImageStr: {
+    validator: (value) => {
+      const stringIsValidBase64Format =
+        regex.is_valid_base_64_image_str.test(value);
+
+      if (!stringIsValidBase64Format) return false;
+
+      const base64Str = value.split(";base64,")[1];
+
+      const binaryData = atob(base64Str);
+      const validImageHeaders = [
+        "\x89PNG",
+        "\xFF\xD8\xFF",
+        "GIF",
+        "WEBP",
+        "<svg",
+      ];
+
+      const decodedHeader = binaryData.substring(0, 5);
+
+      return validImageHeaders.some((header) => decodedHeader.includes(header));
+    },
     message: (key) => `${key} უნდა წარმოადგენდეს ვალიდურ ფაილს.`,
   },
 };

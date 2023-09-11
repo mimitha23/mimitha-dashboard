@@ -12,26 +12,18 @@ const initialState = {
   isUpdating: false,
   updatingTextureId: "",
 
-  status: {
-    loading: false,
-    error: null,
-    message: "",
-  },
+  status: status.default(),
 };
 
 const textureSlice = createSlice({
   name: "texture",
   initialState,
   reducers: {
-    setTexture(state, { payload: { key, value } }) {
-      state.form[key] = value;
-    },
-
     // API
     createTexture: {
-      prepare(payload) {
+      prepare({ data }) {
         return {
-          payload: prepareDataForDB(payload),
+          payload: prepareDataForDB({ data }),
         };
       },
 
@@ -53,9 +45,9 @@ const textureSlice = createSlice({
     },
 
     updateTexture: {
-      prepare(payload) {
+      prepare({ data, updatingTextureId }) {
         return {
-          payload: prepareDataForDB(payload),
+          payload: prepareDataForDB({ data, updatingTextureId }),
         };
       },
 
@@ -93,8 +85,8 @@ const textureSlice = createSlice({
     },
 
     // REQUEST STATUS SETTERS
-    setSuccess(state) {
-      state.status = status.success();
+    setStatusSuccess(state, { payload }) {
+      state.status = status.success(payload);
     },
 
     setError(state, { payload }) {
@@ -126,14 +118,15 @@ const textureSlice = createSlice({
 export default textureSlice.reducer;
 export const textureActions = textureSlice.actions;
 
-function prepareDataForDB(payload) {
+function prepareDataForDB({ data, updatingTextureId }) {
   const credentials = {
-    ka: payload.label_ka,
-    en: payload.label_en,
+    data: {
+      ka: data.label_ka,
+      en: data.label_en,
+    },
   };
 
-  if (payload.isUpdating && payload.updatingTextureId)
-    credentials._id = payload.updatingTextureId;
+  if (updatingTextureId) credentials.updatingTextureId = updatingTextureId;
 
   return credentials;
 }

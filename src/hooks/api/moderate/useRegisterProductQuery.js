@@ -1,42 +1,100 @@
-import { useState } from "react";
+/* eslint-disable react-hooks/exhaustive-deps */
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { selectRegisterProductForm } from "store/selectors/moderate/registerProductSelectors";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { registerProductValidation } from "utils/zod/moderate";
+
+import { generateBase64Str } from "utils";
+import { REQUEST_STATUS_STAGE } from "store/reducers/helpers/controlStatus";
+
 import { registerProductActions } from "store/reducers/moderate/registerProductReducer";
-import { RegisterProductValidation } from "utils/validators/moderate";
-import { generateLowerCaseData } from "functions";
+import * as registerProductSelectors from "store/selectors/moderate/registerProductSelectors";
 
 export default function useRegisterProductQuery() {
   const dispatch = useDispatch();
-  const credentials = useSelector(selectRegisterProductForm);
 
-  const registerProductValidation = new RegisterProductValidation().prepare(
-    credentials
+  const status = useSelector(
+    registerProductSelectors.selectRegisterProductStatus
   );
 
-  const [error, setError] = useState(registerProductValidation.error);
+  const registerProductDefaults = useSelector(
+    registerProductSelectors.selectRegisterProductForm
+  );
 
-  function registerProductQuery() {
-    const { error: validation } = registerProductValidation
-      .validate(credentials)
-      .validateTexturesPercentageSum(credentials.textures)
-      .validateSameTextures(credentials.textures);
+  const formDefaults = {
+    isEditable: false,
+    thumbnail: "",
+    productTypes: {
+      _id: "",
+      ka: "",
+      en: "",
+      query: "",
+      caption: "",
+    },
+    gender: {
+      _id: "",
+      ka: "",
+      en: "",
+      query: "",
+      caption: "",
+    },
+    category: {
+      _id: "",
+      ka: "",
+      en: "",
+      query: "",
+      caption: "",
+    },
+  };
 
-    setError((prev) => ({ ...prev, ...validation }));
+  const form = useForm({
+    resolver: zodResolver(registerProductValidation),
+    defaultValues: formDefaults,
+  });
 
-    if (validation.hasError) return;
+  async function onFileChange(reactEvent, fieldChangeEvent) {
+    const file = reactEvent.target.files[0];
 
-    const checkedData = generateLowerCaseData(credentials, [
-      "warning",
-      "media",
-      "newThumbnail",
-      "updatingRegisteredProductId",
-    ]);
+    const { hasError, base64Str } = await generateBase64Str({
+      file,
+      fileType: "image/",
+    });
 
-    credentials.isUpdating
-      ? dispatch(registerProductActions.updateRegisteredProduct(checkedData))
-      : dispatch(registerProductActions.registerProduct(checkedData));
+    if (hasError)
+      return form.setError(
+        "thumbnail",
+        "ფაილის ნიშნული უნდა წარმოადგენდეს ვალიდურ ფაილს"
+      );
+
+    fieldChangeEvent(base64Str);
   }
 
-  return { registerProductQuery, error };
+  function onSelect({ key, item }) {
+    const f = form.getValues();
+    form.setValue(key, { ...f[key], ...item });
+  }
+
+  const onSubmit = (values) => {
+    console.log(values);
+    // registerProductDefaults.isUpdating
+    //   ? dispatch(
+    //       registerProductActions.updateRegisteredProduct({
+    //         data: values,
+    //         updatingRegisteredProductId:
+    //           registerProductDefaults.updatingRegisteredProductId,
+    //       })
+    //     )
+    //   : dispatch(registerProductActions.registerProduct({ data: values }));
+  };
+
+  useEffect(() => {
+    if (status.stage === REQUEST_STATUS_STAGE.SUCCESS) {
+      form.reset(formDefaults);
+      dispatch(registerProductActions.setStatusSuccess());
+    }
+  }, [status]);
+
+  return { form, onSelect, onFileChange, onSubmit, status };
 }

@@ -9,7 +9,10 @@ export async function getAllColorQuery() {
 }
 
 export async function updateColorQuery(payload) {
-  return await axiosPrivateQuery.put(`/moderate/color/${payload._id}`, payload);
+  return await axiosPrivateQuery.put(
+    `/moderate/color/${payload.updatingColorId}`,
+    payload.data
+  );
 }
 
 export async function deleteColorQuery(payload) {

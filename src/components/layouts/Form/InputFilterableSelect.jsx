@@ -22,7 +22,6 @@ function InputFilterableSelect(
   },
   ref
 ) {
-  console.log(fieldProps);
   const [isTyping, setIsTyping] = useState(false);
 
   function handleDropdownItem(item) {
@@ -86,7 +85,7 @@ function InputFilterableSelect(
                       ? "active"
                       : ""
                   } ${item.caption === inputValue ? "active" : ""}`}
-                  onClick={() => handleDropdownItem(item)}
+                  onMouseDown={() => handleDropdownItem(item)}
                 >
                   {item.caption}
                 </li>

@@ -13,11 +13,7 @@ const initialState = {
   isUpdating: false,
   updatingColorId: "",
 
-  status: {
-    loading: false,
-    error: null,
-    message: "",
-  },
+  status: status.default(),
 };
 
 const colorSlice = createSlice({
@@ -26,9 +22,9 @@ const colorSlice = createSlice({
   reducers: {
     // API
     createColor: {
-      prepare(payload) {
+      prepare({ data }) {
         return {
-          payload: prepareDataForDB(payload),
+          payload: prepareDataForDB({ data }),
         };
       },
 
@@ -51,9 +47,9 @@ const colorSlice = createSlice({
     },
 
     updateColor: {
-      prepare(payload) {
+      prepare({ data, updatingColorId }) {
         return {
-          payload: prepareDataForDB(payload),
+          payload: prepareDataForDB({ data, updatingColorId }),
         };
       },
 
@@ -91,8 +87,8 @@ const colorSlice = createSlice({
     },
 
     // REQUEST STATUS SETTERS
-    setSuccess(state) {
-      state.status = status.success();
+    setStatusSuccess(state, { payload }) {
+      state.status = status.success(payload);
     },
 
     setError(state, { payload }) {
@@ -124,14 +120,16 @@ const colorSlice = createSlice({
 export default colorSlice.reducer;
 export const colorActions = colorSlice.actions;
 
-function prepareDataForDB(payload) {
+function prepareDataForDB({ data, updatingColorId }) {
   const credentials = {
-    ka: payload.color_ka,
-    en: payload.color_en,
-    hex: payload.color_hex,
+    data: {
+      ka: data.color_ka,
+      en: data.color_en,
+      hex: data.color_hex,
+    },
   };
 
-  if (payload.updatingColorId) credentials._id = payload.updatingColorId;
+  if (updatingColorId) credentials.updatingColorId = updatingColorId;
 
   return credentials;
 }

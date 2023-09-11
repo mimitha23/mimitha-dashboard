@@ -1,94 +1,63 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import { useCallback, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-
-import {
-  selectProductStyleForm,
-  selectProductStyleStatus,
-} from "store/selectors/moderate/productStyleSelectors";
-import { useCreateProductStyleQuery } from "hooks/api/moderate";
-import { productStyleActions } from "store/reducers/moderate/productStyleReducer";
+import { useProductStyleMutationQuery } from "hooks/api/moderate";
 
 import { PATHS } from "config/routes";
+import { Controller } from "react-hook-form";
 
-import {
-  Form,
-  InputText,
-  Button,
-  LoadingSpinner,
-  FormHeader,
-  ErrorModal,
-} from "components/layouts";
+import * as Layouts from "components/layouts";
 import * as Styled from "./styles/CreateProductStyle.styled";
 
 export default function CreateProductStyle() {
-  const dispatch = useDispatch();
-  const status = useSelector(selectProductStyleStatus);
-  const { label_ka, label_en, isUpdating } = useSelector(
-    selectProductStyleForm
-  );
-
-  const { createProductStyleQuery, error } = useCreateProductStyleQuery();
-
-  const handleSetProductStyle = useCallback((e) => {
-    dispatch(
-      productStyleActions.setProductStyle({
-        key: e.target.name,
-        value: e.target.value,
-      })
-    );
-  }, []);
-
-  useEffect(() => {
-    return () => {
-      dispatch(productStyleActions.resetState());
-    };
-  }, []);
+  const { form, isUpdating, onSubmit, status } = useProductStyleMutationQuery();
 
   return (
     <Styled.CreateProductStyle>
-      <FormHeader
+      <Layouts.FormHeader
         title="შექმენი პროდუქტის სტილი"
         linkCaption="ნახე პროდუქტის ყველა სტილი"
         redirectPath={PATHS.moderate_nested_routes.productStylesPage.relativePath()}
       />
 
-      <Form>
-        <InputText
-          id="product-label-ka"
-          label="პროდუქტის სტილის იარლიყი (ka)"
+      <Layouts.Form onSubmit={form.handleSubmit(onSubmit)}>
+        <Controller
           name="label_ka"
-          placeholder="სპორტული"
-          error={error.label_ka.hasError}
-          message={error.label_ka.message}
-          value={label_ka}
-          onChange={handleSetProductStyle}
+          control={form.control}
+          render={({ field, fieldState: { error } }) => (
+            <Layouts.InputText
+              id="product-label-ka"
+              label="პროდუქტის სტილის იარლიყი (ka)"
+              placeholder="სპორტული"
+              error={error ? true : false}
+              message={error?.message}
+              fieldProps={{ ...field }}
+            />
+          )}
         />
 
-        <InputText
-          id="product-label-en"
-          label="პროდუქტის სტილის იარლიყი (en)"
+        <Controller
           name="label_en"
-          placeholder="sportswear"
-          error={error.label_en.hasError}
-          message={error.label_en.message}
-          value={label_en}
-          onChange={handleSetProductStyle}
+          control={form.control}
+          render={({ field, fieldState: { error } }) => (
+            <Layouts.InputText
+              id="product-label-en"
+              label="პროდუქტის სტილის იარლიყი (en)"
+              name="label_en"
+              error={error ? true : false}
+              message={error?.message}
+              fieldProps={{ ...field }}
+            />
+          )}
         />
 
-        <Button
-          caption={isUpdating ? "განახლება" : "შექმნა"}
+        <Layouts.Button
+          type="submit"
           disabled={status.loading}
-          onClick={(e) => {
-            e.preventDefault();
-            createProductStyleQuery();
-          }}
+          caption={isUpdating ? "განახლება" : "შექმნა"}
         />
-      </Form>
+      </Layouts.Form>
 
-      <ErrorModal status={status} />
+      <Layouts.ErrorModal status={status} />
 
-      {status.loading && <LoadingSpinner />}
+      {status.loading && <Layouts.LoadingSpinner />}
     </Styled.CreateProductStyle>
   );
 }

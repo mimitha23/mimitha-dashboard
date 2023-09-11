@@ -15,26 +15,18 @@ const initialState = {
   isUpdating: false,
   updatingProductTypeId: "",
 
-  status: {
-    loading: false,
-    error: null,
-    message: "",
-  },
+  status: status.default(),
 };
 
 const productTypeSlice = createSlice({
   name: "product-type",
   initialState,
   reducers: {
-    setProductType(state, { payload: { key, value } }) {
-      state.form[key] = value;
-    },
-
     // API
     createProductType: {
-      prepare(payload) {
+      prepare({ data }) {
         return {
-          payload: prepareDataForDB(payload),
+          payload: prepareDataForDB({ data }),
         };
       },
 
@@ -56,9 +48,9 @@ const productTypeSlice = createSlice({
     },
 
     updateProductType: {
-      prepare(payload) {
+      prepare({ data, updatingProductTypeId }) {
         return {
-          payload: prepareDataForDB(payload),
+          payload: prepareDataForDB({ data, updatingProductTypeId }),
         };
       },
 
@@ -96,8 +88,8 @@ const productTypeSlice = createSlice({
     },
 
     // REQUEST STATUS SETTERS
-    setSuccess(state) {
-      state.status = status.success();
+    setStatusSuccess(state, { payload }) {
+      state.status = status.success(payload);
     },
 
     setError(state, { payload }) {
@@ -129,15 +121,17 @@ const productTypeSlice = createSlice({
 export default productTypeSlice.reducer;
 export const productTypeActions = productTypeSlice.actions;
 
-function prepareDataForDB(payload) {
+function prepareDataForDB({ data, updatingProductTypeId }) {
   const credentials = {
-    ka: payload.label_ka,
-    en: payload.label_en,
-    query: createQueryStr(payload.label_en),
+    data: {
+      ka: data.label_ka,
+      en: data.label_en,
+      query: createQueryStr(data.label_en),
+    },
   };
 
-  if (payload.isUpdating && payload.updatingProductTypeId)
-    credentials._id = payload.updatingProductTypeId;
+  if (updatingProductTypeId)
+    credentials.updatingProductTypeId = updatingProductTypeId;
 
   return credentials;
 }

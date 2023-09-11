@@ -10,9 +10,8 @@ export default function useClickOutside(isActive, handler) {
       if (
         container_ref.current &&
         !container_ref.current.contains(event.target)
-      ) {
+      )
         handler();
-      }
     };
 
     document.addEventListener("mousedown", handleClickOutside);

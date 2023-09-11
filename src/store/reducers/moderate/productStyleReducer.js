@@ -1,6 +1,6 @@
 import {
-  controlStatus as status,
   createQueryStr,
+  controlStatus as status,
 } from "store/reducers/helpers";
 import { createSlice } from "@reduxjs/toolkit";
 
@@ -15,26 +15,18 @@ const initialState = {
   isUpdating: false,
   updatingProductStyleId: "",
 
-  status: {
-    loading: false,
-    error: null,
-    message: "",
-  },
+  status: status.default(),
 };
 
 const productStyleSlice = createSlice({
   name: "product-style",
   initialState,
   reducers: {
-    setProductStyle(state, { payload: { key, value } }) {
-      state.form[key] = value;
-    },
-
     // API
     createProductStyle: {
-      prepare(payload) {
+      prepare({ data }) {
         return {
-          payload: prepareDataForDB(payload),
+          payload: prepareDataForDB({ data }),
         };
       },
 
@@ -56,9 +48,9 @@ const productStyleSlice = createSlice({
     },
 
     updateProductStyle: {
-      prepare(payload) {
+      prepare({ data, updatingProductStyleId }) {
         return {
-          payload: prepareDataForDB(payload),
+          payload: prepareDataForDB({ data, updatingProductStyleId }),
         };
       },
 
@@ -96,8 +88,8 @@ const productStyleSlice = createSlice({
     },
 
     // REQUEST STATUS SETTERS
-    setSuccess(state) {
-      state.status = status.success();
+    setStatusSuccess(state, { payload }) {
+      state.status = status.success(payload);
     },
 
     setError(state, { payload }) {
@@ -129,15 +121,17 @@ const productStyleSlice = createSlice({
 export default productStyleSlice.reducer;
 export const productStyleActions = productStyleSlice.actions;
 
-function prepareDataForDB(payload) {
+function prepareDataForDB({ data, updatingProductStyleId }) {
   const credentials = {
-    ka: payload.label_ka,
-    en: payload.label_en,
-    query: createQueryStr(payload.label_ka),
+    data: {
+      ka: data.label_ka,
+      en: data.label_en,
+      query: createQueryStr(data.label_ka),
+    },
   };
 
-  if (payload.isUpdating && payload.updatingProductStyleId)
-    credentials._id = payload.updatingProductStyleId;
+  if (updatingProductStyleId)
+    credentials.updatingProductStyleId = updatingProductStyleId;
 
   return credentials;
 }

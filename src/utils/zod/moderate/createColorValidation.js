@@ -1,5 +1,5 @@
 import z from "zod";
-import { customValidators } from "../helpers/customValidators";
+import { customValidators } from "utils/zod/helpers/customValidators";
 
 const createColorValidation = z.object({
   color_ka: z

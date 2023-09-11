@@ -9,6 +9,7 @@ const selectedColorForm = ({ color }) => ({
 });
 
 const selectedColorStatus = ({ color }) => ({
+  stage: color.status.stage,
   loading: color.status.loading,
   error: color.status.error,
   message: color.status.message,

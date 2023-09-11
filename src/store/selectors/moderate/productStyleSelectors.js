@@ -8,6 +8,7 @@ const selectedProductStyleForm = ({ productStyle }) => ({
 });
 
 const selectedProductStyleStatus = ({ productStyle }) => ({
+  stage: productStyle.status.stage,
   loading: productStyle.status.loading,
   error: productStyle.status.error,
   message: productStyle.status.message,

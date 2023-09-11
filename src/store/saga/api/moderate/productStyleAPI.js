@@ -10,8 +10,8 @@ export async function getAllProductStyleQuery() {
 
 export async function updateProductStyleQuery(payload) {
   return await axiosPrivateQuery.put(
-    `/moderate/product-style/${payload._id}`,
-    payload
+    `/moderate/product-style/${payload.updatingProductStyleId}`,
+    payload.data
   );
 }
 

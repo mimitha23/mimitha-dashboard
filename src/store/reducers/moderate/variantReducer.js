@@ -1,5 +1,6 @@
 import { createSlice, nanoid } from "@reduxjs/toolkit";
 import { controlStatus as status } from "store/reducers/helpers";
+import { convertBase64StrToFile } from "utils";
 
 const initialState = {
   form: {
@@ -23,39 +24,13 @@ const initialState = {
   existingVariantTypes: [],
   allVariants: [],
 
-  status: {
-    loading: false,
-    error: null,
-    message: "",
-  },
+  status: status.default(),
 };
 
 const variantSlice = createSlice({
   name: "variant",
   initialState,
   reducers: {
-    setVariantType(state, { payload: value }) {
-      state.form.variantType.caption = value;
-    },
-
-    selectVariantType(state, { payload: variant }) {
-      if (variant === null) {
-        state.form.variantType = initialState.form.variantType;
-        return;
-      }
-
-      state.form.variantType = variant;
-
-      if (variant._id && variant.label_ka && variant.label_en) {
-        state.form.label_en = variant.label_en;
-        state.form.label_ka = variant.label_ka;
-      }
-    },
-
-    setIcon(state, { payload }) {
-      state.form.newIcon = payload;
-    },
-
     // API
     getExistingVariantTypes: {
       reducer(state) {
@@ -73,9 +48,9 @@ const variantSlice = createSlice({
     },
 
     createVariant: {
-      prepare(payload) {
+      prepare({ data }) {
         return {
-          payload: prepareDataForDB(payload),
+          payload: prepareDataForDB({ data }),
         };
       },
 
@@ -101,9 +76,9 @@ const variantSlice = createSlice({
     },
 
     updateVariant: {
-      prepare(payload) {
+      prepare({ data, updatingVariantId }) {
         return {
-          payload: prepareDataForDB(payload),
+          payload: prepareDataForDB({ data, updatingVariantId }),
         };
       },
 
@@ -141,8 +116,8 @@ const variantSlice = createSlice({
     },
 
     // REQUEST STATUS SETTERS
-    setSuccess(state) {
-      state.status = status.success();
+    setStatusSuccess(state, { payload: stage }) {
+      state.status = status.success(stage);
     },
 
     setError(state, { payload }) {
@@ -174,20 +149,23 @@ const variantSlice = createSlice({
 export default variantSlice.reducer;
 export const variantActions = variantSlice.actions;
 
-function prepareDataForDB(payload) {
+function prepareDataForDB({ data, updatingVariantId }) {
   const credentials = {
-    type: payload.variantType.caption,
-    description_ka: payload.description_ka,
-    description_en: payload.description_en,
-    label_ka: payload.label_ka,
-    label_en: payload.label_en,
+    data: {
+      type: data.variant_type.caption,
+      description_ka: data.description_ka,
+      description_en: data.description_en,
+      label_ka: data.label_ka,
+      label_en: data.label_en,
+    },
   };
 
-  if (payload.icon) credentials.icon = payload.icon;
-  if (payload.newIcon) credentials.media = payload.newIcon;
+  if (data.icon) credentials.data.icon = data.icon;
+  if (data.new_icon) {
+    const blob = convertBase64StrToFile({ base64Str: data.new_icon });
+    credentials.data.media = blob;
+  }
 
-  if (payload.isUpdating && payload.updatingVariantId)
-    credentials._id = payload.updatingVariantId;
-
+  if (updatingVariantId) credentials.updatingVariantId = updatingVariantId;
   return credentials;
 }

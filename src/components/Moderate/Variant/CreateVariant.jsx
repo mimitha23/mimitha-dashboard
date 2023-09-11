@@ -2,14 +2,12 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { useCreateVariantQuery } from "hooks/api/moderate";
+import { useVariantMutationQuery } from "hooks/api/moderate";
 import { variantActions } from "store/reducers/moderate/variantReducer";
 import * as variantSelectors from "store/selectors/moderate/variantSelectors";
 
 import { PATHS } from "config/routes";
-import { useForm, Controller } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { createVariantValidation } from "utils/zod/moderate";
+import { Controller } from "react-hook-form";
 
 import * as Layouts from "components/layouts";
 import * as Styled from "./styles/CreateVariant.styled";
@@ -17,61 +15,10 @@ import * as Styled from "./styles/CreateVariant.styled";
 export default function CreateVariant() {
   const dispatch = useDispatch();
 
-  const { createVariantQuery, error } = useCreateVariantQuery();
-
-  const {
-    variantType,
-    label_ka,
-    label_en,
-    description_ka,
-    description_en,
-    icon,
-    newIcon,
-    isUpdating,
-  } = useSelector(variantSelectors.selectVariantForm);
-  const status = useSelector(variantSelectors.selectVariantStatus);
   const variants = useSelector(variantSelectors.selectExistingVariantTypes);
 
-  const form = useForm({
-    resolver: zodResolver(createVariantValidation),
-    defaultValues: {
-      variantType: {
-        _id: "",
-        caption: "",
-        label_ka: "",
-        label_en: "",
-      },
-      label_ka: "",
-      label_en: "",
-      description_ka: "",
-      description_en: "",
-      icon: "",
-      new_icon: "",
-    },
-  });
-
-  function onFileChange(reactEvent, fieldChangeEvent) {
-    const file = reactEvent.target.files[0];
-
-    const isImageFile =
-      file && file instanceof File && file.type.includes("image");
-
-    if (!isImageFile) return;
-
-    const fileReader = new FileReader();
-    fileReader.readAsDataURL(file);
-
-    fileReader.onload = async (e) => {
-      const imageBase64 = e.currentTarget.result.toString() || "";
-      fieldChangeEvent(imageBase64);
-    };
-  }
-
-  function onSelectVariant(variant) {
-    console.log(variant);
-  }
-
-  const onSubmit = (values) => console.log(values);
+  const { form, onFileChange, onSelectVariant, onSubmit, isUpdating, status } =
+    useVariantMutationQuery();
 
   useEffect(() => {
     dispatch(variantActions.getExistingVariantTypes());
@@ -91,7 +38,7 @@ export default function CreateVariant() {
 
       <Layouts.Form onSubmit={form.handleSubmit(onSubmit)}>
         <Controller
-          name="variantType"
+          name="variant_type"
           control={form.control}
           render={({ field, fieldState: { error } }) => (
             <Layouts.InputFilterableSelect
@@ -116,25 +63,6 @@ export default function CreateVariant() {
             />
           )}
         />
-
-        {/* <Layouts.InputFilterableSelect
-          id="variant-type"
-          label="ვარიანტის ტიპი"
-          placeholder="pocket"
-          anotation="აირჩიე არსებული ვარიანტის ტიპი ან შექმენი ახალი"
-          strictSelection={false}
-          list={variants}
-          selectValue={({ value }) =>
-            dispatch(variantActions.selectVariantType(value))
-          }
-          name="variantType"
-          message={error.variantType.itemErrors[0]?.message}
-          error={error.variantType.hasError}
-          value={variantType?.caption || ""}
-          setValue={({ value }) =>
-            dispatch(variantActions.setVariantType(value))
-          }
-        /> */}
 
         <Controller
           name="label_ka"
@@ -205,7 +133,7 @@ export default function CreateVariant() {
               accept="image/svg+xml"
               error={error ? true : false}
               message={error?.message}
-              value={value}
+              value={value || form.getValues().icon}
               fieldProps={{
                 ...field,
                 onChange: (e) => onFileChange(e, field.onChange),
