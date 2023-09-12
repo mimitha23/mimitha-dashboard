@@ -40,7 +40,7 @@ export default function CreateProductStyle() {
             <Layouts.InputText
               id="product-label-en"
               label="პროდუქტის სტილის იარლიყი (en)"
-              name="label_en"
+              placeholder="sportswear"
               error={error ? true : false}
               message={error?.message}
               fieldProps={{ ...field }}

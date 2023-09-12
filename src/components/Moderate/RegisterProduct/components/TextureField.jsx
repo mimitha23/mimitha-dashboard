@@ -1,125 +1,124 @@
-import { useCallback, memo } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 
-import {
-  selectRegisterProductForm,
-  selectRegisterProductFormSuggestions,
-} from "store/selectors/moderate/registerProductSelectors";
-import { registerProductActions } from "store/reducers/moderate/registerProductReducer";
+import * as registerProductSelectors from "store/selectors/moderate/registerProductSelectors";
 
-import { extractObjectsArrayError } from "utils/validators/helpers/Validate";
+import { Controller } from "react-hook-form";
 
 import { MinusIcon } from "components/layouts/Icons";
-import { InputFilterableSelect } from "components/layouts";
 import TextureFieldHeader from "./TextureFieldHeader";
 import * as Styled from "./styles/TextureField.styled";
+import { InputFilterableSelect } from "components/layouts";
 
-export default memo(function TextureField({ error }) {
-  const dispatch = useDispatch();
-
-  const { textures: enteredTextures } = useSelector(selectRegisterProductForm);
+export default function TextureField({ textureField, form }) {
   const { textures: textureSuggestions } = useSelector(
-    selectRegisterProductFormSuggestions
-  );
-
-  const setTexture = useCallback(
-    ({ key, value, fieldId }) => {
-      dispatch(
-        registerProductActions.setTexture({
-          key,
-          value,
-          fieldId: fieldId,
-        })
-      );
-    },
-    [dispatch]
-  );
-
-  const selectTexture = useCallback(
-    ({ key, value, fieldId }) => {
-      dispatch(
-        registerProductActions.selectTexture({
-          key,
-          value,
-          fieldId: fieldId,
-        })
-      );
-    },
-    [dispatch]
+    registerProductSelectors.selectRegisterProductFormSuggestions
   );
 
   return (
     <Styled.TextureField>
-      <TextureFieldHeader />
+      <TextureFieldHeader
+        onAddField={() =>
+          textureField.append({
+            percentage: "",
+            texture: {
+              ka: "",
+              en: "",
+              _id: "",
+              caption: "",
+            },
+          })
+        }
+      />
 
-      <ul className="texture-field__list">
-        {enteredTextures.map((texture, i) => {
-          const extractedError = extractObjectsArrayError(error.itemErrors[i]);
-
-          return (
-            <li className="texture-field__list-item" key={texture._id}>
-              <InputFilterableSelect
-                id="texture"
-                name="textures"
-                placeholder="აირჩიეთ ტექსტურა"
-                list={textureSuggestions}
-                error={extractedError.textures?.hasError}
-                message={extractedError.textures?.message}
-                value={texture.textures?.caption || ""}
-                setValue={({ key, value }) =>
-                  setTexture({ key, value, fieldId: texture._id })
-                }
-                selectValue={({ key, value }) =>
-                  selectTexture({ key, value, fieldId: texture._id })
-                }
-              />
-
-              <div className="percentage-field">
-                <label>%</label>
-                <input
-                  type="number"
-                  className={`percentage-input ${
-                    extractedError.percentage?.hasError ? "error" : ""
-                  }`}
-                  name="percentage"
-                  placeholder="100"
-                  max={100}
-                  min={0}
-                  value={texture.percentage}
-                  onChange={(e) =>
-                    setTexture({
-                      key: e.target.name,
-                      value: e.target.value,
-                      fieldId: texture._id,
-                    })
-                  }
+      <Controller
+        name="textures"
+        control={form.control}
+        render={() => (
+          <ul className="texture-field__list">
+            {textureField.fields.map((fieldItem, index) => (
+              <li className="texture-field__list-item" key={fieldItem.id}>
+                <Controller
+                  name={`textures.${index}.texture`}
+                  control={form.control}
+                  defaultValue={fieldItem.texture.caption}
+                  render={({ field, fieldState: { error } }) => (
+                    <InputFilterableSelect
+                      id={`texture-${index}`}
+                      placeholder="აირჩიეთ ტექსტურა"
+                      list={textureSuggestions}
+                      selectValue={(texture) => field.onChange(texture)}
+                      error={error ? true : false}
+                      message={error?.message}
+                      inputValue={field.value?.caption}
+                      fieldProps={{
+                        ...field,
+                        onChange: (e) =>
+                          field.onChange({
+                            ...field.value,
+                            caption: e.target.value,
+                          }),
+                      }}
+                    />
+                  )}
                 />
 
-                {extractedError.percentage?.hasError && (
-                  <p className="percentage-field__message">
-                    {extractedError.percentage?.message}
-                  </p>
-                )}
-              </div>
+                <Controller
+                  name={`textures.${index}.percentage`}
+                  control={form.control}
+                  defaultValue={fieldItem.texture.percentage}
+                  render={({ field, fieldState: { error } }) => (
+                    <PercentageField
+                      fieldProps={field}
+                      error={error ? true : false}
+                      message={error?.message}
+                    />
+                  )}
+                />
 
-              {i > 0 && (
-                <button
-                  className="texture-field__remove-btn"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    dispatch(
-                      registerProductActions.removeTextureField(texture._id)
-                    );
-                  }}
-                >
-                  <MinusIcon />
-                </button>
-              )}
-            </li>
-          );
-        })}
-      </ul>
-      {error.hasError && error.message && <p>{error.message}</p>}
+                {index > 0 && (
+                  <RemoveTextureFieldButton
+                    onRemove={() => textureField.remove(index)}
+                  />
+                )}
+              </li>
+            ))}
+          </ul>
+        )}
+      />
+
+      {/* {error.hasError && error.message && <p>{error.message}</p>} */}
     </Styled.TextureField>
   );
-});
+}
+
+function PercentageField({ fieldProps, error, message }) {
+  return (
+    <div className="percentage-field">
+      <label>%</label>
+      <input
+        type="number"
+        className={`percentage-input ${error ? "error" : ""}`}
+        placeholder="100"
+        max={100}
+        min={0}
+        {...fieldProps}
+      />
+
+      {error && <p className="percentage-field__message">{message}</p>}
+    </div>
+  );
+}
+
+function RemoveTextureFieldButton({ onRemove }) {
+  return (
+    <button
+      className="texture-field__remove-btn"
+      onClick={(e) => {
+        e.preventDefault();
+        onRemove();
+      }}
+    >
+      <MinusIcon />
+    </button>
+  );
+}

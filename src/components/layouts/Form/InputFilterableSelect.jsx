@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useState, forwardRef } from "react";
 
-import * as Styled from "./Form.styled";
+import * as Styled from "./styles/Form.styled";
 import { useClickOutside } from "hooks/utils";
 
 function InputFilterableSelect(
@@ -65,33 +65,13 @@ function InputFilterableSelect(
       />
 
       {isTyping && (
-        <div className="filterable_dropdown">
-          <ul className="filterable_dropdown-list">
-            {list
-              .filter((item) =>
-                inputValue === "" || readOnly
-                  ? item
-                  : item.caption.includes(inputValue)
-              )
-              .map((item) => (
-                <li
-                  key={item._id}
-                  className={`filterable_dropdown-list--item ${
-                    selectedList &&
-                    Array.isArray(selectedList) &&
-                    selectedList.some(
-                      (selectedItem) => selectedItem._id === item._id
-                    )
-                      ? "active"
-                      : ""
-                  } ${item.caption === inputValue ? "active" : ""}`}
-                  onMouseDown={() => handleDropdownItem(item)}
-                >
-                  {item.caption}
-                </li>
-              ))}
-          </ul>
-        </div>
+        <Dropdown
+          list={list}
+          readOnly={readOnly}
+          inputValue={inputValue}
+          selectedList={selectedList}
+          handleDropdownItem={handleDropdownItem}
+        />
       )}
 
       {anotation && <blockquote>{anotation}</blockquote>}
@@ -102,3 +82,41 @@ function InputFilterableSelect(
 }
 
 export default forwardRef(InputFilterableSelect);
+
+function Dropdown({
+  list,
+  readOnly,
+  inputValue,
+  selectedList,
+  handleDropdownItem,
+}) {
+  return (
+    <div className="filterable_dropdown">
+      <ul className="filterable_dropdown-list">
+        {list
+          .filter((item) =>
+            inputValue === "" || readOnly
+              ? item
+              : item.caption.includes(inputValue)
+          )
+          .map((item) => (
+            <li
+              key={item._id}
+              className={`filterable_dropdown-list--item ${
+                selectedList &&
+                Array.isArray(selectedList) &&
+                selectedList.some(
+                  (selectedItem) => selectedItem._id === item._id
+                )
+                  ? "active"
+                  : ""
+              } ${item.caption === inputValue ? "active" : ""}`}
+              onMouseDown={() => handleDropdownItem(item)}
+            >
+              {item.caption}
+            </li>
+          ))}
+      </ul>
+    </div>
+  );
+}

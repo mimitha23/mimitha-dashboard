@@ -1,4 +1,4 @@
-import * as Styled from "./Form.styled";
+import * as Styled from "./styles/Form.styled";
 
 export default function Button({
   caption,

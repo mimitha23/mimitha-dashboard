@@ -105,6 +105,38 @@ const registerProductValidation = z.object({
   isEditable: z.boolean(),
 
   thumbnail: z.string(),
+
+  productStyles: z.array(
+    z.object({
+      _id: z.string(),
+      ka: z.string(),
+      en: z.string(),
+      query: z.string(),
+      caption: z.string(),
+    })
+  ),
+
+  seasons: z.array(
+    z.object({
+      _id: z.string(),
+      ka: z.string(),
+      en: z.string(),
+      query: z.string(),
+      caption: z.string(),
+    })
+  ),
+
+  textures: z.array(
+    z.object({
+      percentage: z.string(),
+      texture: z.object({
+        _id: z.string(),
+        ka: z.string(),
+        en: z.string(),
+        caption: z.string(),
+      }),
+    })
+  ),
 });
 
 export default registerProductValidation;

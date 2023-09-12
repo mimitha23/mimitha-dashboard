@@ -1,5 +1,5 @@
 import { forwardRef } from "react";
-import * as Styled from "./Form.styled";
+import * as Styled from "./styles/Form.styled";
 
 function InputTextarea(
   {

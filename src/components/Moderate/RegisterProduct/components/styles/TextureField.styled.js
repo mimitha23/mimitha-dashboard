@@ -35,7 +35,7 @@ export const TextureField = styled.div`
   .texture-field__list {
     display: flex;
     flex-direction: column;
-    gap: 2rem;
+    gap: 3rem;
 
     &-item {
       display: flex;
@@ -45,7 +45,7 @@ export const TextureField = styled.div`
 
       .texture-field__remove-btn {
         position: absolute;
-        top: -1.5rem;
+        top: -2rem;
         right: 0;
 
         &:hover {

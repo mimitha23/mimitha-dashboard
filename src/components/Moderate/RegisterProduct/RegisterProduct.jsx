@@ -1,10 +1,7 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import { useCallback, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 import * as registerProductSelectors from "store/selectors/moderate/registerProductSelectors";
 import { useRegisterProductQuery } from "hooks/api/moderate";
-import { registerProductActions } from "store/reducers/moderate/registerProductReducer";
 
 import { PATHS } from "config/routes";
 import { Controller } from "react-hook-form";
@@ -15,43 +12,11 @@ import WarningField from "./components/WarningField";
 import * as Styled from "./styles/RegisterProduct.styled";
 
 export default function RegisterProduct() {
-  const dispatch = useDispatch();
+  const form = useRegisterProductQuery();
 
-  const { form, onSelect, onFileChange, onSubmit, status } =
-    useRegisterProductQuery();
-
-  const {
-    gender,
-    productTypes: selectedTypes,
-    seasons: selectedSeasons,
-    productStyles: selectedStyles,
-    isEditable,
-    thumbnail,
-    newThumbnail,
-    isUpdating,
-    category,
-  } = useSelector(registerProductSelectors.selectRegisterProductForm);
-  const {
-    gender: genders,
-    productStyles,
-    productTypes,
-    seasons,
-    categories,
-  } = useSelector(
+  const formDefaults = useSelector(
     registerProductSelectors.selectRegisterProductFormSuggestions
   );
-
-  const setMultipleSelectable = useCallback(({ key, value }) => {
-    dispatch(registerProductActions.setMultipleSelectable({ key, value }));
-  }, []);
-
-  useEffect(() => {
-    dispatch(registerProductActions.getRegisterProductFormSuggestions());
-
-    return () => {
-      dispatch(registerProductActions.resetState());
-    };
-  }, []);
 
   return (
     <Styled.RegisterProduct>
@@ -63,18 +28,18 @@ export default function RegisterProduct() {
         }
       />
 
-      <Layouts.Form onSubmit={form.handleSubmit(onSubmit)}>
+      <Layouts.Form onSubmit={form.form.handleSubmit(form.onSubmit)}>
         <Controller
           name="productTypes"
-          control={form.control}
+          control={form.form.control}
           render={({ field, fieldState: { error } }) => (
             <Layouts.InputFilterableSelect
               id="product-type"
               label="პროდუქტის ტიპი"
               placeholder="აირჩიეთ პროდუქტის ტიპი"
-              list={productTypes}
+              list={formDefaults.productTypes}
               selectValue={(productType) =>
-                onSelect({ key: field.name, item: productType })
+                form.onSelect({ key: field.name, item: productType })
               }
               error={error ? true : false}
               message={error?.message}
@@ -91,42 +56,64 @@ export default function RegisterProduct() {
           )}
         />
 
-        {/* <Layouts.InputMultipleFilterableSelect
-          id="style"
-          label="სტილი"
+        <Controller
           name="productStyles"
-          placeholder="აირჩიეთ სტილი"
-          error={error.productStyles.hasError}
-          message={error.productStyles.message}
-          selectedFields={selectedStyles}
-          selectField={setMultipleSelectable}
-          list={productStyles}
+          control={form.form.control}
+          render={({
+            field: { onChange, value, ...field },
+            fieldState: { error },
+          }) => (
+            <Layouts.InputMultipleFilterableSelect
+              id="style"
+              label="სტილი"
+              placeholder="აირჩიეთ სტილი"
+              list={formDefaults.productStyles}
+              error={error ? true : false}
+              message={error?.message}
+              fieldProps={field}
+              selectedFields={value || []}
+              selectField={(productType) =>
+                form.onMultipleSelect({ key: field.name, item: productType })
+              }
+            />
+          )}
         />
 
-        <Layouts.InputMultipleFilterableSelect
-          id="season"
-          label="სეზონი"
+        <Controller
           name="seasons"
-          placeholder="აირჩიეთ სეზონი"
-          error={error.seasons.hasError}
-          message={error.seasons.message}
-          selectedFields={selectedSeasons}
-          selectField={setMultipleSelectable}
-          list={seasons}
-        /> */}
+          control={form.form.control}
+          render={({
+            field: { onChange, value, ...field },
+            fieldState: { error },
+          }) => (
+            <Layouts.InputMultipleFilterableSelect
+              id="season"
+              label="სეზონი"
+              placeholder="აირჩიეთ სეზონი"
+              list={formDefaults.seasons}
+              selectedFields={value || []}
+              error={error ? true : false}
+              message={error?.message}
+              fieldProps={field}
+              selectField={(season) =>
+                form.onMultipleSelect({ key: field.name, item: season })
+              }
+            />
+          )}
+        />
 
         <Controller
           name="gender"
-          control={form.control}
+          control={form.form.control}
           render={({ field, fieldState: { error } }) => (
             <Layouts.InputFilterableSelect
               id="gender"
               label="გენდერი"
               placeholder="აირჩიეთ გენდერი"
               readOnly={true}
-              list={genders}
+              list={formDefaults.gender}
               selectValue={(gender) =>
-                onSelect({ key: field.name, item: gender })
+                form.onSelect({ key: field.name, item: gender })
               }
               error={error ? true : false}
               message={error?.message}
@@ -145,16 +132,16 @@ export default function RegisterProduct() {
 
         <Controller
           name="category"
-          control={form.control}
+          control={form.form.control}
           render={({ field, fieldState: { error } }) => (
             <Layouts.InputFilterableSelect
               id="category"
               label="კატეგორია"
               placeholder="აირჩიეთ კატეგორია"
               readOnly={true}
-              list={categories}
+              list={formDefaults.categories}
               selectValue={(gender) =>
-                onSelect({ key: field.name, item: gender })
+                form.onSelect({ key: field.name, item: gender })
               }
               error={error ? true : false}
               message={error?.message}
@@ -171,13 +158,13 @@ export default function RegisterProduct() {
           )}
         />
 
-        {/* <TextureField error={error.textures} /> */}
+        <TextureField textureField={form.textureField} form={form.form} />
 
-        {/* <WarningField error={error.warnings} /> */}
+        <WarningField />
 
         <Controller
           name="isEditable"
-          control={form.control}
+          control={form.form.control}
           render={({ field, fieldState: { error } }) => (
             <Layouts.InputCheckBox
               id="is-editable"
@@ -195,16 +182,16 @@ export default function RegisterProduct() {
 
         <Controller
           name="thumbnail"
-          control={form.control}
+          control={form.form.control}
           render={({ field: { value, ...field }, fieldState: { error } }) => (
             <Layouts.InputFile
               message={error?.message}
               error={error ? true : false}
               label="აირჩიეთ პროდუქტის მინიატურა"
-              value={value || form.getValues().thumbnail}
+              value={value || form.form.getValues().thumbnail}
               fieldProps={{
                 ...field,
-                onChange: (e) => onFileChange(e, field.onChange),
+                onChange: (e) => form.onFileChange(e, field.onChange),
               }}
             />
           )}
@@ -212,14 +199,14 @@ export default function RegisterProduct() {
 
         <Layouts.Button
           type="submit"
-          caption={isUpdating ? "განახლება" : "შექმნა"}
-          disabled={status.loading}
+          caption={form.isUpdating ? "განახლება" : "შექმნა"}
+          disabled={form.status.loading}
         />
       </Layouts.Form>
 
-      <Layouts.ErrorModal status={status} />
+      <Layouts.ErrorModal status={form.status} />
 
-      {status.loading && <Layouts.LoadingSpinner />}
+      {form.status.loading && <Layouts.LoadingSpinner />}
     </Styled.RegisterProduct>
   );
 }

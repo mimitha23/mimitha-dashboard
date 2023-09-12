@@ -67,6 +67,7 @@ export const InputCheckbox = styled.div`
     display: flex;
     align-items: center;
     gap: 0.75rem;
+    font-size: ${({ theme }) => theme.fontSize.md};
   }
 `;
 

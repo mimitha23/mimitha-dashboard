@@ -1,6 +1,6 @@
 import { forwardRef } from "react";
 import { CloseXIcon } from "../Icons";
-import * as Styled from "./Form.styled";
+import * as Styled from "./styles/Form.styled";
 
 function InputFile(
   {
@@ -20,38 +20,11 @@ function InputFile(
     <Styled.Input className="form__input-text form__input-file" data-input-file>
       {((Array.isArray(value) && value[0]) ||
         (!Array.isArray(value) && value)) && (
-        <div className="form__file-icon--review" data-input-file-review>
-          {multiple ? (
-            value.map((f, index) => (
-              <figure
-                className="form__file-icon--review__fig multiple"
-                key={`file-${index}`}
-              >
-                <img
-                  src={f instanceof Object ? URL.createObjectURL(f) : f}
-                  alt=""
-                />
-
-                <button
-                  className="multiple-file__close-btn"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    onRemoveFile && onRemoveFile(f);
-                  }}
-                >
-                  <CloseXIcon />
-                </button>
-              </figure>
-            ))
-          ) : (
-            <figure className="form__file-icon--review__fig">
-              <img
-                src={value instanceof File ? URL.createObjectURL(value) : value}
-                alt="media"
-              />
-            </figure>
-          )}
-        </div>
+        <InputFileFrame
+          multiple={multiple}
+          value={value}
+          onRemoveFile={onRemoveFile}
+        />
       )}
 
       <label htmlFor="form-file--upload" className="form__input-file--label">
@@ -75,3 +48,40 @@ function InputFile(
 }
 
 export default forwardRef(InputFile);
+
+function InputFileFrame({ multiple, value, onRemoveFile }) {
+  return (
+    <div className="form__file-icon--review" data-input-file-review>
+      {multiple ? (
+        value.map((f, index) => (
+          <figure
+            className="form__file-icon--review__fig multiple"
+            key={`file-${index}`}
+          >
+            <img
+              src={f instanceof Object ? URL.createObjectURL(f) : f}
+              alt=""
+            />
+
+            <button
+              className="multiple-file__close-btn"
+              onClick={(e) => {
+                e.preventDefault();
+                onRemoveFile && onRemoveFile(f);
+              }}
+            >
+              <CloseXIcon />
+            </button>
+          </figure>
+        ))
+      ) : (
+        <figure className="form__file-icon--review__fig">
+          <img
+            src={value instanceof File ? URL.createObjectURL(value) : value}
+            alt="media"
+          />
+        </figure>
+      )}
+    </div>
+  );
+}

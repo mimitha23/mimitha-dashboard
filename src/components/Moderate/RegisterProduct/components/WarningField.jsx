@@ -8,7 +8,7 @@ import WarningInput from "./WarningInput";
 import EnteredWarningsList from "./EnteredWarningsList";
 import * as Styled from "./styles/WarningField.styled";
 
-export default function WarningField({ error }) {
+export default function WarningField() {
   const dispatch = useDispatch();
   const { warning } = useSelector(selectRegisterProductForm);
 
@@ -67,10 +67,10 @@ export default function WarningField({ error }) {
         add warning
       </button>
 
-      {error?.hasError && error?.message && <p>{error.message}</p>}
+      {/* {error?.hasError && error?.message && <p>{error.message}</p>} */}
 
       <EnteredWarningsList
-        error={error?.itemErrors}
+        // error={error?.itemErrors}
         setIsUpdatingEnteredValue={setIsUpdatingEnteredValue}
       />
     </Styled.WarningField>

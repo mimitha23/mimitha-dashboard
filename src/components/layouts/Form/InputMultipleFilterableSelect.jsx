@@ -1,37 +1,35 @@
-import { useState, memo } from "react";
+import { useState, forwardRef } from "react";
 import { nanoid } from "@reduxjs/toolkit";
 
 import { useClickOutside } from "hooks/utils";
 
 import { CloseXIcon } from "../Icons";
-import * as Styled from "./Form.styled";
+import * as Styled from "./styles/Form.styled";
 
-export default memo(function InputMultipleFilterableSelect({
-  id,
-  label,
-  name,
-  placeholder,
-  anotation,
-  readOnly = false,
-  selectedFields = [],
-  selectField,
-  error,
-  message,
-  list = [],
-  strictSelection = true,
-}) {
+function InputMultipleFilterableSelect(
+  {
+    id,
+    label,
+    placeholder,
+    anotation,
+    readOnly = false,
+    list = [],
+    selectedFields = [],
+    selectField,
+    error,
+    message,
+    fieldProps,
+  },
+  ref
+) {
   const [isTyping, setIsTyping] = useState(false);
   const [enteredValue, setEnteredValue] = useState("");
 
   const dropdown_ref = useClickOutside(isTyping, () => setIsTyping(false));
 
-  function handleOnSelect({ key, value }) {
-    selectField({ key, value });
-    enteredValue && setEnteredValue("");
-  }
-
-  function handleOnCloseSelected(item) {
+  function handleOnSelect(item) {
     selectField(item);
+    enteredValue && setEnteredValue("");
   }
 
   return (
@@ -40,62 +38,92 @@ export default memo(function InputMultipleFilterableSelect({
 
       <input
         id={id}
+        ref={ref}
         type="text"
-        name={name}
-        className={`form__input-field  ${error ? "error" : ""}`}
-        placeholder={placeholder}
-        onChange={(e) => setEnteredValue(e.target.value)}
         value={enteredValue}
-        onFocus={() => setIsTyping(true)}
+        {...fieldProps}
         readOnly={readOnly}
+        placeholder={placeholder}
+        onFocus={() => setIsTyping(true)}
+        onChange={(e) => setEnteredValue(e.target.value)}
+        className={`form__input-field  ${error ? "error" : ""}`}
       />
 
       {selectedFields[0] && (
-        <ul className="selected-fields">
-          {selectedFields.map((field) => (
-            <li key={nanoid()} className="selected-fields--item">
-              <span>{field.caption}</span>
-              <button
-                onClick={(e) => {
-                  e.preventDefault();
-                  handleOnCloseSelected({ key: name, value: field._id });
-                }}
-              >
-                <CloseXIcon />
-              </button>
-            </li>
-          ))}
-        </ul>
+        <SelectedFields
+          selectedFields={selectedFields}
+          handleOnSelect={handleOnSelect}
+        />
       )}
 
       {isTyping && (
-        <div className="filterable_dropdown">
-          <ul className="filterable_dropdown-list">
-            {list
-              .filter((item) =>
-                enteredValue === "" || readOnly
-                  ? item
-                  : item.caption.includes(enteredValue)
-              )
-              .map((item) => (
-                <li
-                  className={`filterable_dropdown-list--item ${
-                    selectedFields.some((field) => field._id === item._id)
-                      ? "selected-field"
-                      : ""
-                  }`}
-                  key={item._id}
-                  onClick={() => handleOnSelect({ key: name, value: item._id })}
-                >
-                  {item.caption}
-                </li>
-              ))}
-          </ul>
-        </div>
+        <MultipleSelectDropdown
+          list={list}
+          readOnly={readOnly}
+          enteredValue={enteredValue}
+          selectedFields={selectedFields}
+          handleOnSelect={handleOnSelect}
+        />
       )}
 
       {anotation && <blockquote>{anotation}</blockquote>}
       {error && <p>{message}</p>}
     </Styled.InputMultipleFilterableSelect>
   );
-});
+}
+
+export default forwardRef(InputMultipleFilterableSelect);
+
+function SelectedFields({ selectedFields, handleOnSelect }) {
+  return (
+    <ul className="selected-fields">
+      {selectedFields.map((field) => (
+        <li key={nanoid()} className="selected-fields--item">
+          <span>{field.caption}</span>
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+              handleOnSelect(field);
+            }}
+          >
+            <CloseXIcon />
+          </button>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+function MultipleSelectDropdown({
+  list,
+  readOnly,
+  enteredValue,
+  selectedFields,
+  handleOnSelect,
+}) {
+  return (
+    <div className="filterable_dropdown">
+      <ul className="filterable_dropdown-list">
+        {list
+          .filter((item) =>
+            enteredValue === "" || readOnly
+              ? item
+              : item.caption.includes(enteredValue)
+          )
+          .map((item) => (
+            <li
+              key={item._id}
+              onClick={() => handleOnSelect(item)}
+              className={`filterable_dropdown-list--item ${
+                selectedFields.some((field) => field._id === item._id)
+                  ? "selected-field"
+                  : ""
+              }`}
+            >
+              {item.caption}
+            </li>
+          ))}
+      </ul>
+    </div>
+  );
+}

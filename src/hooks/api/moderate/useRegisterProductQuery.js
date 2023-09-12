@@ -2,11 +2,11 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm, useFieldArray } from "react-hook-form";
 import { registerProductValidation } from "utils/zod/moderate";
 
-import { generateBase64Str } from "utils";
+import { useReactHookForm } from "hooks/utils";
 import { REQUEST_STATUS_STAGE } from "store/reducers/helpers/controlStatus";
 
 import { registerProductActions } from "store/reducers/moderate/registerProductReducer";
@@ -47,6 +47,19 @@ export default function useRegisterProductQuery() {
       query: "",
       caption: "",
     },
+    productStyles: [],
+    seasons: [],
+    textures: [
+      {
+        percentage: "",
+        texture: {
+          ka: "",
+          en: "",
+          _id: "",
+          caption: "",
+        },
+      },
+    ],
   };
 
   const form = useForm({
@@ -54,26 +67,38 @@ export default function useRegisterProductQuery() {
     defaultValues: formDefaults,
   });
 
-  async function onFileChange(reactEvent, fieldChangeEvent) {
-    const file = reactEvent.target.files[0];
+  const styleField = useFieldArray({
+    control: form.control,
+    name: "productStyles",
+  });
 
-    const { hasError, base64Str } = await generateBase64Str({
-      file,
-      fileType: "image/",
-    });
+  const seasonsField = useFieldArray({
+    control: form.control,
+    name: "seasons",
+  });
 
-    if (hasError)
-      return form.setError(
-        "thumbnail",
-        "ფაილის ნიშნული უნდა წარმოადგენდეს ვალიდურ ფაილს"
-      );
+  const textureField = useFieldArray({
+    control: form.control,
+    name: "textures",
+  });
 
-    fieldChangeEvent(base64Str);
-  }
+  const {
+    onSelect,
+    onFileChange,
+    onMultipleSelect: multipleSelect,
+  } = useReactHookForm(form);
 
-  function onSelect({ key, item }) {
-    const f = form.getValues();
-    form.setValue(key, { ...f[key], ...item });
+  function onMultipleSelect({ key, item }) {
+    switch (key) {
+      case "productStyles":
+        multipleSelect({ key, item, field: styleField });
+        break;
+      case "seasons":
+        multipleSelect({ key, item, field: seasonsField });
+        break;
+      default:
+        break;
+    }
   }
 
   const onSubmit = (values) => {
@@ -96,5 +121,22 @@ export default function useRegisterProductQuery() {
     }
   }, [status]);
 
-  return { form, onSelect, onFileChange, onSubmit, status };
+  useEffect(() => {
+    dispatch(registerProductActions.getRegisterProductFormSuggestions());
+
+    return () => {
+      dispatch(registerProductActions.resetState());
+    };
+  }, []);
+
+  return {
+    form,
+    onSelect,
+    onMultipleSelect,
+    onFileChange,
+    textureField,
+    onSubmit,
+    status,
+    isUpdating: registerProductDefaults.isUpdating,
+  };
 }

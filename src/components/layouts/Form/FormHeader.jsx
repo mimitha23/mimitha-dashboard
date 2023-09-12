@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import * as Styled from "./FormHeader.styled";
+import * as Styled from "./styles/FormHeader.styled";
 
 export default function FormHeader({ title, redirectPath, linkCaption }) {
   return (
