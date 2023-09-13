@@ -24,15 +24,14 @@ const initialState = {
         amount: "",
       },
     ],
-    enteredVariant: "",
     variants: [],
     description_ka: "",
     description_en: "",
-    isPublic: false,
-    isFeatured: false,
+    is_public: false,
+    is_featured: false,
     assets: [],
-    filesToUpload: [],
-    filesToDelete: [],
+    new_assets: [],
+    assets_to_delete: [],
   },
 
   developeProductFormSuggestions: {
@@ -65,134 +64,6 @@ const developeProductSlice = createSlice({
   name: "developed-products",
   initialState,
   reducers: {
-    // primitives
-    setDevelopedProduct(state, { payload: { key, value } }) {
-      state.form[key] = value;
-    },
-
-    // variant
-    selectVariant(state, { payload: variant }) {
-      const variantIsSelected = state.form.variants.find(
-        (v) => v._id === variant._id
-      );
-
-      if (variantIsSelected) return;
-
-      state.form.variants = [...state.form.variants, variant].sort(
-        (variantA, variantB) => (variantA.type < variantB.type ? -1 : 1)
-      );
-    },
-
-    removeVariant(state, { payload }) {
-      state.form.variants = state.form.variants
-        .filter((v) => v._id !== payload)
-        .sort((variantA, variantB) => (variantA.type < variantB.type ? -1 : 1));
-    },
-
-    // size
-    addSizeField(state) {
-      const lastSize = [...state.form.sizes].pop();
-
-      // check if last field is filled, otherwise don't let add new field
-      const lastSizeFieldIsFilled = Object.values(lastSize).every(
-        (fieldValue) =>
-          (typeof fieldValue === "string" && fieldValue.trim() !== "") ||
-          (typeof fieldValue === "object" &&
-            Object.values(fieldValue).every((value) => value.trim() !== ""))
-      );
-
-      lastSizeFieldIsFilled &&
-        state.form.sizes.push({ ...initialState.form.sizes[0], _id: nanoid() });
-    },
-
-    removeSizeField(state, { payload }) {
-      state.form.sizes = state.form.sizes.filter(
-        (size) => size._id !== payload
-      );
-    },
-
-    setSize(state, { payload: { key, value, fieldId } }) {
-      const activeFieldIndex = state.form.sizes.findIndex(
-        (field) => field._id === fieldId
-      );
-
-      if (activeFieldIndex < 0) return;
-
-      if (key === "amount") {
-        state.form.sizes[activeFieldIndex].amount = value;
-      } else if (key === "size") {
-        state.form.sizes[activeFieldIndex].size.caption = value;
-      }
-    },
-
-    selectSize(state, { payload: { value: size, fieldId } }) {
-      const activeFieldIndex = state.form.sizes.findIndex(
-        (field) => field._id === fieldId
-      );
-
-      if (activeFieldIndex < 0) return;
-
-      if (size === null) {
-        state.form.sizes[activeFieldIndex].size =
-          initialState.form.sizes[0].size;
-
-        return;
-      }
-
-      state.form.sizes[activeFieldIndex].size = size;
-    },
-
-    // color
-    setColor(state, { payload: { value } }) {
-      state.form.color.caption = value;
-    },
-
-    selectColor(state, { payload: { value: color } }) {
-      if (color === null) {
-        state.form.color = initialState.form.color;
-        return;
-      }
-
-      state.form.color = color;
-    },
-
-    // isPublic
-    setCheckbox(state, { payload: { key, value } }) {
-      state.form[key] = value;
-    },
-
-    // assets
-    setAssets(state, { payload }) {
-      const files = Array.from(payload);
-
-      const filterAsset = (asset, file) =>
-        asset instanceof Blob && asset.name === file.name;
-
-      files.forEach((file) => {
-        if (!state.form.assets.some((asset) => filterAsset(asset, file)))
-          state.form.assets.push(file);
-        if (!state.form.filesToUpload.some((asset) => filterAsset(asset, file)))
-          state.form.filesToUpload.push(file);
-      });
-    },
-
-    removeAsset(state, { payload }) {
-      const filterFile = (asset) =>
-        (asset instanceof Blob && asset.name !== payload.name) ||
-        typeof asset === "string";
-
-      if (payload instanceof Blob) {
-        state.form.assets = state.form.assets.filter(filterFile);
-        state.form.filesToUpload = state.form.filesToUpload.filter(filterFile);
-      } else {
-        state.form.assets = state.form.assets.filter(
-          (asset) => asset !== payload
-        );
-
-        state.form.filesToDelete.push(payload);
-      }
-    },
-
     // API
     attachDevelopedProduct: {
       prepare(payload) {
@@ -228,7 +99,8 @@ const developeProductSlice = createSlice({
         })),
         description_ka: payload.description.ka,
         description_en: payload.description.en,
-        isPublic: payload.isPublic,
+        is_public: payload.isPublic,
+        is_featured: payload.isFeatured,
         assets: payload.assets,
       };
 
@@ -347,7 +219,8 @@ const developeProductSlice = createSlice({
         })),
         description_ka: payload.description.ka,
         description_en: payload.description.en,
-        isPublic: payload.isPublic,
+        is_public: payload.isPublic,
+        is_featured: payload.is_featured,
       };
 
       state.form = {
@@ -368,7 +241,7 @@ const developeProductSlice = createSlice({
       Object.keys(payload).forEach((key) => {
         const editedList = payload[key].map((item) => ({
           ...item,
-          caption: item.ka,
+          caption: item.ka ? item.ka : item.label_ka ? item.label_ka : "",
           _id: item._id ? item._id : nanoid(),
         }));
 
@@ -427,8 +300,8 @@ export const developeProductActions = developeProductSlice.actions;
 function prepareDataForDB(payload) {
   const credentials = {
     product: payload.registeredProductId,
-    isPublic: payload.isPublic,
-    isFeatured: payload.isFeatured,
+    isPublic: payload.is_public,
+    isFeatured: payload.is_featured,
     title: {
       ka: payload.title_ka,
       en: payload.title_en,

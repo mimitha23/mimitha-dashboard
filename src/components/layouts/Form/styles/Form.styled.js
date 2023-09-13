@@ -34,6 +34,12 @@ export const Input = styled.div`
     }
   }
 
+  .form__input-text--box {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
   .form__input-file--label {
     text-align: center;
     border-radius: 0.5rem;
@@ -179,5 +185,17 @@ export const AddFieldButton = styled.button`
     display: flex;
     align-items: center;
     margin-top: 0.4rem;
+  }
+`;
+
+export const DynamicFieldHeader = styled.div`
+  grid-column: span 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+
+  label {
+    font-size: ${({ theme }) => theme.fontSize.md};
   }
 `;

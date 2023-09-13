@@ -1,79 +1,93 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import { useCallback } from "react";
-import { useSelector, useDispatch } from "react-redux";
-
-import { selectDevelopeProductForm } from "store/selectors/moderate/developeProductSelectors";
-import { developeProductActions } from "store/reducers/moderate/developeProductReducer";
-
-import { extractObjectsArrayError } from "utils/validators/helpers/Validate";
-
-import AmountInput from "./AmountInput";
-import SizeFieldHeader from "./SizeFieldHeader";
-import RemoveFieldButton from "./RemoveFieldButton";
-import { InputFilterableSelect } from "components/layouts/Form";
+import { Controller } from "react-hook-form";
+import * as Form from "components/layouts/Form";
 import * as Styled from "./SizeField.styled";
 
-export default function SizeField({ sizes, error }) {
-  const dispatch = useDispatch();
-  const { sizes: selectedSizes } = useSelector(selectDevelopeProductForm);
-
-  const onSetSize = useCallback(({ key, value, sizeId }) => {
-    dispatch(
-      developeProductActions.setSize({
-        key,
-        value,
-        fieldId: sizeId,
-      })
-    );
-  }, []);
-
-  const onSelectSize = useCallback(({ value, sizeId }) => {
-    dispatch(
-      developeProductActions.selectSize({
-        value,
-        fieldId: sizeId,
-      })
-    );
-  }, []);
-
+export default function SizeField({ sizeField, form, sizeSuggestions }) {
   return (
     <Styled.SizeField>
-      <SizeFieldHeader />
+      <Form.DynamicFieldHeader
+        label="ზომა"
+        onAddField={() =>
+          sizeField.append({
+            amount: "",
+            size: {
+              ka: "",
+              en: "",
+              _id: "",
+              caption: "",
+            },
+          })
+        }
+      />
 
-      <ul className="size-field__inps-list">
-        {selectedSizes.map((size, i) => {
-          const extractedError = extractObjectsArrayError(error.itemErrors[i]);
+      <Controller
+        name="sizes"
+        control={form.control}
+        render={({ field, fieldState: { error } }) => (
+          <ul className="size-field__inputs-list">
+            {sizeField.fields.map((fieldItem, index) => (
+              <li className="size-field__inputs" key={fieldItem.id}>
+                <Controller
+                  control={form.control}
+                  name={`sizes.${index}.size`}
+                  defaultValue={fieldItem?.size?.caption}
+                  render={({
+                    field: childField,
+                    fieldState: { error: childError },
+                  }) => (
+                    <Form.InputFilterableSelect
+                      id="size"
+                      placeholder="sm"
+                      anotation="აირჩიე არსებული ზომა ან შექმენი ახალი"
+                      list={sizeSuggestions}
+                      selectValue={(size) => childField.onChange(size)}
+                      error={childError ? true : false}
+                      message={childError?.message}
+                      inputValue={childField.value?.caption}
+                      fieldProps={{
+                        ...childField,
+                        onChange: (e) =>
+                          childField.onChange({
+                            ...childField.value,
+                            caption: e.target.value,
+                          }),
+                      }}
+                    />
+                  )}
+                />
 
-          return (
-            <li className="size-field__inps" key={size._id}>
-              <InputFilterableSelect
-                id="size"
-                name="size"
-                placeholder="sm"
-                anotation="აირჩიე არსებული ზომა ან შექმენი ახალი"
-                list={sizes}
-                value={size.size.caption || ""}
-                error={extractedError.size?.hasError || false}
-                message={extractedError.size?.message || ""}
-                setValue={({ key, value }) =>
-                  onSetSize({ key, value, sizeId: size._id })
-                }
-                selectValue={({ value }) =>
-                  onSelectSize({ value, sizeId: size._id })
-                }
-              />
+                <Controller
+                  name={`sizes.${index}.amount`}
+                  control={form.control}
+                  defaultValue={fieldItem?.amount}
+                  render={({
+                    field: childField,
+                    fieldState: { error: childError },
+                  }) => (
+                    <Form.InputText
+                      type="number"
+                      placeholder="1"
+                      fieldProps={{
+                        ...childField,
+                        onChange: (e) => childField.onChange(+e.target.value),
+                        min: 0,
+                      }}
+                      error={childError ? true : false}
+                      message={childError?.message}
+                    />
+                  )}
+                />
 
-              <AmountInput
-                error={extractedError}
-                onSetSize={onSetSize}
-                size={size}
-              />
-
-              {i > 0 && <RemoveFieldButton sizeId={size._id} />}
-            </li>
-          );
-        })}
-      </ul>
+                {index > 0 && (
+                  <Form.RemoveFieldButton
+                    onRemove={() => sizeField.remove(index)}
+                  />
+                )}
+              </li>
+            ))}
+          </ul>
+        )}
+      />
     </Styled.SizeField>
   );
 }

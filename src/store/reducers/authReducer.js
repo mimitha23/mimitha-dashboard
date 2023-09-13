@@ -26,10 +26,6 @@ const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    setAuthForm(state, { payload: { key, value } }) {
-      state.form[key] = value;
-    },
-
     login: {
       prepare(paylaod) {
         return {

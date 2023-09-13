@@ -1,82 +1,55 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { Controller } from "react-hook-form";
 
-import {
-  selectAuthForm,
-  selectAuthStatus,
-} from "store/selectors/authSelectors";
-import { authActions } from "store/reducers/authReducer";
-import { useIsAuthenticated } from "hooks/auth";
-import { PATHS } from "config/routes";
+import useAuthForm from "hooks/auth/useAuthForm";
 
-import { EyeShowIcon, EyeHideIcon } from "components/layouts/Icons";
+import * as Styled from "./Login.styled";
 import { Spinner } from "components/layouts";
 import * as Form from "components/layouts/Form";
-import * as Styled from "./Login.styled";
+import { EyeShowIcon, EyeHideIcon } from "components/layouts/Icons";
 
 export default function Login() {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-
-  const form = useSelector(selectAuthForm);
-  const status = useSelector(selectAuthStatus);
-
-  const { isAuthenticated } = useIsAuthenticated();
-
-  const [showPassword, setShowPassword] = useState(false);
-
-  const handleShowPassword = (e) => {
-    e.preventDefault();
-    setShowPassword((prev) => !prev);
-  };
-
-  function handleAuthForm({ key, value }) {
-    dispatch(authActions.setAuthForm({ key, value }));
-  }
-
-  function handleAuth(e) {
-    e.preventDefault();
-    dispatch(authActions.login({ email: form.email, password: form.password }));
-  }
-
-  useEffect(() => {
-    if (!isAuthenticated) return;
-    navigate(PATHS.main_navigation.home, { replace: true });
-  }, [isAuthenticated]);
+  const { form, showPassword, handleShowPassword, onSubmit, status } =
+    useAuthForm();
 
   return (
     <Styled.Login>
-      <Form.Form>
-        <Form.InputText
-          type="email"
-          placeholder="Email"
+      <Form.Form onSubmit={form.handleSubmit(onSubmit)}>
+        <Controller
           name="email"
-          value={form.email}
-          onChange={(e) =>
-            handleAuthForm({ key: e.target.name, value: e.target.value })
-          }
+          control={form.control}
+          render={({ field, fieldState: { error } }) => (
+            <Form.InputText
+              type="email"
+              placeholder="Email"
+              fieldProps={field}
+              error={error ? true : false}
+              message={error?.message}
+            />
+          )}
         />
 
-        <div className="password-field">
-          <Form.InputText
-            type={showPassword ? "text" : "password"}
-            placeholder="Password"
-            name="password"
-            value={form.password}
-            onChange={(e) =>
-              handleAuthForm({ key: e.target.name, value: e.target.value })
-            }
-          />
-          <button onClick={handleShowPassword}>
-            {showPassword ? <EyeHideIcon /> : <EyeShowIcon />}
-          </button>
-        </div>
+        <Controller
+          name="password"
+          control={form.control}
+          render={({ field, fieldState: { error } }) => (
+            <div className="password-field">
+              <Form.InputText
+                type={showPassword ? "text" : "password"}
+                placeholder="Password"
+                fieldProps={field}
+                error={error ? true : false}
+                message={error?.message}
+              />
+              <button onClick={handleShowPassword}>
+                {showPassword ? <EyeHideIcon /> : <EyeShowIcon />}
+              </button>
+            </div>
+          )}
+        />
 
         {status.error && <p>{status.message}</p>}
 
-        <Form.Button caption="ავტორიზაცია" onClick={handleAuth} />
+        <Form.Button caption="ავტორიზაცია" type="submit" />
       </Form.Form>
       {status.loading && <Spinner />}
     </Styled.Login>

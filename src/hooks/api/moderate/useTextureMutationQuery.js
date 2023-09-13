@@ -18,8 +18,8 @@ export default function useTextureMutationQuery() {
   const textureDefaults = useSelector(textureSelectors.selectTextureForm);
 
   const formDefaults = {
-    label_ka: textureDefaults.label_ka || "",
-    label_en: textureDefaults.label_en || "",
+    label_ka: textureDefaults.label_ka,
+    label_en: textureDefaults.label_en,
   };
 
   const form = useForm({

@@ -56,6 +56,7 @@ export const customValidators = {
         "\xFF\xD8\xFF",
         "GIF",
         "WEBP",
+        "RIFFp",
         "<svg",
       ];
 

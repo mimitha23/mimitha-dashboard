@@ -28,6 +28,10 @@ export const AddDevelopedProduct = styled.div`
       grid-template-columns: repeat(2, 1fr);
     }
 
+    & .form [data-multiple-select-input]:has([name="variants"]) {
+      grid-column: span 2;
+    }
+
     .button-primary,
     .form__input-text.form__input-file,
     .form__input-text.form__input-text.form__input--textarea,

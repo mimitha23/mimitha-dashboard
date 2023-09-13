@@ -24,42 +24,16 @@ export default function useRegisterProductQuery() {
   );
 
   const formDefaults = {
-    isEditable: false,
-    thumbnail: "",
-    productTypes: {
-      _id: "",
-      ka: "",
-      en: "",
-      query: "",
-      caption: "",
-    },
-    gender: {
-      _id: "",
-      ka: "",
-      en: "",
-      query: "",
-      caption: "",
-    },
-    category: {
-      _id: "",
-      ka: "",
-      en: "",
-      query: "",
-      caption: "",
-    },
-    productStyles: [],
-    seasons: [],
-    textures: [
-      {
-        percentage: "",
-        texture: {
-          ka: "",
-          en: "",
-          _id: "",
-          caption: "",
-        },
-      },
-    ],
+    isEditable: registerProductDefaults.isEditable,
+    thumbnail: registerProductDefaults.thumbnail,
+    newThumbnail: registerProductDefaults.newThumbnail,
+    productTypes: registerProductDefaults.productTypes,
+    gender: registerProductDefaults.gender,
+    category: registerProductDefaults.category,
+    productStyles: registerProductDefaults.productStyles,
+    seasons: registerProductDefaults.seasons,
+    textures: registerProductDefaults.textures,
+    warnings: registerProductDefaults.warnings,
   };
 
   const form = useForm({
@@ -82,6 +56,11 @@ export default function useRegisterProductQuery() {
     name: "textures",
   });
 
+  const warningField = useFieldArray({
+    control: form.control,
+    name: "warnings",
+  });
+
   const {
     onSelect,
     onFileChange,
@@ -102,16 +81,15 @@ export default function useRegisterProductQuery() {
   }
 
   const onSubmit = (values) => {
-    console.log(values);
-    // registerProductDefaults.isUpdating
-    //   ? dispatch(
-    //       registerProductActions.updateRegisteredProduct({
-    //         data: values,
-    //         updatingRegisteredProductId:
-    //           registerProductDefaults.updatingRegisteredProductId,
-    //       })
-    //     )
-    //   : dispatch(registerProductActions.registerProduct({ data: values }));
+    registerProductDefaults.isUpdating
+      ? dispatch(
+          registerProductActions.updateRegisteredProduct({
+            data: values,
+            updatingRegisteredProductId:
+              registerProductDefaults.updatingRegisteredProductId,
+          })
+        )
+      : dispatch(registerProductActions.registerProduct({ data: values }));
   };
 
   useEffect(() => {
@@ -135,6 +113,7 @@ export default function useRegisterProductQuery() {
     onMultipleSelect,
     onFileChange,
     textureField,
+    warningField,
     onSubmit,
     status,
     isUpdating: registerProductDefaults.isUpdating,

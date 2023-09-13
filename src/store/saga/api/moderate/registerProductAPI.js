@@ -12,8 +12,8 @@ export async function registerProductQuery(payload) {
 
 export async function updateRegisteredProductQuery(payload) {
   return await axiosFormDataQuery.put(
-    `/moderate/register-product/${payload._id}`,
-    payload
+    `/moderate/register-product/${payload.updatingRegisteredProductId}`,
+    payload.data
   );
 }
 

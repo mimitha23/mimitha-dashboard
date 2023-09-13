@@ -20,8 +20,8 @@ export default function useProductStyleMutationQuery() {
   );
 
   const formDefaults = {
-    label_ka: productStyleDefaults.label_ka || "",
-    label_en: productStyleDefaults.label_en || "",
+    label_ka: productStyleDefaults.label_ka,
+    label_en: productStyleDefaults.label_en,
   };
 
   const form = useForm({

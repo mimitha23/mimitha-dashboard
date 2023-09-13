@@ -2,21 +2,21 @@ import { createSelector } from "@reduxjs/toolkit";
 
 const selectedRegisterProductForm = ({ registerProduct }) => ({
   isEditable: registerProduct.form.isEditable,
+  thumbnail: registerProduct.form.thumbnail,
+  newThumbnail: registerProduct.form.newThumbnail,
   productTypes: registerProduct.form.productTypes,
   gender: registerProduct.form.gender,
   category: registerProduct.form.category,
   productStyles: registerProduct.form.productStyles,
   seasons: registerProduct.form.seasons,
-  warning: registerProduct.form.warning,
-  warnings: registerProduct.form.warnings,
   textures: registerProduct.form.textures,
-  thumbnail: registerProduct.form.thumbnail,
-  newThumbnail: registerProduct.form.newThumbnail,
+  warnings: registerProduct.form.warnings,
   isUpdating: registerProduct.isUpdating,
   updatingRegisteredProductId: registerProduct.updatingRegisteredProductId,
 });
 
 const selectedRegisterProductStatus = ({ registerProduct }) => ({
+  stage: registerProduct.status.stage,
   loading: registerProduct.status.loading,
   error: registerProduct.status.error,
   message: registerProduct.status.message,

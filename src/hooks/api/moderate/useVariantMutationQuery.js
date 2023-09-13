@@ -20,18 +20,13 @@ export default function useVariantMutationQuery() {
   const variantDefaults = useSelector(variantSelectors.selectVariantForm);
 
   const formDefaults = {
-    variant_type: {
-      _id: variantDefaults.variantType._id || "",
-      caption: variantDefaults.variantType.caption || "",
-      label_ka: variantDefaults.variantType.label_ka || "",
-      label_en: variantDefaults.variantType.label_en || "",
-    },
-    label_ka: variantDefaults.label_ka || "",
-    label_en: variantDefaults.label_en || "",
-    description_ka: variantDefaults.description_ka || "",
-    description_en: variantDefaults.description_en || "",
-    icon: variantDefaults.icon || "",
-    new_icon: "",
+    variant_type: variantDefaults.variant_type,
+    label_ka: variantDefaults.label_ka,
+    label_en: variantDefaults.label_en,
+    description_ka: variantDefaults.description_ka,
+    description_en: variantDefaults.description_en,
+    icon: variantDefaults.icon,
+    new_icon: variantDefaults.new_icon,
   };
 
   const form = useForm({

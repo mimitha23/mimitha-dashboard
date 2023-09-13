@@ -33,7 +33,10 @@ function InputMultipleFilterableSelect(
   }
 
   return (
-    <Styled.InputMultipleFilterableSelect ref={dropdown_ref}>
+    <Styled.InputMultipleFilterableSelect
+      ref={dropdown_ref}
+      data-multiple-select-input
+    >
       <label htmlFor={id}>{label}</label>
 
       <input

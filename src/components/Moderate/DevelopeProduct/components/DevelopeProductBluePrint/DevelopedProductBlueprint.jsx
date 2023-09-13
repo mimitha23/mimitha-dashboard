@@ -1,10 +1,7 @@
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 
-import {
-  selectDevelopeProductForm,
-  selectDevelopedProductAssets,
-} from "store/selectors/moderate/developeProductSelectors";
+import { selectDevelopeProductForm } from "store/selectors/moderate/developeProductSelectors";
 
 import ImageFilesReview from "./ImageFilesReview";
 import DetailsBlock from "./DetailsBlock";
@@ -13,7 +10,6 @@ import * as Styled from "./DevelopedProductBlueprint.styled";
 
 export default function DevelopedProductBlueprint() {
   const form = useSelector(selectDevelopeProductForm);
-  const assets = useSelector(selectDevelopedProductAssets);
 
   const [size, setSize] = useState({
     size: "",
@@ -41,20 +37,22 @@ export default function DevelopedProductBlueprint() {
 
   return (
     <Styled.DevelopedProductBlueprint>
-      <ImageFilesReview assets={assets.assets} />
+      <ImageFilesReview assets={[]} />
 
       <MediaDualBox
         title="პროდუქტის ხატულები"
         firstChild={{
-          message: "პროდუქტის წინა მხარე",
-          type: "image",
           src: "",
+          type: "image",
+          message: "პროდუქტის წინა მხარე",
+          id: "product-thumbnail--front",
           // src: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTw14qbKDfS2PeLdAL26F7zyv5Tk3_TyzwvBQ&usqp=CAU",
         }}
         secondChild={{
-          message: "პროდუქტის უკანა მხარე",
-          type: "image",
           src: "",
+          type: "image",
+          message: "პროდუქტის უკანა მხარე",
+          id: "product-thumbnail--back",
           // src: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTw14qbKDfS2PeLdAL26F7zyv5Tk3_TyzwvBQ&usqp=CAU",
         }}
       />
@@ -62,15 +60,17 @@ export default function DevelopedProductBlueprint() {
       <MediaDualBox
         title="პროდუქტის მანეკენი და მოდელი"
         firstChild={{
-          message: "მანეკენი",
-          type: "image",
           src: "",
+          type: "image",
+          message: "მანეკენი",
+          id: "product-mannequin",
           // src: "https://moremannequins.co.uk/c/47-Niara_category/female-mannequins-aegon.jpg",
         }}
         secondChild={{
-          message: "მოდელი",
-          type: "video",
           src: "",
+          type: "video",
+          message: "მოდელი",
+          id: "product-model",
           // src: "https://cdn.coverr.co/videos/coverr-woman-posing-in-front-of-blue-wall-3845/1080p.mp4",
         }}
       />
@@ -78,20 +78,22 @@ export default function DevelopedProductBlueprint() {
       <MediaDualBox
         title="პროდუქტის კონფიგურატორი (აღება და დადება)"
         firstChild={{
-          message: "პროდუქტის დადება",
-          type: "video",
           src: "",
+          type: "video",
+          message: "პროდუქტის დადება",
+          id: "product-config-take-down",
           // src: "https://cdn.coverr.co/videos/coverr-woman-posing-in-front-of-blue-wall-3845/1080p.mp4",
         }}
         secondChild={{
-          message: "პროდუქტის აღება",
-          type: "video",
           src: "",
+          type: "video",
+          message: "პროდუქტის აღება",
+          id: "product-config-take-up",
           // src: "https://cdn.coverr.co/videos/coverr-woman-posing-in-front-of-blue-wall-3845/1080p.mp4",
         }}
       />
 
-      <div className="registered-product--card__details">
+      {/* <div className="registered-product--card__details">
         <DetailsBlock label="სათაური (ka)" value={form.title_ka} />
 
         <DetailsBlock label="სათაური (en)" value={form.title_en} />
@@ -113,7 +115,7 @@ export default function DevelopedProductBlueprint() {
         <DetailsBlock label="საჯარო" value={form.isPublic ? "✔" : "❌"} />
 
         <DetailsBlock label="პოპულარული" value={form.isFeatured ? "✔" : "❌"} />
-      </div>
+      </div> */}
     </Styled.DevelopedProductBlueprint>
   );
 }

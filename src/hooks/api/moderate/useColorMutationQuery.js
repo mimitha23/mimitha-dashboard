@@ -18,9 +18,9 @@ export default function useColorMutationQuery() {
   const colorDefaults = useSelector(colorSelectors.selectColorForm);
 
   const formDefaults = {
-    color_ka: colorDefaults.color_ka || "",
-    color_en: colorDefaults.color_en || "",
-    color_hex: colorDefaults.color_hex || "",
+    color_ka: colorDefaults.color_ka,
+    color_en: colorDefaults.color_en,
+    color_hex: colorDefaults.color_hex,
   };
 
   const form = useForm({

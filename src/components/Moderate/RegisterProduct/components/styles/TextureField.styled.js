@@ -8,13 +8,6 @@ export const TextureField = styled.div`
   display: flex;
   flex-direction: column;
 
-  .texture-head {
-    grid-column: span 2;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-
   .texture-field__list {
     display: flex;
     flex-direction: column;
@@ -25,6 +18,19 @@ export const TextureField = styled.div`
       align-items: flex-start;
       gap: 1.5rem;
       position: relative;
+    }
+
+    &-item [data-input]:has(input[type="number"]) {
+      width: 40%;
+
+      .form__input-text--box {
+        flex-direction: row;
+        align-items: center;
+
+        input {
+          width: 100%;
+        }
+      }
     }
   }
 

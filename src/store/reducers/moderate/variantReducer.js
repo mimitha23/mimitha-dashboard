@@ -4,18 +4,18 @@ import { convertBase64StrToFile } from "utils";
 
 const initialState = {
   form: {
-    variantType: {
+    variant_type: {
+      _id: "",
+      caption: "",
       label_ka: "",
       label_en: "",
-      caption: "",
-      _id: "",
     },
     label_ka: "",
     label_en: "",
     description_ka: "",
     description_en: "",
-    icon: null,
-    newIcon: null,
+    icon: "",
+    new_icon: "",
   },
 
   isUpdating: false,
@@ -61,7 +61,7 @@ const variantSlice = createSlice({
 
     setVariantDefaults(state, { payload }) {
       const form = {
-        variantType: { _id: nanoid(), caption: payload.type },
+        variant_type: { _id: nanoid(), caption: payload.type },
         label_ka: payload.label_ka,
         label_en: payload.label_en,
         description_ka: payload.description_ka,

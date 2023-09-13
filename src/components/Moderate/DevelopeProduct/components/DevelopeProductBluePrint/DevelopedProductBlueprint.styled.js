@@ -51,17 +51,19 @@ export const ImageFilesReview = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 2rem;
-  min-height: 12rem;
-  padding: 2rem 0;
-  border: 1px solid gray;
+  min-height: 24rem;
+  padding: 2rem;
+  border-radius: 0.5rem;
+  border: 1px solid ${({ theme }) => theme.colors.gray_shade};
 
   .images-review__list {
     width: 100%;
+    min-height: 15rem;
     display: grid;
     grid-template-columns: repeat(auto-fit, 12rem);
     justify-content: center;
-    padding: 1rem;
     gap: 1rem;
+    padding: 1rem;
     border-radius: 0.5rem;
     border: 1px dashed ${({ theme }) => theme.colors.gray_shade};
   }
@@ -81,7 +83,7 @@ export const ImageFilesReview = styled.div`
     }
   }
 
-  .no-files--message {
+  .product__media-box__label {
     grid-column: span 5;
     justify-self: center;
     width: 100%;
@@ -90,8 +92,25 @@ export const ImageFilesReview = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
+    gap: 0.5rem;
     opacity: 0.5;
-    font-weight: 900;
+    font-weight: 600;
+    font-size: ${({ theme }) => theme.fontSize.sm};
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover {
+      color: ${({ theme }) => theme.colors.blue};
+      opacity: 1;
+    }
+
+    svg {
+      margin-top: 0.2rem;
+    }
+
+    span {
+      line-height: 1;
+    }
   }
 `;
 
@@ -102,10 +121,29 @@ export const AssetsReviewDualBox = styled.div`
   align-items: center;
   padding: 2rem 0;
   border: 1px solid gray;
+  border-radius: 0.5rem;
+  border: 1px solid ${({ theme }) => theme.colors.gray_shade};
 
   .product__thumbnails {
     display: flex;
     gap: 2rem;
+  }
+
+  .dual-box__file-label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    opacity: 0.5;
+    font-weight: 600;
+    font-size: ${({ theme }) => theme.fontSize.sm};
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover {
+      color: ${({ theme }) => theme.colors.blue};
+      opacity: 1;
+    }
   }
 
   figure {
@@ -114,7 +152,8 @@ export const AssetsReviewDualBox = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 1px dashed gray;
+    border-radius: 0.5rem;
+    border: 1px dashed ${({ theme }) => theme.colors.gray_shade};
 
     .video_frame {
       aspect-ratio: 16/9;

@@ -9,3 +9,4 @@ export { default as InputMultipleFilterableSelect } from "./InputMultipleFiltera
 export { default as InputText } from "./InputText";
 export { default as InputTextarea } from "./InputTextarea";
 export { default as RemoveFieldButton } from "./RemoveFieldButton";
+export { default as DynamicFieldHeader } from "./DynamicFieldHeader";

@@ -22,7 +22,7 @@ export function* getRegisterProductFormSuggestions() {
 
 export function* registerProduct({ payload }) {
   try {
-    yield call(registerProductAPI.registerProductQuery, payload);
+    yield call(registerProductAPI.registerProductQuery, payload.data);
     yield put(
       registerProductActions.setStatusSuccess(REQUEST_STATUS_STAGE.SUCCESS)
     );

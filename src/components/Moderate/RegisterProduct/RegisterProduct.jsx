@@ -1,16 +1,15 @@
 import { useSelector } from "react-redux";
 
-import * as registerProductSelectors from "store/selectors/moderate/registerProductSelectors";
 import { useRegisterProductQuery } from "hooks/api/moderate";
+import * as registerProductSelectors from "store/selectors/moderate/registerProductSelectors";
 
 import { PATHS } from "config/routes";
 import { Controller } from "react-hook-form";
 
 import * as Layouts from "components/layouts";
 import * as Form from "components/layouts/Form";
-import TextureField from "./components/TextureField";
-import WarningField from "./components/WarningField";
 import * as Styled from "./styles/RegisterProduct.styled";
+import { TextureField, WarningField } from "./components";
 
 export default function RegisterProduct() {
   const form = useRegisterProductQuery();
@@ -161,7 +160,7 @@ export default function RegisterProduct() {
 
         <TextureField textureField={form.textureField} form={form.form} />
 
-        <WarningField />
+        <WarningField warningField={form.warningField} form={form.form} />
 
         <Controller
           name="isEditable"
@@ -182,7 +181,7 @@ export default function RegisterProduct() {
         />
 
         <Controller
-          name="thumbnail"
+          name="newThumbnail"
           control={form.form.control}
           render={({ field: { value, ...field }, fieldState: { error } }) => (
             <Form.InputFile

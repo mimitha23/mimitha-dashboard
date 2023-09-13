@@ -1,4 +1,5 @@
 import * as Styled from "./DevelopedProductBlueprint.styled";
+import { PlusIcon } from "components/layouts/Icons";
 
 export default function MediaDualBox({
   title,
@@ -6,16 +7,19 @@ export default function MediaDualBox({
     message: "",
     type: "image", // image | video
     src: "",
+    id: "",
   },
   secondChild = {
     message: "",
     type: "image", // image | video
     src: "",
+    id: "",
   },
 }) {
   return (
     <Styled.AssetsReviewDualBox>
       <p className="product__media-box--title">{title}</p>
+
       <div className="product__thumbnails">
         <figure>
           <ChildComponent child={firstChild} />
@@ -49,7 +53,13 @@ function ChildComponent({ child }) {
         </>
       )}
 
-      {!child.src && <p>{child.message}</p>}
+      {!child.src && (
+        <label className="dual-box__file-label" htmlFor={child.id}>
+          <PlusIcon />
+          <span>{child.message}</span>
+          <input hidden id={child.id} type="file" />
+        </label>
+      )}
     </>
   );
 }
