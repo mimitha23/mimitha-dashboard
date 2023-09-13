@@ -4,6 +4,7 @@ import { Controller } from "react-hook-form";
 import { useProductTypeMutationQuery } from "hooks/api/moderate";
 
 import * as Layouts from "components/layouts";
+import * as Form from "components/layouts/Form";
 import * as Styled from "./styles/CreateProductType.styled";
 
 export default function CreateProductType() {
@@ -11,18 +12,18 @@ export default function CreateProductType() {
 
   return (
     <Styled.CreateProductType>
-      <Layouts.FormHeader
+      <Form.FormHeader
         title="შექმენი პროდუქტის ტიპი"
         linkCaption="ნახე პროდუქტის ყველა ტიპი"
         redirectPath={PATHS.moderate_nested_routes.productTypesPage.relativePath()}
       />
 
-      <Layouts.Form onSubmit={form.handleSubmit(onSubmit)}>
+      <Form.Form onSubmit={form.handleSubmit(onSubmit)}>
         <Controller
           name="label_ka"
           control={form.control}
           render={({ field, fieldState: { error } }) => (
-            <Layouts.InputText
+            <Form.InputText
               id="product-label-ka"
               label="პროდუქტის ტიპის იარლიყი (ka)"
               placeholder="კარგო შარვალი"
@@ -37,7 +38,7 @@ export default function CreateProductType() {
           name="label_en"
           control={form.control}
           render={({ field, fieldState: { error } }) => (
-            <Layouts.InputText
+            <Form.InputText
               id="product-label-en"
               label="პროდუქტის ტიპის იარლიყი (en)"
               placeholder="cargo trousers"
@@ -48,12 +49,12 @@ export default function CreateProductType() {
           )}
         />
 
-        <Layouts.Button
+        <Form.Button
           type="submit"
           disabled={status.loading}
           caption={isUpdating ? "განახლება" : "შექმნა"}
         />
-      </Layouts.Form>
+      </Form.Form>
 
       <Layouts.ErrorModal status={status} />
 

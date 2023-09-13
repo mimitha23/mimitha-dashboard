@@ -11,6 +11,7 @@ import { developeProductActions } from "store/reducers/moderate/developeProductR
 import { PATHS } from "config/routes";
 
 import * as Layouts from "components/layouts";
+import * as Form from "components/layouts/Form";
 import DevelopedProductBlueprint from "./components/DevelopeProductBluePrint/DevelopedProductBlueprint";
 import AddVariantField from "./components/VariantField/AddVariantField";
 import SizeField from "./components/SizeField/SizeField";
@@ -92,7 +93,7 @@ export default function AddDevelopedProduct() {
 
   return (
     <Styled.AddDevelopedProduct>
-      <Layouts.FormHeader
+      <Form.FormHeader
         title="განავითარე პროდუქტი"
         linkCaption="ნახე ყველა მიმაგრებული პროდუქტი"
         redirectPath={PATHS.moderate_nested_routes.developedProductsPage.absolutePath(
@@ -103,8 +104,8 @@ export default function AddDevelopedProduct() {
       <div className="add-developed--product__content">
         <div className="add-developed--product__form-wrapper">
           {!developeForm.isUpdating && <CopyDevelopedProductConfig />}
-          <Layouts.Form>
-            <Layouts.InputText
+          <Form.Form>
+            <Form.InputText
               id="product-title_ka"
               label="პროდუქტის სათაური (ka)"
               name="title_ka"
@@ -115,7 +116,7 @@ export default function AddDevelopedProduct() {
               onChange={setDevelopedProduct}
             />
 
-            <Layouts.InputText
+            <Form.InputText
               id="product-title_en"
               label="პროდუქტის სათაური (en)"
               placeholder="black hoody with pocket"
@@ -126,7 +127,7 @@ export default function AddDevelopedProduct() {
               onChange={setDevelopedProduct}
             />
 
-            <Layouts.InputText
+            <Form.InputText
               id="product-price"
               label="პროდუქტის ფასი"
               name="price"
@@ -138,7 +139,7 @@ export default function AddDevelopedProduct() {
               onChange={setDevelopedProduct}
             />
 
-            <Layouts.InputFilterableSelect
+            <Form.InputFilterableSelect
               id="color"
               label="ფერი"
               name="color"
@@ -155,7 +156,7 @@ export default function AddDevelopedProduct() {
 
             <AddVariantField error={error.variants} />
 
-            <Layouts.InputTextarea
+            <Form.InputTextarea
               id="product-description--ka"
               label="პროდუქტის აღწერა (ka)"
               name="description_ka"
@@ -166,7 +167,7 @@ export default function AddDevelopedProduct() {
               onChange={setDevelopedProduct}
             />
 
-            <Layouts.InputTextarea
+            <Form.InputTextarea
               id="product-description--en"
               label="პროდუქტის აღწერა (en)"
               name="description_en"
@@ -177,7 +178,7 @@ export default function AddDevelopedProduct() {
               onChange={setDevelopedProduct}
             />
 
-            <Layouts.InputCheckBox
+            <Form.InputCheckBox
               id="is-public"
               name="isPublic"
               checked={developeForm.isPublic}
@@ -186,7 +187,7 @@ export default function AddDevelopedProduct() {
               label="არი საჯარო"
             />
 
-            <Layouts.InputCheckBox
+            <Form.InputCheckBox
               id="is-featured"
               checked={developeForm.isFeatured}
               name="isFeatured"
@@ -196,7 +197,7 @@ export default function AddDevelopedProduct() {
               label="is featured"
             />
 
-            <Layouts.InputFile
+            <Form.InputFile
               name="newAssets"
               label="დაამატეთ პროდუქტის მედია ფაილები"
               fileRef={filesRef}
@@ -216,12 +217,12 @@ export default function AddDevelopedProduct() {
               }
             />
 
-            <Layouts.Button
+            <Form.Button
               caption={developeForm.isUpdating ? "განახლება" : "შექმნა"}
               disabled={status.loading}
               onClick={onSubmit}
             />
-          </Layouts.Form>
+          </Form.Form>
         </div>
 
         <DevelopedProductBlueprint />

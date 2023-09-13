@@ -5,7 +5,7 @@ import { selectSubCategoryRoutes } from "store/selectors/app/navSelectors";
 import { selectProductTypesWithCaption } from "store/selectors/moderate/productTypeSelectors";
 
 import ControlListButtons from "./ControlListButtons";
-import { InputFilterableSelect } from "components/layouts";
+import { InputFilterableSelect } from "components/layouts/Form";
 
 export default function RoutesListItem({
   route,

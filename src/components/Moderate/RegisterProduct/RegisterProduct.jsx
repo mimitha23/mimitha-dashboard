@@ -7,6 +7,7 @@ import { PATHS } from "config/routes";
 import { Controller } from "react-hook-form";
 
 import * as Layouts from "components/layouts";
+import * as Form from "components/layouts/Form";
 import TextureField from "./components/TextureField";
 import WarningField from "./components/WarningField";
 import * as Styled from "./styles/RegisterProduct.styled";
@@ -20,7 +21,7 @@ export default function RegisterProduct() {
 
   return (
     <Styled.RegisterProduct>
-      <Layouts.FormHeader
+      <Form.FormHeader
         title="დაარეგისტრირე პროდუქტი"
         linkCaption="ნახე ყველა რეგისტრირებული პროდუქტი"
         redirectPath={
@@ -28,12 +29,12 @@ export default function RegisterProduct() {
         }
       />
 
-      <Layouts.Form onSubmit={form.form.handleSubmit(form.onSubmit)}>
+      <Form.Form onSubmit={form.form.handleSubmit(form.onSubmit)}>
         <Controller
           name="productTypes"
           control={form.form.control}
           render={({ field, fieldState: { error } }) => (
-            <Layouts.InputFilterableSelect
+            <Form.InputFilterableSelect
               id="product-type"
               label="პროდუქტის ტიპი"
               placeholder="აირჩიეთ პროდუქტის ტიპი"
@@ -63,7 +64,7 @@ export default function RegisterProduct() {
             field: { onChange, value, ...field },
             fieldState: { error },
           }) => (
-            <Layouts.InputMultipleFilterableSelect
+            <Form.InputMultipleFilterableSelect
               id="style"
               label="სტილი"
               placeholder="აირჩიეთ სტილი"
@@ -86,7 +87,7 @@ export default function RegisterProduct() {
             field: { onChange, value, ...field },
             fieldState: { error },
           }) => (
-            <Layouts.InputMultipleFilterableSelect
+            <Form.InputMultipleFilterableSelect
               id="season"
               label="სეზონი"
               placeholder="აირჩიეთ სეზონი"
@@ -106,7 +107,7 @@ export default function RegisterProduct() {
           name="gender"
           control={form.form.control}
           render={({ field, fieldState: { error } }) => (
-            <Layouts.InputFilterableSelect
+            <Form.InputFilterableSelect
               id="gender"
               label="გენდერი"
               placeholder="აირჩიეთ გენდერი"
@@ -134,7 +135,7 @@ export default function RegisterProduct() {
           name="category"
           control={form.form.control}
           render={({ field, fieldState: { error } }) => (
-            <Layouts.InputFilterableSelect
+            <Form.InputFilterableSelect
               id="category"
               label="კატეგორია"
               placeholder="აირჩიეთ კატეგორია"
@@ -166,7 +167,7 @@ export default function RegisterProduct() {
           name="isEditable"
           control={form.form.control}
           render={({ field, fieldState: { error } }) => (
-            <Layouts.InputCheckBox
+            <Form.InputCheckBox
               id="is-editable"
               label="არის რედაქტირებადი"
               error={error ? true : false}
@@ -184,7 +185,7 @@ export default function RegisterProduct() {
           name="thumbnail"
           control={form.form.control}
           render={({ field: { value, ...field }, fieldState: { error } }) => (
-            <Layouts.InputFile
+            <Form.InputFile
               message={error?.message}
               error={error ? true : false}
               label="აირჩიეთ პროდუქტის მინიატურა"
@@ -197,12 +198,12 @@ export default function RegisterProduct() {
           )}
         />
 
-        <Layouts.Button
+        <Form.Button
           type="submit"
           caption={form.isUpdating ? "განახლება" : "შექმნა"}
           disabled={form.status.loading}
         />
-      </Layouts.Form>
+      </Form.Form>
 
       <Layouts.ErrorModal status={form.status} />
 

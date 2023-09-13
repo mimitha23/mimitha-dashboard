@@ -154,3 +154,30 @@ export const Button = styled.button`
     cursor: none;
   }
 `;
+
+export const RemoveFieldButton = styled.button`
+  position: absolute;
+  top: -2rem;
+  right: 0;
+
+  &:hover {
+    color: ${({ theme }) => theme.colors.red};
+  }
+`;
+
+export const AddFieldButton = styled.button`
+  font-size: ${({ theme }) => theme.fontSize.md};
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+
+  span {
+    line-height: 1;
+  }
+
+  span:last-child {
+    display: flex;
+    align-items: center;
+    margin-top: 0.4rem;
+  }
+`;

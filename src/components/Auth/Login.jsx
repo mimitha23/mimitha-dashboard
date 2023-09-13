@@ -12,7 +12,8 @@ import { useIsAuthenticated } from "hooks/auth";
 import { PATHS } from "config/routes";
 
 import { EyeShowIcon, EyeHideIcon } from "components/layouts/Icons";
-import { Form, InputText, Button, Spinner } from "components/layouts";
+import { Spinner } from "components/layouts";
+import * as Form from "components/layouts/Form";
 import * as Styled from "./Login.styled";
 
 export default function Login() {
@@ -47,8 +48,8 @@ export default function Login() {
 
   return (
     <Styled.Login>
-      <Form>
-        <InputText
+      <Form.Form>
+        <Form.InputText
           type="email"
           placeholder="Email"
           name="email"
@@ -59,7 +60,7 @@ export default function Login() {
         />
 
         <div className="password-field">
-          <InputText
+          <Form.InputText
             type={showPassword ? "text" : "password"}
             placeholder="Password"
             name="password"
@@ -75,8 +76,8 @@ export default function Login() {
 
         {status.error && <p>{status.message}</p>}
 
-        <Button caption="ავტორიზაცია" onClick={handleAuth} />
-      </Form>
+        <Form.Button caption="ავტორიზაცია" onClick={handleAuth} />
+      </Form.Form>
       {status.loading && <Spinner />}
     </Styled.Login>
   );

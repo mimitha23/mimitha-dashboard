@@ -1,4 +1,4 @@
-import { InputText } from "components/layouts";
+import { InputText } from "components/layouts/Form";
 
 export default function WarningInput({ id, name, value, onChange, caption }) {
   return (

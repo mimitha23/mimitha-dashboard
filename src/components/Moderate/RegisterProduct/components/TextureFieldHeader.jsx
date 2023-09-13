@@ -1,21 +1,10 @@
-import { PlusIcon } from "components/layouts/Icons";
+import { AddFieldButton } from "components/layouts/Form";
 
 export default function TextureFieldHeader({ onAddField }) {
   return (
     <div className="texture-head">
       <label>ტექსტურა</label>
-      <button
-        className="add-texture--field__btn"
-        onClick={(e) => {
-          e.preventDefault();
-          onAddField();
-        }}
-      >
-        <span>დაამატე ველი</span>
-        <span>
-          <PlusIcon />
-        </span>
-      </button>
+      <AddFieldButton onAddField={onAddField} />
     </div>
   );
 }

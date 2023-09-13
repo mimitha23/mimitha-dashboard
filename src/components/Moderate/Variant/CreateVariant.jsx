@@ -10,6 +10,7 @@ import { PATHS } from "config/routes";
 import { Controller } from "react-hook-form";
 
 import * as Layouts from "components/layouts";
+import * as Form from "components/layouts/Form";
 import * as Styled from "./styles/CreateVariant.styled";
 
 export default function CreateVariant() {
@@ -30,18 +31,18 @@ export default function CreateVariant() {
 
   return (
     <Styled.CreateVariant>
-      <Layouts.FormHeader
+      <Form.FormHeader
         title="შექმენი ვარიანტი"
         linkCaption="ნახე ყველა ვარიანტი"
         redirectPath={PATHS.moderate_nested_routes.variantsPage.relativePath()}
       />
 
-      <Layouts.Form onSubmit={form.handleSubmit(onSubmit)}>
+      <Form.Form onSubmit={form.handleSubmit(onSubmit)}>
         <Controller
           name="variant_type"
           control={form.control}
           render={({ field, fieldState: { error } }) => (
-            <Layouts.InputFilterableSelect
+            <Form.InputFilterableSelect
               id="variant-type"
               label="ვარიანტის ტიპი"
               placeholder="pocket"
@@ -68,7 +69,7 @@ export default function CreateVariant() {
           name="label_ka"
           control={form.control}
           render={({ field, fieldState: { error } }) => (
-            <Layouts.InputText
+            <Form.InputText
               id="variant-label"
               label="ვარიანტის იარლიყი (ka)"
               placeholder="ჯიბე"
@@ -83,7 +84,7 @@ export default function CreateVariant() {
           name="label_en"
           control={form.control}
           render={({ field, fieldState: { error } }) => (
-            <Layouts.InputText
+            <Form.InputText
               id="variant-label"
               label="ვარიანტის იარლიყი (en)"
               placeholder="pocket"
@@ -98,7 +99,7 @@ export default function CreateVariant() {
           name="description_ka"
           control={form.control}
           render={({ field, fieldState: { error } }) => (
-            <Layouts.InputTextarea
+            <Form.InputTextarea
               id="variant-description"
               label="ვარიანტის აღწერა (ka)"
               placeholder="აღწერე ვარიანტი..."
@@ -113,7 +114,7 @@ export default function CreateVariant() {
           name="description_en"
           control={form.control}
           render={({ field, fieldState: { error } }) => (
-            <Layouts.InputTextarea
+            <Form.InputTextarea
               id="variant-description"
               label="ვარიანტის აღწერა (en)"
               placeholder="describe variant..."
@@ -128,7 +129,7 @@ export default function CreateVariant() {
           name="new_icon"
           control={form.control}
           render={({ field: { value, ...field }, fieldState: { error } }) => (
-            <Layouts.InputFile
+            <Form.InputFile
               label="აირჩიეთ ნიშნულის ფაილი"
               accept="image/svg+xml"
               error={error ? true : false}
@@ -142,12 +143,12 @@ export default function CreateVariant() {
           )}
         />
 
-        <Layouts.Button
+        <Form.Button
           type="submit"
           disabled={status.loading}
           caption={isUpdating ? "განახლება" : "შექმნა"}
         />
-      </Layouts.Form>
+      </Form.Form>
 
       <Layouts.ErrorModal status={status} />
 

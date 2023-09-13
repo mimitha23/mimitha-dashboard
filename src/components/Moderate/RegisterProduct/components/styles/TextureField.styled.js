@@ -13,23 +13,6 @@ export const TextureField = styled.div`
     display: flex;
     align-items: center;
     justify-content: space-between;
-
-    .add-texture--field__btn {
-      font-size: ${({ theme }) => theme.fontSize.md};
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-
-      span {
-        line-height: 1;
-      }
-
-      span:last-child {
-        display: flex;
-        align-items: center;
-        margin-top: 0.4rem;
-      }
-    }
   }
 
   .texture-field__list {
@@ -42,16 +25,6 @@ export const TextureField = styled.div`
       align-items: flex-start;
       gap: 1.5rem;
       position: relative;
-
-      .texture-field__remove-btn {
-        position: absolute;
-        top: -2rem;
-        right: 0;
-
-        &:hover {
-          color: ${({ theme }) => theme.colors.red};
-        }
-      }
     }
   }
 

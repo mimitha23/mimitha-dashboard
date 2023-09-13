@@ -6,7 +6,8 @@ import { selectNavStatus, selectNav } from "store/selectors/app/navSelectors";
 import { navActions } from "store/reducers/app/navigation/navReducer";
 import { productTypeActions } from "store/reducers/moderate/productTypeReducer";
 
-import { LoadingSpinner, Button } from "components/layouts";
+import { LoadingSpinner } from "components/layouts";
+import { Button } from "components/layouts/Form";
 import SubCategoryListItem from "./components/SubCategoryListItem";
 import AddSubCategoryButton from "./components/AddSubCategoryButton";
 import RoutesListItem from "./components/RoutesListItem";

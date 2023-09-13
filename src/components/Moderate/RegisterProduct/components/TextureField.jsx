@@ -4,10 +4,9 @@ import * as registerProductSelectors from "store/selectors/moderate/registerProd
 
 import { Controller } from "react-hook-form";
 
-import { MinusIcon } from "components/layouts/Icons";
 import TextureFieldHeader from "./TextureFieldHeader";
 import * as Styled from "./styles/TextureField.styled";
-import { InputFilterableSelect } from "components/layouts";
+import * as Form from "components/layouts/Form";
 
 export default function TextureField({ textureField, form }) {
   const { textures: textureSuggestions } = useSelector(
@@ -42,7 +41,7 @@ export default function TextureField({ textureField, form }) {
                   control={form.control}
                   defaultValue={fieldItem.texture.caption}
                   render={({ field, fieldState: { error } }) => (
-                    <InputFilterableSelect
+                    <Form.InputFilterableSelect
                       id={`texture-${index}`}
                       placeholder="აირჩიეთ ტექსტურა"
                       list={textureSuggestions}
@@ -76,7 +75,7 @@ export default function TextureField({ textureField, form }) {
                 />
 
                 {index > 0 && (
-                  <RemoveTextureFieldButton
+                  <Form.RemoveFieldButton
                     onRemove={() => textureField.remove(index)}
                   />
                 )}
@@ -106,19 +105,5 @@ function PercentageField({ fieldProps, error, message }) {
 
       {error && <p className="percentage-field__message">{message}</p>}
     </div>
-  );
-}
-
-function RemoveTextureFieldButton({ onRemove }) {
-  return (
-    <button
-      className="texture-field__remove-btn"
-      onClick={(e) => {
-        e.preventDefault();
-        onRemove();
-      }}
-    >
-      <MinusIcon />
-    </button>
   );
 }

@@ -10,7 +10,7 @@ import { extractObjectsArrayError } from "utils/validators/helpers/Validate";
 import AmountInput from "./AmountInput";
 import SizeFieldHeader from "./SizeFieldHeader";
 import RemoveFieldButton from "./RemoveFieldButton";
-import { InputFilterableSelect } from "components/layouts";
+import { InputFilterableSelect } from "components/layouts/Form";
 import * as Styled from "./SizeField.styled";
 
 export default function SizeField({ sizes, error }) {

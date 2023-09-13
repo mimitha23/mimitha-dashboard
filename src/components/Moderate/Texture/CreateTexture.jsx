@@ -3,6 +3,7 @@ import { Controller } from "react-hook-form";
 import { useTextureMutationQuery } from "hooks/api/moderate";
 
 import * as Layouts from "components/layouts";
+import * as Form from "components/layouts/Form";
 import * as Styled from "./styles/CreateTexture.styled";
 
 export default function CreateTexture() {
@@ -10,18 +11,18 @@ export default function CreateTexture() {
 
   return (
     <Styled.CreateTexture>
-      <Layouts.FormHeader
+      <Form.FormHeader
         title="შექმენი ტექსტურა"
         linkCaption="ნახე ყველა ტექსტურა"
         redirectPath={PATHS.moderate_nested_routes.texturesPage.relativePath()}
       />
 
-      <Layouts.Form onSubmit={form.handleSubmit(onSubmit)}>
+      <Form.Form onSubmit={form.handleSubmit(onSubmit)}>
         <Controller
           name="label_ka"
           control={form.control}
           render={({ field, fieldState: { error } }) => (
-            <Layouts.InputText
+            <Form.InputText
               id="texture-label--ka"
               label="ტექსტურა (ka)"
               placeholder="ბამბა"
@@ -36,7 +37,7 @@ export default function CreateTexture() {
           name="label_en"
           control={form.control}
           render={({ field, fieldState: { error } }) => (
-            <Layouts.InputText
+            <Form.InputText
               id="texture-label--en"
               label="ტექსტურა (en)"
               placeholder="cotton"
@@ -47,12 +48,12 @@ export default function CreateTexture() {
           )}
         />
 
-        <Layouts.Button
+        <Form.Button
           type="submit"
           disabled={status.loading}
           caption={isUpdating ? "განახლება" : "შექმნა"}
         />
-      </Layouts.Form>
+      </Form.Form>
 
       <Layouts.ErrorModal status={status} />
 

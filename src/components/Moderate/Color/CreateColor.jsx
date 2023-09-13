@@ -7,6 +7,7 @@ import { isValidHexColor } from "functions";
 import { Controller } from "react-hook-form";
 
 import * as Layouts from "components/layouts";
+import * as Form from "components/layouts/Form";
 import * as Styled from "./styles/CreateColor.styled";
 
 export default function CreateColor() {
@@ -14,18 +15,18 @@ export default function CreateColor() {
 
   return (
     <Styled.CreateColor>
-      <Layouts.FormHeader
+      <Form.FormHeader
         title="შექმენი ფერი"
         linkCaption="ნახე ყველა ფერი"
         redirectPath={PATHS.moderate_nested_routes.colorsPage.relativePath()}
       />
 
-      <Layouts.Form onSubmit={form.handleSubmit(onSubmit)}>
+      <Form.Form onSubmit={form.handleSubmit(onSubmit)}>
         <Controller
           name="color_ka"
           control={form.control}
           render={({ field, fieldState: { error } }) => (
-            <Layouts.InputText
+            <Form.InputText
               id="color-label--ka"
               label="ფერი (ka)"
               placeholder="მწვანე"
@@ -40,7 +41,7 @@ export default function CreateColor() {
           name="color_en"
           control={form.control}
           render={({ field, fieldState: { error } }) => (
-            <Layouts.InputText
+            <Form.InputText
               id="color-label--en"
               label="ფერი (en)"
               placeholder="green"
@@ -56,7 +57,7 @@ export default function CreateColor() {
           control={form.control}
           render={({ field, fieldState: { error } }) => (
             <>
-              <Layouts.InputText
+              <Form.InputText
                 id="color-hex"
                 label="ფერი hex in decimal ფორმატში"
                 placeholder="#26E066"
@@ -75,7 +76,7 @@ export default function CreateColor() {
           )}
         />
 
-        <Layouts.Button
+        <Form.Button
           type="submit"
           disabled={status.loading}
           caption={isUpdating ? "განახლება" : "შექმნა"}
@@ -84,7 +85,7 @@ export default function CreateColor() {
         <Layouts.ErrorModal status={status} />
 
         {status.loading && <Layouts.LoadingSpinner />}
-      </Layouts.Form>
+      </Form.Form>
     </Styled.CreateColor>
   );
 }
