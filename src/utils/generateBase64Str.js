@@ -1,4 +1,4 @@
-export default function generateBase64Str({ file, fileType = "image" }) {
+export default function generateBase64Str({ file, fileType = "image/" }) {
   return new Promise((resolve, _) => {
     const isImageFile =
       file && file instanceof File && file.type.includes(fileType);

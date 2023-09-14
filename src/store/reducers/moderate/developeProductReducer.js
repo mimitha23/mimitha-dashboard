@@ -9,19 +9,18 @@ const initialState = {
     color: {
       ka: "",
       en: "",
-      caption: "",
       _id: "",
+      caption: "",
     },
     sizes: [
       {
-        _id: nanoid(),
+        amount: "",
         size: {
           ka: "",
           en: "",
-          caption: "",
           _id: "",
+          caption: "",
         },
-        amount: "",
       },
     ],
     variants: [],
@@ -30,8 +29,11 @@ const initialState = {
     is_public: false,
     is_featured: false,
     assets: [],
-    new_assets: [],
-    assets_to_delete: [],
+    thumbnails: ["", ""],
+    mannequin: "",
+    model_video: "",
+    simulation_video_placing: "",
+    simulation_video_pick_up: "",
   },
 
   developeProductFormSuggestions: {
@@ -47,17 +49,9 @@ const initialState = {
   isUpdating: false,
   updatingDevelopedProductId: "",
 
-  status: {
-    loading: false,
-    error: null,
-    message: "",
-  },
+  status: status.default(),
 
-  singleProductStatus: {
-    loading: false,
-    error: null,
-    message: "",
-  },
+  singleProductStatus: status.default(),
 };
 
 const developeProductSlice = createSlice({

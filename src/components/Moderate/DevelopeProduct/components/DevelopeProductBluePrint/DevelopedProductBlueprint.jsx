@@ -1,97 +1,143 @@
-import { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
-
-import { selectDevelopeProductForm } from "store/selectors/moderate/developeProductSelectors";
+// import { useState, useEffect } from "react";
+// import { useSelector } from "react-redux";
+// import DetailsBlock from "./DetailsBlock";
+// import { selectDevelopeProductForm } from "store/selectors/moderate/developeProductSelectors";
 
 import ImageFilesReview from "./ImageFilesReview";
-import DetailsBlock from "./DetailsBlock";
+import { Controller } from "react-hook-form";
+import { useDevelopeProductProvider } from "providers/DevelopeProductFormProvider";
+
+import MediaBox from "./MediaBox";
 import MediaDualBox from "./MediaDualBox";
+import MediaDualBoxContainer from "./MediaDualBoxContainer";
 import * as Styled from "./DevelopedProductBlueprint.styled";
 
 export default function DevelopedProductBlueprint() {
-  const form = useSelector(selectDevelopeProductForm);
+  // const form = useSelector(selectDevelopeProductForm);
 
-  const [size, setSize] = useState({
-    size: "",
-    inStock: "",
-  });
+  // const [size, setSize] = useState({
+  //   size: "",
+  //   inStock: "",
+  // });
 
-  useEffect(() => {
-    if (!form.sizes[0]) return;
+  // useEffect(() => {
+  //   if (!form.sizes[0]) return;
 
-    const sizeStr = form.sizes
-      .map((size) => (size.size.ka ? `${size.size.ka} - ${size.amount}` : ""))
-      .join(" / ");
+  //   const sizeStr = form.sizes
+  //     .map((size) => (size.size.ka ? `${size.size.ka} - ${size.amount}` : ""))
+  //     .join(" / ");
 
-    const inStock = form.sizes.reduce(
-      (acc, size) => acc + parseFloat(size.amount),
-      0
-    );
+  //   const inStock = form.sizes.reduce(
+  //     (acc, size) => acc + parseFloat(size.amount),
+  //     0
+  //   );
 
-    setSize((prev) => ({
-      ...prev,
-      size: sizeStr,
-      inStock,
-    }));
-  }, [form.sizes]);
+  //   setSize((prev) => ({
+  //     ...prev,
+  //     size: sizeStr,
+  //     inStock,
+  //   }));
+  // }, [form.sizes]);
+  const { form, onThumbnailChange, onMannequinChange } =
+    useDevelopeProductProvider();
 
   return (
     <Styled.DevelopedProductBlueprint>
-      <ImageFilesReview assets={[]} />
+      <ImageFilesReview />
 
-      <MediaDualBox
-        title="პროდუქტის ხატულები"
-        firstChild={{
-          src: "",
-          type: "image",
-          message: "პროდუქტის წინა მხარე",
-          id: "product-thumbnail--front",
-          // src: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTw14qbKDfS2PeLdAL26F7zyv5Tk3_TyzwvBQ&usqp=CAU",
-        }}
-        secondChild={{
-          src: "",
-          type: "image",
-          message: "პროდუქტის უკანა მხარე",
-          id: "product-thumbnail--back",
-          // src: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTw14qbKDfS2PeLdAL26F7zyv5Tk3_TyzwvBQ&usqp=CAU",
-        }}
+      <Controller
+        name="new_thumbnails"
+        control={form.control}
+        render={({ field, fieldState: { error } }) => (
+          <MediaDualBox
+            title="პროდუქტის ხატულები"
+            error={error ? true : false}
+            message={error?.message}
+            firstChild={{
+              src: field.value[0],
+              type: "image",
+              message: "პროდუქტის წინა მხარე",
+              id: "product-thumbnail--front",
+              onChange: (e) =>
+                onThumbnailChange({
+                  index: 0,
+                  reactEvent: e,
+                }),
+            }}
+            secondChild={{
+              src: field.value[1],
+              type: "image",
+              message: "პროდუქტის უკანა მხარე",
+              id: "product-thumbnail--back",
+              onChange: (e) =>
+                onThumbnailChange({
+                  index: 1,
+                  reactEvent: e,
+                }),
+            }}
+          />
+        )}
       />
 
-      <MediaDualBox
-        title="პროდუქტის მანეკენი და მოდელი"
-        firstChild={{
-          src: "",
-          type: "image",
-          message: "მანეკენი",
-          id: "product-mannequin",
-          // src: "https://moremannequins.co.uk/c/47-Niara_category/female-mannequins-aegon.jpg",
-        }}
-        secondChild={{
-          src: "",
-          type: "video",
-          message: "მოდელი",
-          id: "product-model",
-          // src: "https://cdn.coverr.co/videos/coverr-woman-posing-in-front-of-blue-wall-3845/1080p.mp4",
-        }}
-      />
+      <MediaDualBoxContainer title="პროდუქტის მანეკენი და მოდელი">
+        <Controller
+          name="new_mannequin"
+          control={form.control}
+          render={({ field, fieldState: { error } }) => (
+            <MediaBox
+              id="product-mannequin"
+              type="image"
+              message="მანეკენი"
+              src={""}
+              onChange={() => {}}
+            />
+          )}
+        />
 
-      <MediaDualBox
-        title="პროდუქტის კონფიგურატორი (აღება და დადება)"
-        firstChild={{
-          src: "",
-          type: "video",
-          message: "პროდუქტის დადება",
-          id: "product-config-take-down",
-          // src: "https://cdn.coverr.co/videos/coverr-woman-posing-in-front-of-blue-wall-3845/1080p.mp4",
-        }}
-        secondChild={{
-          src: "",
-          type: "video",
-          message: "პროდუქტის აღება",
-          id: "product-config-take-up",
-          // src: "https://cdn.coverr.co/videos/coverr-woman-posing-in-front-of-blue-wall-3845/1080p.mp4",
-        }}
-      />
+        <Controller
+          name="new_model_video"
+          control={form.control}
+          render={({ field, fieldState: { error } }) => (
+            <MediaBox
+              id="product-model"
+              type="video"
+              message="მოდელი"
+              src={""}
+              onChange={() => {}}
+            />
+          )}
+        />
+      </MediaDualBoxContainer>
+
+      <MediaDualBoxContainer title="პროდუქტის კონფიგურატორი (აღება და დადება)">
+        <Controller
+          name="new_simulation_video_placing"
+          control={form.control}
+          render={({ field, fieldState: { error } }) => (
+            <MediaBox
+              id="product-config-take-down"
+              type="video"
+              message="პროდუქტის დადება"
+              src={""}
+              onChange={() => {}}
+            />
+          )}
+        />
+
+        <Controller
+          name="new_simulation_video_pick_up"
+          control={form.control}
+          render={({ field, fieldState: { error } }) => (
+            <MediaBox
+              id="product-config-take-up"
+              type="video"
+              message="პროდუქტის აღება"
+              src={""}
+              onChange={() => {}}
+            />
+          )}
+        />
+      </MediaDualBoxContainer>
 
       {/* <div className="registered-product--card__details">
         <DetailsBlock label="სათაური (ka)" value={form.title_ka} />

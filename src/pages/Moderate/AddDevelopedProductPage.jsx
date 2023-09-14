@@ -1,5 +1,10 @@
 import AddDevelopedProduct from "components/Moderate/DevelopeProduct/AddDevelopedProduct";
+import DevelopeProductFormProvider from "providers/DevelopeProductFormProvider";
 
 export default function AddDevelopedProductPage() {
-  return <AddDevelopedProduct />;
+  return (
+    <DevelopeProductFormProvider>
+      <AddDevelopedProduct />
+    </DevelopeProductFormProvider>
+  );
 }

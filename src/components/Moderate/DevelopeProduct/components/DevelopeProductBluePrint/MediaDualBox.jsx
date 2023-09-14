@@ -1,65 +1,42 @@
-import * as Styled from "./DevelopedProductBlueprint.styled";
-import { PlusIcon } from "components/layouts/Icons";
+import MediaBox from "./MediaBox";
+import MediaDualBoxContainer from "./MediaDualBoxContainer";
 
 export default function MediaDualBox({
   title,
+  error,
+  message,
   firstChild = {
-    message: "",
-    type: "image", // image | video
-    src: "",
     id: "",
+    src: "",
+    message: "",
+    onChange: () => {},
+    type: "image", // image | video
   },
   secondChild = {
-    message: "",
-    type: "image", // image | video
-    src: "",
     id: "",
+    src: "",
+    message: "",
+    onChange: () => {},
+    type: "image", // image | video
   },
 }) {
   return (
-    <Styled.AssetsReviewDualBox>
-      <p className="product__media-box--title">{title}</p>
+    <MediaDualBoxContainer title={title}>
+      <MediaBox
+        id={firstChild.id}
+        src={firstChild.src}
+        type={firstChild.type}
+        message={firstChild.message}
+        onChange={firstChild.onChange}
+      />
 
-      <div className="product__thumbnails">
-        <figure>
-          <ChildComponent child={firstChild} />
-        </figure>
-
-        <figure>
-          <ChildComponent child={secondChild} />
-        </figure>
-      </div>
-    </Styled.AssetsReviewDualBox>
-  );
-}
-
-function ChildComponent({ child }) {
-  return (
-    <>
-      {child.src && (
-        <>
-          {child.type === "image" ? (
-            <img src={child.src} alt="dual-box_image-asset" />
-          ) : child.type === "video" ? (
-            <video
-              controls={true}
-              autoPlay={true}
-              src={child.src}
-              alt="dual-box_video-asset"
-            />
-          ) : (
-            <></>
-          )}
-        </>
-      )}
-
-      {!child.src && (
-        <label className="dual-box__file-label" htmlFor={child.id}>
-          <PlusIcon />
-          <span>{child.message}</span>
-          <input hidden id={child.id} type="file" />
-        </label>
-      )}
-    </>
+      <MediaBox
+        id={secondChild.id}
+        src={secondChild.src}
+        type={secondChild.type}
+        message={secondChild.message}
+        onChange={secondChild.onChange}
+      />
+    </MediaDualBoxContainer>
   );
 }

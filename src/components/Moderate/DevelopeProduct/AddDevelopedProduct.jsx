@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 
-import { useDevelopeProductQuery } from "hooks/api/moderate";
+import { useDevelopeProductProvider } from "providers/DevelopeProductFormProvider";
 import * as developeProductSelectors from "store/selectors/moderate/developeProductSelectors";
 
 import { PATHS } from "config/routes";
@@ -16,7 +16,7 @@ export default function AddDevelopedProduct() {
     developeProductSelectors.selectDevelopeProductFormSuggestions
   );
 
-  const form = useDevelopeProductQuery();
+  const form = useDevelopeProductProvider();
 
   return (
     <Styled.AddDevelopedProduct>
@@ -32,7 +32,7 @@ export default function AddDevelopedProduct() {
         <div className="add-developed--product__form-wrapper">
           {!form.isUpdating && <UI.CopyDevelopedProductConfig />}
 
-          <Form.Form>
+          <Form.Form onSubmit={form.form.handleSubmit(form.onSubmit)}>
             <Controller
               name="title_ka"
               control={form.form.control}
@@ -73,8 +73,11 @@ export default function AddDevelopedProduct() {
                   id="product-price"
                   label="პროდუქტის ფასი"
                   message={error?.message}
-                  fieldProps={{ ...field }}
                   error={error ? true : false}
+                  fieldProps={{
+                    ...field,
+                    onChange: (e) => field.onChange(+e.target.value),
+                  }}
                 />
               )}
             />
@@ -203,27 +206,6 @@ export default function AddDevelopedProduct() {
                 />
               )}
             />
-
-            {/* <Controller
-              name="new_assets"
-              control={form.form.control}
-              render={({
-                field: { value, ...field },
-                fieldState: { error },
-              }) => (
-                <Form.InputFile
-                  multiple={true}
-                  message={error?.message}
-                  error={error ? true : false}
-                  label="დაამატეთ პროდუქტის მედია ფაილები"
-                  value={value || form.form.getValues().newAssets}
-                  fieldProps={{
-                    ...field,
-                    onChange: (e) => form.onFileChange(e, field.onChange),
-                  }}
-                />
-              )}
-            /> */}
 
             <Form.Button
               type="submit"

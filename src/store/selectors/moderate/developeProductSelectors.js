@@ -21,8 +21,11 @@ const selectedDevelopeProductForm = ({ developeProduct }) => ({
   isUpdating: developeProduct.isUpdating,
   updatingDevelopedProductId: developeProduct.updatingDevelopedProductId,
   assets: developeProduct.form.assets,
-  new_assets: developeProduct.form.new_assets,
-  assets_to_delete: developeProduct.form.assets_to_delete,
+  thumbnails: developeProduct.form.thumbnails,
+  mannequin: developeProduct.form.mannequin,
+  model_video: developeProduct.form.model_video,
+  simulation_video_placing: developeProduct.form.simulation_video_placing,
+  simulation_video_pick_up: developeProduct.form.simulation_video_pick_up,
 });
 
 const selectedDevelopeProductStatus = ({ developeProduct }) => ({

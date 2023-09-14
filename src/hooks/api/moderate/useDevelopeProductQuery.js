@@ -8,6 +8,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, useFieldArray } from "react-hook-form";
 import { developeProductValidation } from "utils/zod/moderate";
 
+import { generateBase64Str } from "utils";
+import { customValidators } from "utils/zod/helpers/customValidators";
+
 import { developeProductActions } from "store/reducers/moderate/developeProductReducer";
 import * as developeProductSelectors from "store/selectors/moderate/developeProductSelectors";
 
@@ -24,38 +27,44 @@ export default function useDevelopeProductQuery() {
     developeProductSelectors.selectDevelopeProductForm
   );
 
+  const formDefaults = {
+    title_ka: developeProductFormDefaults.title_ka,
+    title_en: developeProductFormDefaults.title_en,
+    price: developeProductFormDefaults.price,
+    color: developeProductFormDefaults.color,
+    sizes: developeProductFormDefaults.sizes,
+    variants: developeProductFormDefaults.variants,
+    description_ka: developeProductFormDefaults.description_ka,
+    description_en: developeProductFormDefaults.description_en,
+    is_public: developeProductFormDefaults.is_public,
+    is_featured: developeProductFormDefaults.is_featured,
+    // media properties
+    // 1. assets
+    assets: developeProductFormDefaults.assets,
+    new_assets: [],
+    assets_to_delete: [],
+    // 2. thumbnails
+    thumbnails: developeProductFormDefaults.thumbnails,
+    new_thumbnails: ["", ""],
+    thumbnails_to_delete: [],
+    // 3. mannequin
+    mannequin: developeProductFormDefaults.mannequin,
+    new_mannequin: "",
+    // 4. model
+    model_video: developeProductFormDefaults.model_video,
+    new_model_video: "",
+    // 5. simulation videos
+    simulation_video_placing:
+      developeProductFormDefaults.simulation_video_placing,
+    new_simulation_video_placing: "",
+    simulation_video_pick_up:
+      developeProductFormDefaults.simulation_video_pick_up,
+    new_simulation_video_pick_up: "",
+  };
+
   const form = useForm({
     resolver: zodResolver(developeProductValidation),
-    defaultValues: {
-      title_ka: "",
-      title_en: "",
-      price: "",
-      color: {
-        ka: "",
-        en: "",
-        _id: "",
-        caption: "",
-      },
-      sizes: [
-        {
-          amount: "",
-          size: {
-            ka: "",
-            en: "",
-            _id: "",
-            caption: "",
-          },
-        },
-      ],
-      variants: [],
-      description_ka: "",
-      description_en: "",
-      is_public: "",
-      is_featured: "",
-      assets: [],
-      new_assets: [],
-      assets_to_delete: [],
-    },
+    defaultValues: formDefaults,
   });
 
   const sizeField = useFieldArray({
@@ -68,7 +77,62 @@ export default function useDevelopeProductQuery() {
     name: "variants",
   });
 
-  const { onSelect, onMultipleSelect: multipleSelect } = useReactHookForm(form);
+  const {
+    onSelect,
+    onFileChange,
+    onMultipleSelect: multipleSelect,
+    onMultipleFileChange: onMultipleFileChangeEvent,
+  } = useReactHookForm(form);
+
+  const onAssetsChange = onMultipleFileChangeEvent({
+    formPropertyName: "new_assets",
+  });
+
+  const onRemoveAsset = (assetSrc) => {
+    if (customValidators.isValidBase64ImageStr.validator(assetSrc)) {
+      const existingAssets = form.getValues("new_assets");
+      form.setValue(
+        "new_assets",
+        existingAssets.filter((asset) => asset !== assetSrc)
+      );
+    } else if (customValidators.isURL.validator(assetSrc)) {
+      console.log("isUrl");
+    } else {
+      console.log("not base64 not url");
+    }
+  };
+
+  const onThumbnailChange = async ({ index, reactEvent }) => {
+    try {
+      const file = reactEvent.target.files[0];
+
+      const { hasError, base64Str } = await generateBase64Str({
+        file,
+        fileType: "image/",
+      });
+
+      if (hasError) {
+        throw new Error(
+          "თქვენს მიერ მითითებული მედია ფაილები არ არის ვალიდური"
+        );
+      }
+
+      const existingThumbnails = form.getValues("new_thumbnails");
+
+      form.setValue(
+        "new_thumbnails",
+        index === 0
+          ? [base64Str, existingThumbnails[1]]
+          : index === 1
+          ? [existingThumbnails[0], base64Str]
+          : existingThumbnails
+      );
+    } catch (error) {
+      form.setError("new_thumbnails", error.message);
+    }
+  };
+
+  const onMannequinChange = onFileChange({ formPropertyName: "new_mannequin" });
 
   function onMultipleSelect({ key, item }) {
     switch (key) {
@@ -110,8 +174,13 @@ export default function useDevelopeProductQuery() {
     sizeField,
     onSelect,
     onMultipleSelect,
+    onAssetsChange,
+    onRemoveAsset,
+    onThumbnailChange,
+    onMannequinChange,
     status,
     registeredProductId,
     isUpdating: developeProductFormDefaults.isUpdating,
+    onSubmit,
   };
 }

@@ -51,7 +51,7 @@ export const ImageFilesReview = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 2rem;
-  min-height: 24rem;
+  height: max-content;
   padding: 2rem;
   border-radius: 0.5rem;
   border: 1px solid ${({ theme }) => theme.colors.gray_shade};
@@ -59,8 +59,10 @@ export const ImageFilesReview = styled.div`
   .images-review__list {
     width: 100%;
     min-height: 15rem;
+    height: auto;
     display: grid;
     grid-template-columns: repeat(auto-fit, 12rem);
+    grid-template-rows: auto;
     justify-content: center;
     gap: 1rem;
     padding: 1rem;
@@ -72,32 +74,71 @@ export const ImageFilesReview = styled.div`
     width: 100%;
     height: 12rem;
     border: 1px solid ${({ theme }) => theme.colors.gray_shade};
+    background: ${({ theme }) => theme.colors.white};
     border-radius: 0.5rem;
     overflow: hidden;
     cursor: pointer;
+    position: relative;
+
+    .remove-asset__btn {
+      position: absolute;
+      top: 0.5rem;
+      right: 0.5rem;
+      border-radius: 100%;
+      width: 2.5rem;
+      height: 2.5rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: ${({ theme }) => theme.colors.black_tr_05};
+      color: ${({ theme }) => theme.colors.white};
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.35s ease;
+
+      svg {
+        width: 1.6rem;
+        height: 1.6rem;
+      }
+    }
+
+    &:hover .remove-asset__btn {
+      opacity: 1;
+      pointer-events: all;
+    }
 
     img {
       width: 100%;
       height: 100%;
-      object-fit: cover;
+      object-fit: contain;
     }
   }
 
   .product__media-box__label {
-    grid-column: span 5;
     justify-self: center;
     width: 100%;
     min-width: 100%;
-    height: 100%;
+    height: 12rem;
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
     gap: 0.5rem;
+    text-align: center;
+    text-wrap: balance;
     opacity: 0.5;
     font-weight: 600;
     font-size: ${({ theme }) => theme.fontSize.sm};
+    border: 1px dashed ${({ theme }) => theme.colors.gray_shade};
     cursor: pointer;
     transition: all 0.2s ease;
+
+    &.empty {
+      grid-column: span 5;
+      border: none;
+      height: 100%;
+      flex-direction: row;
+    }
 
     &:hover {
       color: ${({ theme }) => theme.colors.blue};
@@ -109,12 +150,12 @@ export const ImageFilesReview = styled.div`
     }
 
     span {
-      line-height: 1;
+      line-height: 1.4;
     }
   }
 `;
 
-export const AssetsReviewDualBox = styled.div`
+export const MediaDualBox = styled.div`
   display: flex;
   flex-direction: column;
   gap: 2rem;
@@ -128,24 +169,9 @@ export const AssetsReviewDualBox = styled.div`
     display: flex;
     gap: 2rem;
   }
+`;
 
-  .dual-box__file-label {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.5rem;
-    opacity: 0.5;
-    font-weight: 600;
-    font-size: ${({ theme }) => theme.fontSize.sm};
-    cursor: pointer;
-    transition: all 0.2s ease;
-
-    &:hover {
-      color: ${({ theme }) => theme.colors.blue};
-      opacity: 1;
-    }
-  }
-
+export const MediaBox = styled.label`
   figure {
     width: 20rem;
     aspect-ratio: 1/1;
@@ -169,6 +195,23 @@ export const AssetsReviewDualBox = styled.div`
       object-fit: contain;
       max-width: 100%;
       max-height: 100%;
+    }
+  }
+
+  .dual-box__file-label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    opacity: 0.5;
+    font-weight: 600;
+    font-size: ${({ theme }) => theme.fontSize.sm};
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover {
+      color: ${({ theme }) => theme.colors.blue};
+      opacity: 1;
     }
   }
 `;

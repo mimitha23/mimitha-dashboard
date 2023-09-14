@@ -63,9 +63,11 @@ export default function useRegisterProductQuery() {
 
   const {
     onSelect,
-    onFileChange,
+    onFileChange: onFileChangeEvent,
     onMultipleSelect: multipleSelect,
   } = useReactHookForm(form);
+
+  const onFileChange = onFileChangeEvent({ formPropertyName: "thumbnail" });
 
   function onMultipleSelect({ key, item }) {
     switch (key) {

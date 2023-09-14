@@ -1,22 +1,41 @@
 import { generateBase64Str } from "utils";
 
 export default function useReactHookForm(form) {
-  const onFileChange = async (reactEvent, fieldChangeEvent) => {
-    const file = reactEvent.target.files[0];
+  const onFileChange =
+    ({ formPropertyName, fileType = "image/" }) =>
+    async (reactEvent, fieldChangeEvent) => {
+      try {
+        const file = reactEvent.target.files[0];
 
-    const { hasError, base64Str } = await generateBase64Str({
-      file,
-      fileType: "image/",
-    });
+        const base64Str = await convertFilesToBase64Str(file, fileType);
 
-    if (hasError)
-      return form.setError(
-        "thumbnail",
-        "ფაილის ნიშნული უნდა წარმოადგენდეს ვალიდურ ფაილს"
-      );
+        fieldChangeEvent(base64Str);
+      } catch (error) {
+        form.setError(formPropertyName, error.message);
+      }
+    };
 
-    fieldChangeEvent(base64Str);
-  };
+  const onMultipleFileChange =
+    ({ formPropertyName, fileType = "image/" }) =>
+    async (reactEvent, fieldChangeEvent) => {
+      try {
+        const files = reactEvent.target.files;
+
+        if (!files || !files[0])
+          throw new Error("გთხოვთ მიუთითეთ მედია ფაილები");
+
+        const base64Strings = await Promise.all(
+          Array.from(files).map(
+            async (file) => await convertFilesToBase64Str(file, fileType)
+          )
+        );
+
+        fieldChangeEvent(base64Strings);
+      } catch (error) {
+        console.log(error.message);
+        form.setError(formPropertyName, error.message);
+      }
+    };
 
   function onSelect({ key, item }) {
     const f = form.getValues();
@@ -34,5 +53,19 @@ export default function useReactHookForm(form) {
     else field.append(item);
   }
 
-  return { onFileChange, onSelect, onMultipleSelect };
+  return { onFileChange, onSelect, onMultipleSelect, onMultipleFileChange };
+}
+
+async function convertFilesToBase64Str(file, fileType) {
+  try {
+    const { hasError, base64Str } = await generateBase64Str({ file, fileType });
+
+    if (hasError) {
+      throw new Error("თქვენს მიერ მითითებული მედია ფაილები არ არის ვალიდური");
+    }
+
+    return base64Str;
+  } catch (error) {
+    throw new Error("დაფიქსირდა შეცდომა მედია ფაილების კონვერტირებისას");
+  }
 }

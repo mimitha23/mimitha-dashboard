@@ -5,10 +5,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { createVariantValidation } from "utils/zod/moderate";
+import { useReactHookForm } from "hooks/utils";
 
 import { REQUEST_STATUS_STAGE } from "store/reducers/helpers/controlStatus";
-
-import { generateBase64Str } from "utils";
 
 import { variantActions } from "store/reducers/moderate/variantReducer";
 import * as variantSelectors from "store/selectors/moderate/variantSelectors";
@@ -34,22 +33,12 @@ export default function useVariantMutationQuery() {
     defaultValues: formDefaults,
   });
 
-  async function onFileChange(reactEvent, fieldChangeEvent) {
-    const file = reactEvent.target.files[0];
+  const { onFileChange: onFileChangeEvent } = useReactHookForm(form);
 
-    const { hasError, base64Str } = await generateBase64Str({
-      file,
-      fileType: "image/svg+xml",
-    });
-
-    if (hasError)
-      return form.setError(
-        "new_icon",
-        "ფაილის ნიშნული უნდა წარმოადგენდეს ვალიდურ svg ფაილს"
-      );
-
-    fieldChangeEvent(base64Str);
-  }
+  const onFileChange = onFileChangeEvent({
+    formPropertyName: "new_icon",
+    fileType: "image/svg+xml",
+  });
 
   function onSelectVariant(variant) {
     const f = form.getValues();
