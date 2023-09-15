@@ -1,13 +1,23 @@
-import { generateBase64Str } from "utils";
+import { FileChange } from "utils";
+import { customValidators } from "utils/zod/helpers/customValidators";
 
 export default function useReactHookForm(form) {
-  const onFileChange =
+  // change file to base64
+  const onBase64FileChange =
     ({ formPropertyName, fileType = "image/" }) =>
     async (reactEvent, fieldChangeEvent) => {
       try {
         const file = reactEvent.target.files[0];
 
-        const base64Str = await convertFilesToBase64Str(file, fileType);
+        const { validator, message } = customValidators.isImageFile;
+
+        if (!validator(file))
+          return form.setError(formPropertyName, message("მედია ფაილი"));
+
+        const base64Str = await FileChange.convertFilesToBase64Str(
+          file,
+          fileType
+        );
 
         fieldChangeEvent(base64Str);
       } catch (error) {
@@ -15,18 +25,26 @@ export default function useReactHookForm(form) {
       }
     };
 
-  const onMultipleFileChange =
+  const onBase64MultipleFileChange =
     ({ formPropertyName, fileType = "image/" }) =>
     async (reactEvent, fieldChangeEvent) => {
       try {
         const files = reactEvent.target.files;
 
-        if (!files || !files[0])
-          throw new Error("გთხოვთ მიუთითეთ მედია ფაილები");
+        const { validator, message } = customValidators.isImageFile;
+
+        if (
+          !files ||
+          !Array.isArray(Array.from(files)) ||
+          !files[0] ||
+          !Array.from(files).every((f) => validator(f))
+        )
+          throw new Error(message("მედია ფაილები"));
 
         const base64Strings = await Promise.all(
           Array.from(files).map(
-            async (file) => await convertFilesToBase64Str(file, fileType)
+            async (file) =>
+              await FileChange.convertFilesToBase64Str(file, fileType)
           )
         );
 
@@ -35,6 +53,20 @@ export default function useReactHookForm(form) {
         console.log(error.message);
         form.setError(formPropertyName, error.message);
       }
+    };
+
+  // file change
+  const onVideoFileChange =
+    ({ formPropertyName, fileType = "video/" }) =>
+    (reactEvent, fieldChangeEvent) => {
+      const file = reactEvent.target.files[0];
+
+      const { validator, message } = customValidators.isVideoFile;
+
+      if (!validator(file))
+        return form.setError(formPropertyName, message("ვიდეო"));
+
+      fieldChangeEvent(file);
     };
 
   function onSelect({ key, item }) {
@@ -53,19 +85,11 @@ export default function useReactHookForm(form) {
     else field.append(item);
   }
 
-  return { onFileChange, onSelect, onMultipleSelect, onMultipleFileChange };
-}
-
-async function convertFilesToBase64Str(file, fileType) {
-  try {
-    const { hasError, base64Str } = await generateBase64Str({ file, fileType });
-
-    if (hasError) {
-      throw new Error("თქვენს მიერ მითითებული მედია ფაილები არ არის ვალიდური");
-    }
-
-    return base64Str;
-  } catch (error) {
-    throw new Error("დაფიქსირდა შეცდომა მედია ფაილების კონვერტირებისას");
-  }
+  return {
+    onSelect,
+    onMultipleSelect,
+    onVideoFileChange,
+    onBase64FileChange,
+    onBase64MultipleFileChange,
+  };
 }

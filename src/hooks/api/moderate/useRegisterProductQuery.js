@@ -63,7 +63,7 @@ export default function useRegisterProductQuery() {
 
   const {
     onSelect,
-    onFileChange: onFileChangeEvent,
+    onBase64FileChange: onFileChangeEvent,
     onMultipleSelect: multipleSelect,
   } = useReactHookForm(form);
 

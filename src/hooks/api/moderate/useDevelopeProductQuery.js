@@ -8,7 +8,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, useFieldArray } from "react-hook-form";
 import { developeProductValidation } from "utils/zod/moderate";
 
-import { generateBase64Str } from "utils";
+import { FileChange } from "utils";
 import { customValidators } from "utils/zod/helpers/customValidators";
 
 import { developeProductActions } from "store/reducers/moderate/developeProductReducer";
@@ -67,21 +67,12 @@ export default function useDevelopeProductQuery() {
     defaultValues: formDefaults,
   });
 
-  const sizeField = useFieldArray({
-    control: form.control,
-    name: "sizes",
-  });
-
-  const variantField = useFieldArray({
-    control: form.control,
-    name: "variants",
-  });
-
   const {
     onSelect,
-    onFileChange,
+    onBase64FileChange,
+    onVideoFileChange,
     onMultipleSelect: multipleSelect,
-    onMultipleFileChange: onMultipleFileChangeEvent,
+    onBase64MultipleFileChange: onMultipleFileChangeEvent,
   } = useReactHookForm(form);
 
   const onAssetsChange = onMultipleFileChangeEvent({
@@ -106,7 +97,7 @@ export default function useDevelopeProductQuery() {
     try {
       const file = reactEvent.target.files[0];
 
-      const { hasError, base64Str } = await generateBase64Str({
+      const { hasError, base64Str } = await FileChange.generateBase64Str({
         file,
         fileType: "image/",
       });
@@ -132,7 +123,31 @@ export default function useDevelopeProductQuery() {
     }
   };
 
-  const onMannequinChange = onFileChange({ formPropertyName: "new_mannequin" });
+  const onMannequinChange = onBase64FileChange({
+    formPropertyName: "new_mannequin",
+  });
+
+  const onModelVideoChange = onVideoFileChange({
+    formPropertyName: "new_model_video",
+  });
+
+  const onPlacingVideoChange = onVideoFileChange({
+    formPropertyName: "new_simulation_video_placing",
+  });
+
+  const onPickUpVideoChange = onVideoFileChange({
+    formPropertyName: "new_simulation_video_pick_up",
+  });
+
+  const sizeField = useFieldArray({
+    control: form.control,
+    name: "sizes",
+  });
+
+  const variantField = useFieldArray({
+    control: form.control,
+    name: "variants",
+  });
 
   function onMultipleSelect({ key, item }) {
     switch (key) {
@@ -178,6 +193,9 @@ export default function useDevelopeProductQuery() {
     onRemoveAsset,
     onThumbnailChange,
     onMannequinChange,
+    onModelVideoChange,
+    onPlacingVideoChange,
+    onPickUpVideoChange,
     status,
     registeredProductId,
     isUpdating: developeProductFormDefaults.isUpdating,

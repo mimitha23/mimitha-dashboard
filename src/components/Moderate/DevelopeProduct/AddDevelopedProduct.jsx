@@ -177,7 +177,7 @@ export default function AddDevelopedProduct() {
               render={({ field, fieldState: { error } }) => (
                 <Form.InputCheckBox
                   id="is-public"
-                  label="არი საჯარო"
+                  label="არის საჯარო"
                   error={error ? true : false}
                   message={error?.message}
                   checked={field.value}
@@ -195,7 +195,7 @@ export default function AddDevelopedProduct() {
               render={({ field, fieldState: { error } }) => (
                 <Form.InputCheckBox
                   id="is-featured"
-                  label="is featured"
+                  label="არის პოპულარული"
                   error={error ? true : false}
                   message={error?.message}
                   checked={field.value}

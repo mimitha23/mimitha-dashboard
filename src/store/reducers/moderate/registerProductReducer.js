@@ -1,6 +1,6 @@
 import { createSlice, nanoid } from "@reduxjs/toolkit";
 import { controlStatus as status } from "store/reducers/helpers";
-import { convertBase64StrToFile } from "utils";
+import { FileChange } from "utils";
 
 const initialState = {
   form: {
@@ -270,7 +270,9 @@ function prepareDataForDB({ data, updatingRegisteredProductId }) {
 
   if (data.thumbnail) credentials.data.thumbnail = data.thumbnail;
   if (data.newThumbnail) {
-    const blob = convertBase64StrToFile({ base64Str: data.newThumbnail });
+    const blob = FileChange.convertBase64StrToFile({
+      base64Str: data.newThumbnail,
+    });
     credentials.data.media = blob;
   }
 

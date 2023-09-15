@@ -38,8 +38,14 @@ export default function DevelopedProductBlueprint() {
   //     inStock,
   //   }));
   // }, [form.sizes]);
-  const { form, onThumbnailChange, onMannequinChange } =
-    useDevelopeProductProvider();
+  const {
+    form,
+    onThumbnailChange,
+    onMannequinChange,
+    onModelVideoChange,
+    onPlacingVideoChange,
+    onPickUpVideoChange,
+  } = useDevelopeProductProvider();
 
   return (
     <Styled.DevelopedProductBlueprint>
@@ -56,7 +62,7 @@ export default function DevelopedProductBlueprint() {
             firstChild={{
               src: field.value[0],
               type: "image",
-              message: "პროდუქტის წინა მხარე",
+              label: "პროდუქტის წინა მხარე",
               id: "product-thumbnail--front",
               onChange: (e) =>
                 onThumbnailChange({
@@ -67,7 +73,7 @@ export default function DevelopedProductBlueprint() {
             secondChild={{
               src: field.value[1],
               type: "image",
-              message: "პროდუქტის უკანა მხარე",
+              label: "პროდუქტის უკანა მხარე",
               id: "product-thumbnail--back",
               onChange: (e) =>
                 onThumbnailChange({
@@ -83,13 +89,19 @@ export default function DevelopedProductBlueprint() {
         <Controller
           name="new_mannequin"
           control={form.control}
-          render={({ field, fieldState: { error } }) => (
+          render={({
+            field: { value, onChange, ...field },
+            fieldState: { error },
+          }) => (
             <MediaBox
               id="product-mannequin"
               type="image"
-              message="მანეკენი"
-              src={""}
-              onChange={() => {}}
+              label="მანეკენი"
+              src={value}
+              fieldProps={field}
+              message={error?.message}
+              error={error ? true : false}
+              onChange={(e) => onMannequinChange(e, onChange)}
             />
           )}
         />
@@ -97,13 +109,19 @@ export default function DevelopedProductBlueprint() {
         <Controller
           name="new_model_video"
           control={form.control}
-          render={({ field, fieldState: { error } }) => (
+          render={({
+            field: { value, onChange, ...field },
+            fieldState: { error },
+          }) => (
             <MediaBox
               id="product-model"
               type="video"
-              message="მოდელი"
-              src={""}
-              onChange={() => {}}
+              label="მოდელი"
+              src={value}
+              fieldProps={field}
+              message={error?.message}
+              error={error ? true : false}
+              onChange={(e) => onModelVideoChange(e, onChange)}
             />
           )}
         />
@@ -113,13 +131,19 @@ export default function DevelopedProductBlueprint() {
         <Controller
           name="new_simulation_video_placing"
           control={form.control}
-          render={({ field, fieldState: { error } }) => (
+          render={({
+            field: { value, onChange, ...field },
+            fieldState: { error },
+          }) => (
             <MediaBox
               id="product-config-take-down"
               type="video"
-              message="პროდუქტის დადება"
-              src={""}
-              onChange={() => {}}
+              label="პროდუქტის დადება"
+              src={value}
+              fieldProps={field}
+              message={error?.message}
+              error={error ? true : false}
+              onChange={(e) => onPlacingVideoChange(e, onChange)}
             />
           )}
         />
@@ -127,13 +151,19 @@ export default function DevelopedProductBlueprint() {
         <Controller
           name="new_simulation_video_pick_up"
           control={form.control}
-          render={({ field, fieldState: { error } }) => (
+          render={({
+            field: { value, onChange, ...field },
+            fieldState: { error },
+          }) => (
             <MediaBox
               id="product-config-take-up"
               type="video"
-              message="პროდუქტის აღება"
-              src={""}
-              onChange={() => {}}
+              label="პროდუქტის აღება"
+              src={value}
+              fieldProps={field}
+              message={error?.message}
+              error={error ? true : false}
+              onChange={(e) => onPickUpVideoChange(e, onChange)}
             />
           )}
         />

@@ -39,6 +39,12 @@ export const customValidators = {
       `გთხოვთ მიუთითოთ ${key}. ${key} უნდა წარმოადგენდეს ფოტოს (JPP, JPEG, PNG, WEBP, SVG და ა.შ).`,
   },
 
+  isVideoFile: {
+    validator: (value) => value instanceof File && value.type.includes("video"),
+    message: (key) =>
+      `გთხოვთ მიუთითოთ ${key}. ${key} უნდა წარმოადგენდეს ვიდეო (MP4, AVI, MOV, WebM, WMV, 3GP/3G2 და ა.შ).`,
+  },
+
   hasWhiteSpaceInSequence: {
     validator: (value) =>
       !regex.has_two_or_more_white_space_in_sequence.test(value),

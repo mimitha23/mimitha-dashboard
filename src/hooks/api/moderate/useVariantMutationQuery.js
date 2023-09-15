@@ -33,7 +33,7 @@ export default function useVariantMutationQuery() {
     defaultValues: formDefaults,
   });
 
-  const { onFileChange: onFileChangeEvent } = useReactHookForm(form);
+  const { onBase64FileChange: onFileChangeEvent } = useReactHookForm(form);
 
   const onFileChange = onFileChangeEvent({
     formPropertyName: "new_icon",

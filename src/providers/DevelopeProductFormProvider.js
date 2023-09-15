@@ -20,6 +20,9 @@ const DevelopeProductFormContext = createContext({
   onRemoveAsset: (assetSrc) => {},
   onThumbnailChange: ({ index, reactEvent, fieldChangeEvent }) => {},
   onMannequinChange: (reactEvent, fieldChangeEvent) => {},
+  onModelVideoChange: (reactEvent, fieldChangeEvent) => {},
+  onPlacingVideoChange: (reactEvent, fieldChangeEvent) => {},
+  onPickUpVideoChange: (reactEvent, fieldChangeEvent) => {},
   onSubmit: (values) => {},
   status: {
     stage: "",
@@ -41,6 +44,9 @@ export default function DevelopeProductFormProvider({ children }) {
     onRemoveAsset,
     onThumbnailChange,
     onMannequinChange,
+    onModelVideoChange,
+    onPlacingVideoChange,
+    onPickUpVideoChange,
     onSubmit,
     status,
   } = useDevelopeProductQuery();
@@ -58,6 +64,9 @@ export default function DevelopeProductFormProvider({ children }) {
         onRemoveAsset,
         onThumbnailChange,
         onMannequinChange,
+        onModelVideoChange,
+        onPlacingVideoChange,
+        onPickUpVideoChange,
         onSubmit,
         status,
       }}

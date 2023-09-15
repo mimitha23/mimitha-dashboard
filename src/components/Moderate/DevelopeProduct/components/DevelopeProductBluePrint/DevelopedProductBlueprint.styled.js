@@ -156,6 +156,23 @@ export const ImageFilesReview = styled.div`
 `;
 
 export const MediaDualBox = styled.div`
+  [data-dual-box-container].product__thumbnails {
+    display: grid;
+    grid-template-columns: repeat(2, 20rem);
+    grid-template-rows: repeat(2, max-content);
+    .dual-box__err-msg {
+      grid-row: 2;
+      grid-column: span 2;
+      text-align: center;
+      text-wrap: balance;
+      font-weight: 300;
+      font-size: ${({ theme }) => theme.fontSize.sm};
+      color: ${({ theme }) => theme.colors.red};
+    }
+  }
+`;
+
+export const MediaDualBoxContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 2rem;
@@ -172,8 +189,14 @@ export const MediaDualBox = styled.div`
 `;
 
 export const MediaBox = styled.label`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+
   figure {
     width: 20rem;
+    height: 20rem;
     aspect-ratio: 1/1;
     display: flex;
     align-items: center;
@@ -196,6 +219,14 @@ export const MediaBox = styled.label`
       max-width: 100%;
       max-height: 100%;
     }
+  }
+
+  .media-box__err-msg {
+    text-align: center;
+    text-wrap: balance;
+    font-weight: 300;
+    font-size: ${({ theme }) => theme.fontSize.sm};
+    color: ${({ theme }) => theme.colors.red};
   }
 
   .dual-box__file-label {
