@@ -2,23 +2,69 @@ import z from "zod";
 import { customValidators } from "../helpers/customValidators";
 
 const developeProductValidation = z.object({
-  title_ka: z.string(),
-  title_en: z.string(),
-  price: z.number(),
+  title_ka: z
+    .string()
+    .nonempty()
+    .refine(customValidators.isGeorgianLetters.validator, {
+      message: customValidators.isGeorgianLetters.message("სათაური (ka)"),
+    }),
+  title_en: z
+    .string()
+    .nonempty()
+    .refine(customValidators.isLatinLetters.validator, {
+      message: customValidators.isLatinLetters.message("სათაური (en)"),
+    }),
+  price: z.number().min(1),
   color: z.object({
-    ka: z.string(),
-    en: z.string(),
-    _id: z.string(),
-    caption: z.string(),
+    ka: z
+      .string()
+      .nonempty()
+      .refine(customValidators.isGeorgianLetters.validator, {
+        message: customValidators.isGeorgianLetters.message("ფერი (ka)"),
+      }),
+    en: z
+      .string()
+      .nonempty()
+      .refine(customValidators.isLatinLetters.validator, {
+        message: customValidators.isLatinLetters.message("ფერი (en)"),
+      }),
+    hex: z
+      .string()
+      .nonempty()
+      .refine(customValidators.isValidHexColor.validator, {
+        message: customValidators.isValidHexColor.message("ფერი hex ფორმატში"),
+      }),
+    caption: z
+      .string()
+      .nonempty()
+      .refine(customValidators.isGeorgianLetters.validator, {
+        message: customValidators.isGeorgianLetters.message("ფერი"),
+      }),
+    _id: z.string().nonempty(),
   }),
   sizes: z.array(
     z.object({
-      amount: z.number(),
+      amount: z.number().min(1),
       size: z.object({
-        ka: z.string(),
-        en: z.string(),
-        _id: z.string(),
-        caption: z.string(),
+        ka: z
+          .string()
+          .nonempty()
+          .refine(customValidators.isLatinLetters.validator, {
+            message: customValidators.isLatinLetters.message("ზომა (ka)"),
+          }),
+        en: z
+          .string()
+          .nonempty()
+          .refine(customValidators.isLatinLetters.validator, {
+            message: customValidators.isLatinLetters.message("ზომა (en)"),
+          }),
+        caption: z
+          .string()
+          .nonempty()
+          .refine(customValidators.isLatinLetters.validator, {
+            message: customValidators.isLatinLetters.message("ზომის სათაური"),
+          }),
+        _id: z.string().nonempty(),
       }),
     })
   ),
@@ -34,8 +80,18 @@ const developeProductValidation = z.object({
       caption: z.string(),
     })
   ),
-  description_ka: z.string(),
-  description_en: z.string(),
+  description_ka: z
+    .string()
+    .nonempty()
+    .refine(customValidators.isGeorgianLetters.validator, {
+      message: customValidators.isGeorgianLetters.message("აღწერა (ka)"),
+    }),
+  description_en: z
+    .string()
+    .nonempty()
+    .refine(customValidators.isLatinLetters.validator, {
+      message: customValidators.isLatinLetters.message("აღწერა (en)"),
+    }),
   is_public: z.boolean(),
   is_featured: z.boolean(),
 

@@ -17,7 +17,6 @@ function InputFilterableSelect(
     inputValue,
     list = [],
     selectedList,
-    strictSelection = true,
     fieldProps,
   },
   ref
@@ -30,17 +29,9 @@ function InputFilterableSelect(
   }
 
   const dropdown_ref = useClickOutside(isTyping, () => {
-    let valueToAssign = null;
-
     const existingValue = list.find((item) => item.caption === inputValue);
 
-    if (!strictSelection && inputValue && existingValue)
-      valueToAssign = existingValue;
-
-    if (!strictSelection && inputValue && !existingValue)
-      valueToAssign = { caption: inputValue };
-
-    selectValue(valueToAssign);
+    if (inputValue && existingValue) selectValue(existingValue);
 
     setIsTyping(false);
   });

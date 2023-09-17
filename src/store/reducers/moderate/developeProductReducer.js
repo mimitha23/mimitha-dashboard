@@ -1,5 +1,6 @@
 import { createSlice, nanoid } from "@reduxjs/toolkit";
 import { controlStatus as status } from "store/reducers/helpers";
+import { FileChange } from "utils";
 
 const initialState = {
   form: {
@@ -60,9 +61,9 @@ const developeProductSlice = createSlice({
   reducers: {
     // API
     attachDevelopedProduct: {
-      prepare(payload) {
+      prepare({ data, registeredProductId }) {
         return {
-          payload: prepareDataForDB(payload),
+          payload: prepareDataForDB({ data, registeredProductId }),
         };
       },
 
@@ -108,9 +109,13 @@ const developeProductSlice = createSlice({
     },
 
     updateDevelopedProduct: {
-      prepare(payload) {
+      prepare({ data, registeredProductId, updatingDevelopedProductId }) {
         return {
-          payload: prepareDataForDB(payload),
+          payload: prepareDataForDB({
+            data,
+            registeredProductId,
+            updatingDevelopedProductId,
+          }),
         };
       },
 
@@ -246,8 +251,8 @@ const developeProductSlice = createSlice({
     },
 
     // REQUEST STATUS SETTERS
-    setSuccess(state) {
-      state.status = status.success();
+    setStatusSuccess(state, { payload }) {
+      state.status = status.success(payload);
     },
 
     setError(state, { payload }) {
@@ -291,46 +296,70 @@ const developeProductSlice = createSlice({
 export default developeProductSlice.reducer;
 export const developeProductActions = developeProductSlice.actions;
 
-function prepareDataForDB(payload) {
+function prepareDataForDB({
+  data,
+  registeredProductId,
+  updatingDevelopedProductId,
+}) {
   const credentials = {
-    product: payload.registeredProductId,
-    isPublic: payload.is_public,
-    isFeatured: payload.is_featured,
-    title: {
-      ka: payload.title_ka,
-      en: payload.title_en,
-    },
-    price: payload.price,
-    color: {
-      ka: payload.color.ka,
-      en: payload.color.en,
-      hex: payload.color.hex,
-      _id: payload.color._id,
-    },
-    size: payload.sizes.map((size) => ({
-      size: size.size.en,
-      amount: size.amount,
-    })),
-    inStock: payload.sizes.reduce(
-      (acc, size) => acc + parseFloat(size.amount),
-      0
-    ),
-    variants: payload.variants.map((variant) => variant._id),
-    description: {
-      ka: payload.description_ka,
-      en: payload.description_en,
+    registeredProductId,
+    data: {
+      product: registeredProductId,
+      price: data.price,
+      isPublic: data.is_public,
+      isFeatured: data.is_featured,
+      variants: data.variants.map((variant) => variant._id),
+      inStock: data.sizes.reduce(
+        (acc, size) => acc + parseFloat(size.amount),
+        0
+      ),
+      title: {
+        ka: data.title_ka,
+        en: data.title_en,
+      },
+      description: {
+        ka: data.description_ka,
+        en: data.description_en,
+      },
+      size: data.sizes.map((size) => ({
+        size: size.size.en,
+        amount: size.amount,
+      })),
+      color: {
+        ka: data.color.ka,
+        en: data.color.en,
+        hex: data.color.hex,
+        _id: data.color._id,
+      },
     },
   };
-
-  if (payload.isUpdating) {
-    credentials._id = payload.updatingDevelopedProductId;
-    credentials.filesToDelete = payload.filesToDelete;
-    credentials.assets = payload.assets.filter(
-      (asset) => !(asset instanceof File) && typeof asset === "string"
-    );
-    if (payload.filesToUpload[0]) credentials.media = payload.filesToUpload;
+  if (updatingDevelopedProductId) {
+    // credentials.updatingDevelopedProductId = updatingDevelopedProductId;
+    // credentials.filesToDelete = data.filesToDelete;
+    // credentials.assets = data.assets.filter(
+    //   (asset) => !(asset instanceof File) && typeof asset === "string"
+    // );
+    // if (data.filesToUpload[0]) credentials.media = data.filesToUpload;
   } else {
-    credentials.media = payload.filesToUpload;
+    credentials.data.new_assets = data.new_assets.map((base64Str) =>
+      FileChange.convertBase64StrToFile({ base64Str })
+    );
+
+    credentials.data.new_thumbnails = data.new_thumbnails.map((base64Str) =>
+      FileChange.convertBase64StrToFile({ base64Str })
+    );
+
+    credentials.data.new_mannequin = FileChange.convertBase64StrToFile({
+      base64Str: data.new_mannequin,
+    });
+
+    credentials.data.new_model_video = data.new_model_video;
+
+    credentials.data.new_simulation_video_placing =
+      data.new_simulation_video_placing;
+
+    credentials.data.new_simulation_video_pick_up =
+      data.new_simulation_video_pick_up;
   }
 
   return credentials;

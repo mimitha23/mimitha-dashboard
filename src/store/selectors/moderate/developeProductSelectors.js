@@ -18,14 +18,16 @@ const selectedDevelopeProductForm = ({ developeProduct }) => ({
   description_en: developeProduct.form.description_en,
   is_public: developeProduct.form.is_public,
   is_featured: developeProduct.form.is_featured,
-  isUpdating: developeProduct.isUpdating,
-  updatingDevelopedProductId: developeProduct.updatingDevelopedProductId,
+  // MULTIMEDIA
   assets: developeProduct.form.assets,
   thumbnails: developeProduct.form.thumbnails,
   mannequin: developeProduct.form.mannequin,
   model_video: developeProduct.form.model_video,
   simulation_video_placing: developeProduct.form.simulation_video_placing,
   simulation_video_pick_up: developeProduct.form.simulation_video_pick_up,
+  // UPDATE
+  isUpdating: developeProduct.isUpdating,
+  updatingDevelopedProductId: developeProduct.updatingDevelopedProductId,
 });
 
 const selectedDevelopeProductStatus = ({ developeProduct }) => ({

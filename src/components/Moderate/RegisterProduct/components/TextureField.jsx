@@ -38,8 +38,8 @@ export default function TextureField({ textureField, form }) {
               {textureField.fields.map((fieldItem, index) => (
                 <li className="texture-field__list-item" key={fieldItem.id}>
                   <Controller
-                    name={`textures.${index}.texture`}
                     control={form.control}
+                    name={`textures.${index}.texture`}
                     defaultValue={fieldItem.texture?.caption}
                     render={({
                       field: childField,

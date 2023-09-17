@@ -11,6 +11,7 @@ import { developeProductValidation } from "utils/zod/moderate";
 import { FileChange } from "utils";
 import { customValidators } from "utils/zod/helpers/customValidators";
 
+import { REQUEST_STATUS_STAGE } from "store/reducers/helpers/controlStatus";
 import { developeProductActions } from "store/reducers/moderate/developeProductReducer";
 import * as developeProductSelectors from "store/selectors/moderate/developeProductSelectors";
 
@@ -43,14 +44,14 @@ export default function useDevelopeProductQuery() {
     assets: developeProductFormDefaults.assets,
     new_assets: [],
     assets_to_delete: [],
-    // 2. thumbnails
+    // // 2. thumbnails
     thumbnails: developeProductFormDefaults.thumbnails,
     new_thumbnails: ["", ""],
     thumbnails_to_delete: [],
-    // 3. mannequin
+    // // 3. mannequin
     mannequin: developeProductFormDefaults.mannequin,
     new_mannequin: "",
-    // 4. model
+    // // 4. model
     model_video: developeProductFormDefaults.model_video,
     new_model_video: "",
     // 5. simulation videos
@@ -160,20 +161,21 @@ export default function useDevelopeProductQuery() {
   }
 
   function onSubmit(values) {
-    console.log(values);
-    // credentials.isUpdating
-    //   ? dispatch(
-    //       developeProductActions.updateDevelopedProduct({
-    //         ...checkedData,
-    //         registeredProductId,
-    //       })
-    //     )
-    //   : dispatch(
-    //       developeProductActions.attachDevelopedProduct({
-    //         ...checkedData,
-    //         registeredProductId,
-    //       })
-    //     );
+    developeProductFormDefaults.isUpdating
+      ? dispatch(
+          developeProductActions.updateDevelopedProduct({
+            data: values,
+            registeredProductId,
+          })
+        )
+      : dispatch(
+          developeProductActions.attachDevelopedProduct({
+            data: values,
+            registeredProductId,
+            updatingDevelopedProductId:
+              developeProductFormDefaults.updatingDevelopedProductId,
+          })
+        );
   }
 
   useEffect(() => {
@@ -183,6 +185,13 @@ export default function useDevelopeProductQuery() {
       dispatch(developeProductActions.resetState());
     };
   }, []);
+
+  // useEffect(() => {
+  //   if (status.stage === REQUEST_STATUS_STAGE.SUCCESS) {
+  //     form.reset(formDefaults);
+  //     dispatch(developeProductActions.setStatusSuccess());
+  //   }
+  // }, [status]);
 
   return {
     form,

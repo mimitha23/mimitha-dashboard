@@ -1,13 +1,15 @@
 import { call, put } from "redux-saga/effects";
-import { errorController } from "store/saga/handlers/helpers";
-import { developeProductActions } from "store/reducers/moderate/developeProductReducer";
 import { developeProductAPI } from "store/saga/api/moderate";
+import { errorController } from "store/saga/handlers/helpers";
+import { REQUEST_STATUS_STAGE } from "store/reducers/helpers/controlStatus";
+import { developeProductActions } from "store/reducers/moderate/developeProductReducer";
 
 export function* attachDevelopedProduct({ payload }) {
   try {
     yield call(developeProductAPI.attachDevelopedProductQuery, payload);
-    yield put(developeProductActions.resetFormState());
-    yield put(developeProductActions.setSuccess());
+    yield put(
+      developeProductActions.setStatusSuccess(REQUEST_STATUS_STAGE.SUCCESS)
+    );
   } catch (error) {
     yield errorController({
       error,
@@ -45,7 +47,7 @@ export function* copyDevelopedProductConfig({ payload }) {
       payload
     );
     yield put(developeProductActions.setCopyDevelopedProductConfig(data));
-    yield put(developeProductActions.setSuccess());
+    yield put(developeProductActions.setStatusSuccess());
   } catch (error) {
     yield errorController({
       error,
@@ -57,9 +59,12 @@ export function* copyDevelopedProductConfig({ payload }) {
 
 export function* updateDevelopedProduct({ payload }) {
   try {
-    yield call(developeProductAPI.updateDevelopedProductQuery, payload);
-    yield put(developeProductActions.resetFormState());
-    yield put(developeProductActions.setSuccess());
+    // console.log(payload);
+    // yield call(developeProductAPI.updateDevelopedProductQuery, payload);
+    // yield put(developeProductActions.resetFormState());
+    yield put(
+      developeProductActions.setStatusSuccess(REQUEST_STATUS_STAGE.SUCCESS)
+    );
   } catch (error) {
     yield errorController({
       error,
@@ -77,7 +82,7 @@ export function* deleteDevelopedProduct({ payload }) {
         payload.developedProductId
       )
     );
-    yield put(developeProductActions.setSuccess());
+    yield put(developeProductActions.setStatusSuccess());
   } catch (error) {
     yield errorController({
       error,
@@ -94,7 +99,7 @@ export function* getAllDevelopedProducts({ payload }) {
       payload
     );
     yield put(developeProductActions.setAllDevelopedProducts(data));
-    yield put(developeProductActions.setSuccess());
+    yield put(developeProductActions.setStatusSuccess());
   } catch (error) {
     yield errorController({
       error,
@@ -110,7 +115,7 @@ export function* getDevelopeProductFormSuggestions() {
       developeProductAPI.getDevelopeProductFormSuggestionsQuery
     );
     yield put(developeProductActions.setDevelopeProductFormSuggestions(data));
-    yield put(developeProductActions.setSuccess());
+    yield put(developeProductActions.setStatusSuccess());
   } catch (error) {
     yield errorController({
       error,

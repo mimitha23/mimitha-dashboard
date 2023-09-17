@@ -5,16 +5,17 @@ import {
 } from "services/axios";
 
 export async function attachDevelopedProductQuery(payload) {
+  console.log(payload);
   return await axiosFormDataQuery.post(
-    `/moderate/develope-product/${payload.product}/products`,
-    payload
+    `/moderate/develope-product/${payload.registeredProductId}/products`,
+    payload.data
   );
 }
 
 export async function updateDevelopedProductQuery(payload) {
   return await axiosFormDataQuery.put(
-    `/moderate/develope-product/${payload.product}/products/${payload._id}`,
-    payload
+    `/moderate/develope-product/${payload.data.product}/products/${payload.updatingDevelopedProductId}`,
+    payload.data
   );
 }
 

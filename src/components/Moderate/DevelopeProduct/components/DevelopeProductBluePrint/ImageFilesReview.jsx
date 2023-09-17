@@ -1,4 +1,3 @@
-import { memo } from "react";
 import { Controller } from "react-hook-form";
 import { nanoid } from "@reduxjs/toolkit";
 
@@ -7,7 +6,7 @@ import { useDevelopeProductProvider } from "providers/DevelopeProductFormProvide
 import { PlusIcon, CloseXIcon } from "components/layouts/Icons";
 import * as Styled from "./DevelopedProductBlueprint.styled";
 
-export default memo(function ImageFilesReview() {
+export default function ImageFilesReview() {
   const { form, onAssetsChange, onRemoveAsset } = useDevelopeProductProvider();
 
   return (
@@ -56,7 +55,7 @@ export default memo(function ImageFilesReview() {
       </div>
     </Styled.ImageFilesReview>
   );
-});
+}
 
 function ImageFrame({ asset, onRemoveAsset }) {
   return (
