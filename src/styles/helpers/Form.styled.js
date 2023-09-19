@@ -1,6 +1,14 @@
 import { css } from "styled-components";
 import scrollbar from "./scrollbar.styled";
 
+export const errMessageStyles = css`
+  text-align: center;
+  text-wrap: balance;
+  font-weight: 300;
+  font-size: ${({ theme }) => theme.fontSize.sm};
+  color: ${({ theme }) => theme.colors.red};
+`;
+
 export const input = css`
   textarea {
     padding: 1rem;
@@ -56,11 +64,7 @@ export const label = css`
 
 export const error = css`
   p {
-    font-weight: 300;
-    font-size: ${({ theme }) => theme.fontSize.sm};
-    color: ${({ theme }) => theme.colors.red};
-    text-wrap: balance;
-    text-align: center;
+    ${errMessageStyles};
 
     &::first-letter {
       text-transform: capitalize;

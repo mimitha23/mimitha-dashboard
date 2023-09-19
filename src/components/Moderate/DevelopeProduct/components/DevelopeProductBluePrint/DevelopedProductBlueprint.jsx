@@ -47,6 +47,12 @@ export default function DevelopedProductBlueprint() {
     onPickUpVideoChange,
   } = useDevelopeProductProvider();
 
+  const existingThumbnails = form.getValues("thumbnails");
+  const existingMannequin = form.getValues("mannequin");
+  const existingModelVideo = form.getValues("modelVideo");
+  const existingPlacingVideo = form.getValues("placingVideo");
+  const existingPickUpVideo = form.getValues("pickUpVideo");
+
   return (
     <Styled.DevelopedProductBlueprint>
       <ImageFilesReview />
@@ -60,7 +66,7 @@ export default function DevelopedProductBlueprint() {
             error={error ? true : false}
             message={error?.message}
             firstChild={{
-              src: field.value[0],
+              src: field.value[0] || existingThumbnails[0],
               type: "image",
               label: "პროდუქტის წინა მხარე",
               id: "product-thumbnail--front",
@@ -71,7 +77,7 @@ export default function DevelopedProductBlueprint() {
                 }),
             }}
             secondChild={{
-              src: field.value[1],
+              src: field.value[1] || existingThumbnails[1],
               type: "image",
               label: "პროდუქტის უკანა მხარე",
               id: "product-thumbnail--back",
@@ -97,7 +103,7 @@ export default function DevelopedProductBlueprint() {
               id="product-mannequin"
               type="image"
               label="მანეკენი"
-              src={value}
+              src={value || existingMannequin}
               fieldProps={field}
               message={error?.message}
               error={error ? true : false}
@@ -117,7 +123,7 @@ export default function DevelopedProductBlueprint() {
               id="product-model"
               type="video"
               label="მოდელი"
-              src={value}
+              src={value || existingModelVideo}
               fieldProps={field}
               message={error?.message}
               error={error ? true : false}
@@ -139,7 +145,7 @@ export default function DevelopedProductBlueprint() {
               id="product-config-take-down"
               type="video"
               label="პროდუქტის დადება"
-              src={value}
+              src={value || existingPlacingVideo}
               fieldProps={field}
               message={error?.message}
               error={error ? true : false}
@@ -159,7 +165,7 @@ export default function DevelopedProductBlueprint() {
               id="product-config-take-up"
               type="video"
               label="პროდუქტის აღება"
-              src={value}
+              src={value || existingPickUpVideo}
               fieldProps={field}
               message={error?.message}
               error={error ? true : false}

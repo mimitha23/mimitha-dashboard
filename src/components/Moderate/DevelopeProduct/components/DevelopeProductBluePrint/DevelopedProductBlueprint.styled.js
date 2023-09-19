@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { scrollbar } from "styles/helpers";
+import { errMessageStyles } from "styles/helpers/Form.styled";
 
 export const DevelopedProductBlueprint = styled.div`
   position: sticky;
@@ -153,6 +154,12 @@ export const ImageFilesReview = styled.div`
       line-height: 1.4;
     }
   }
+
+  .assets-review__err-msg {
+    grid-row: 2;
+    grid-column: span 2;
+    ${errMessageStyles};
+  }
 `;
 
 export const MediaDualBox = styled.div`
@@ -160,14 +167,11 @@ export const MediaDualBox = styled.div`
     display: grid;
     grid-template-columns: repeat(2, 20rem);
     grid-template-rows: repeat(2, max-content);
+
     .dual-box__err-msg {
       grid-row: 2;
       grid-column: span 2;
-      text-align: center;
-      text-wrap: balance;
-      font-weight: 300;
-      font-size: ${({ theme }) => theme.fontSize.sm};
-      color: ${({ theme }) => theme.colors.red};
+      ${errMessageStyles};
     }
   }
 `;
@@ -222,11 +226,7 @@ export const MediaBox = styled.label`
   }
 
   .media-box__err-msg {
-    text-align: center;
-    text-wrap: balance;
-    font-weight: 300;
-    font-size: ${({ theme }) => theme.fontSize.sm};
-    color: ${({ theme }) => theme.colors.red};
+    ${errMessageStyles};
   }
 
   .dual-box__file-label {

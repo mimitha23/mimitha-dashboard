@@ -22,9 +22,9 @@ const selectedDevelopeProductForm = ({ developeProduct }) => ({
   assets: developeProduct.form.assets,
   thumbnails: developeProduct.form.thumbnails,
   mannequin: developeProduct.form.mannequin,
-  model_video: developeProduct.form.model_video,
-  simulation_video_placing: developeProduct.form.simulation_video_placing,
-  simulation_video_pick_up: developeProduct.form.simulation_video_pick_up,
+  modelVideo: developeProduct.form.modelVideo,
+  placingVideo: developeProduct.form.placingVideo,
+  pickUpVideo: developeProduct.form.pickUpVideo,
   // UPDATE
   isUpdating: developeProduct.isUpdating,
   updatingDevelopedProductId: developeProduct.updatingDevelopedProductId,

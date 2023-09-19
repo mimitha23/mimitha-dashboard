@@ -52,14 +52,12 @@ export default function useDevelopeProductQuery() {
     mannequin: developeProductFormDefaults.mannequin,
     new_mannequin: "",
     // // 4. model
-    model_video: developeProductFormDefaults.model_video,
+    modelVideo: developeProductFormDefaults.modelVideo,
     new_model_video: "",
     // 5. simulation videos
-    simulation_video_placing:
-      developeProductFormDefaults.simulation_video_placing,
+    placingVideo: developeProductFormDefaults.placingVideo,
     new_simulation_video_placing: "",
-    simulation_video_pick_up:
-      developeProductFormDefaults.simulation_video_pick_up,
+    pickUpVideo: developeProductFormDefaults.pickUpVideo,
     new_simulation_video_pick_up: "",
   };
 
@@ -67,6 +65,10 @@ export default function useDevelopeProductQuery() {
     resolver: zodResolver(developeProductValidation),
     defaultValues: formDefaults,
   });
+
+  useEffect(() => {
+    form.reset(formDefaults);
+  }, [developeProductFormDefaults]);
 
   const {
     onSelect,
@@ -81,16 +83,22 @@ export default function useDevelopeProductQuery() {
   });
 
   const onRemoveAsset = (assetSrc) => {
+    const existingAssets = form.getValues("assets");
+    const existingNewAssets = form.getValues("new_assets");
+    const existingAssetsToDelete = form.getValues("assets_to_delete");
+
     if (customValidators.isValidBase64ImageStr.validator(assetSrc)) {
-      const existingAssets = form.getValues("new_assets");
       form.setValue(
         "new_assets",
-        existingAssets.filter((asset) => asset !== assetSrc)
+        existingNewAssets.filter((asset) => asset !== assetSrc)
       );
     } else if (customValidators.isURL.validator(assetSrc)) {
-      console.log("isUrl");
-    } else {
-      console.log("not base64 not url");
+      form.setValue(
+        "assets",
+        existingAssets.filter((asset) => asset !== assetSrc)
+      );
+
+      form.setValue("assets_to_delete", [...existingAssetsToDelete, assetSrc]);
     }
   };
 
@@ -109,16 +117,24 @@ export default function useDevelopeProductQuery() {
         );
       }
 
-      const existingThumbnails = form.getValues("new_thumbnails");
+      const existingNewThumbnails = form.getValues("new_thumbnails");
+      const existingThumbnails = form.getValues("thumbnails");
+      const existingThumbnailsToDelete = form.getValues("thumbnails_to_delete");
 
       form.setValue(
         "new_thumbnails",
         index === 0
-          ? [base64Str, existingThumbnails[1]]
+          ? [base64Str, existingNewThumbnails[1]]
           : index === 1
-          ? [existingThumbnails[0], base64Str]
-          : existingThumbnails
+          ? [existingNewThumbnails[0], base64Str]
+          : existingNewThumbnails
       );
+
+      if (customValidators.isURL.validator(existingThumbnails[index]))
+        form.setValue("thumbnails_to_delete", [
+          ...existingThumbnailsToDelete,
+          existingThumbnails[index],
+        ]);
     } catch (error) {
       form.setError("new_thumbnails", error.message);
     }
@@ -178,6 +194,13 @@ export default function useDevelopeProductQuery() {
         );
   }
 
+  // useEffect(() => {
+  //   if (status.stage === REQUEST_STATUS_STAGE.SUCCESS) {
+  //     form.reset(formDefaults);
+  //     dispatch(developeProductActions.setStatusSuccess());
+  //   }
+  // }, [status]);
+
   useEffect(() => {
     dispatch(developeProductActions.getDevelopeProductFormSuggestions());
 
@@ -185,13 +208,6 @@ export default function useDevelopeProductQuery() {
       dispatch(developeProductActions.resetState());
     };
   }, []);
-
-  // useEffect(() => {
-  //   if (status.stage === REQUEST_STATUS_STAGE.SUCCESS) {
-  //     form.reset(formDefaults);
-  //     dispatch(developeProductActions.setStatusSuccess());
-  //   }
-  // }, [status]);
 
   return {
     form,

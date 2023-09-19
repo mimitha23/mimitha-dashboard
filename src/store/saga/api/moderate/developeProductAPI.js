@@ -5,7 +5,6 @@ import {
 } from "services/axios";
 
 export async function attachDevelopedProductQuery(payload) {
-  console.log(payload);
   return await axiosFormDataQuery.post(
     `/moderate/develope-product/${payload.registeredProductId}/products`,
     payload.data

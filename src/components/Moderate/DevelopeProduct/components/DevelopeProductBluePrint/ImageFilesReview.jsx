@@ -1,5 +1,5 @@
-import { Controller } from "react-hook-form";
 import { nanoid } from "@reduxjs/toolkit";
+import { Controller } from "react-hook-form";
 
 import { useDevelopeProductProvider } from "providers/DevelopeProductFormProvider";
 
@@ -9,21 +9,23 @@ import * as Styled from "./DevelopedProductBlueprint.styled";
 export default function ImageFilesReview() {
   const { form, onAssetsChange, onRemoveAsset } = useDevelopeProductProvider();
 
+  const existingAssets = form.watch("assets");
+
   return (
     <Styled.ImageFilesReview>
       <p className="product__media-box--title">პროდუქტის ფოტო მასალა</p>
 
-      <div className="images-review__list">
-        <Controller
-          name="new_assets"
-          control={form.control}
-          render={({
-            field: { onChange, value, ...field },
-            fieldState: { error },
-          }) => (
-            <>
-              {value[0] &&
-                value.map((asset) => (
+      <Controller
+        name="new_assets"
+        control={form.control}
+        render={({
+          field: { onChange, value, ...field },
+          fieldState: { error },
+        }) => (
+          <>
+            <div className="images-review__list">
+              {(value[0] || existingAssets[0]) &&
+                [...existingAssets, ...value].map((asset) => (
                   <ImageFrame
                     key={nanoid()}
                     asset={asset}
@@ -33,7 +35,7 @@ export default function ImageFilesReview() {
 
               <label
                 className={`product__media-box__label ${
-                  value[0] ? "" : "empty"
+                  value[0] || existingAssets[0] ? "" : "empty"
                 }`}
                 htmlFor="product__media-box__input"
               >
@@ -49,10 +51,12 @@ export default function ImageFilesReview() {
                   onChange={(e) => onAssetsChange(e, onChange)}
                 />
               </label>
-            </>
-          )}
-        />
-      </div>
+            </div>
+
+            {error && <p className="assets-review__err-msg">{error.message}</p>}
+          </>
+        )}
+      />
     </Styled.ImageFilesReview>
   );
 }

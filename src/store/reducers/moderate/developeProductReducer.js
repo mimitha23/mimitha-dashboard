@@ -7,6 +7,11 @@ const initialState = {
     title_ka: "",
     title_en: "",
     price: "",
+    variants: [],
+    description_ka: "",
+    description_en: "",
+    is_public: false,
+    is_featured: false,
     color: {
       ka: "",
       en: "",
@@ -24,17 +29,12 @@ const initialState = {
         },
       },
     ],
-    variants: [],
-    description_ka: "",
-    description_en: "",
-    is_public: false,
-    is_featured: false,
     assets: [],
     thumbnails: ["", ""],
     mannequin: "",
-    model_video: "",
-    simulation_video_placing: "",
-    simulation_video_pick_up: "",
+    modelVideo: "",
+    placingVideo: "",
+    pickUpVideo: "",
   },
 
   developeProductFormSuggestions: {
@@ -79,7 +79,6 @@ const developeProductSlice = createSlice({
         price: payload.price,
         color: { ...payload.color, caption: payload.color.ka },
         sizes: payload.size.map((size) => ({
-          _id: nanoid(),
           size: {
             ka: size.size,
             en: size.size,
@@ -90,13 +89,18 @@ const developeProductSlice = createSlice({
         })),
         variants: payload.variants.map((variant) => ({
           ...variant,
-          caption: variant.ka,
+          caption: variant.label_ka,
         })),
         description_ka: payload.description.ka,
         description_en: payload.description.en,
         is_public: payload.isPublic,
         is_featured: payload.isFeatured,
         assets: payload.assets,
+        thumbnails: payload.thumbnails,
+        mannequin: payload.mannequin,
+        modelVideo: payload.modelVideo,
+        placingVideo: payload.placingVideo,
+        pickUpVideo: payload.pickUpVideo,
       };
 
       state.form = {
@@ -203,7 +207,6 @@ const developeProductSlice = createSlice({
       const form = {
         price: payload.price,
         sizes: payload.size.map((size) => ({
-          _id: nanoid(),
           size: {
             ka: size.size,
             en: size.size,
@@ -331,36 +334,51 @@ function prepareDataForDB({
         hex: data.color.hex,
         _id: data.color._id,
       },
+      assets: data.assets,
+      thumbnails: data.thumbnails,
+      mannequin: data.mannequin,
+      modelVideo: data.modelVideo,
+      placingVideo: data.placingVideo,
+      pickUpVideo: data.pickUpVideo,
     },
   };
-  if (updatingDevelopedProductId) {
-    // credentials.updatingDevelopedProductId = updatingDevelopedProductId;
-    // credentials.filesToDelete = data.filesToDelete;
-    // credentials.assets = data.assets.filter(
-    //   (asset) => !(asset instanceof File) && typeof asset === "string"
-    // );
-    // if (data.filesToUpload[0]) credentials.media = data.filesToUpload;
-  } else {
+
+  if (data.new_assets[0]) {
     credentials.data.new_assets = data.new_assets.map((base64Str) =>
       FileChange.convertBase64StrToFile({ base64Str })
     );
 
-    credentials.data.new_thumbnails = data.new_thumbnails.map((base64Str) =>
-      FileChange.convertBase64StrToFile({ base64Str })
-    );
+    if (updatingDevelopedProductId && data.assets_to_delete[0])
+      credentials.data.assetsToDelete = data.assets_to_delete;
+  }
 
+  if (data.new_thumbnails.map((src) => src !== undefined && src !== "")[0]) {
+    credentials.data.new_thumbnails = data.new_thumbnails
+      .filter((src) => src !== undefined && src !== "")
+      .map((base64Str) => FileChange.convertBase64StrToFile({ base64Str }));
+
+    if (updatingDevelopedProductId && data.thumbnails_to_delete[0])
+      credentials.data.thumbnailsToDelete = data.thumbnails_to_delete;
+  }
+
+  if (data.new_mannequin)
     credentials.data.new_mannequin = FileChange.convertBase64StrToFile({
       base64Str: data.new_mannequin,
     });
 
+  if (data.new_model_video)
     credentials.data.new_model_video = data.new_model_video;
 
+  if (data.new_simulation_video_placing)
     credentials.data.new_simulation_video_placing =
       data.new_simulation_video_placing;
 
+  if (data.new_simulation_video_pick_up)
     credentials.data.new_simulation_video_pick_up =
       data.new_simulation_video_pick_up;
-  }
+
+  if (updatingDevelopedProductId)
+    credentials.updatingDevelopedProductId = updatingDevelopedProductId;
 
   return credentials;
 }

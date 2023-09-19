@@ -1,6 +1,7 @@
+import { customValidators } from "./zod/helpers/customValidators";
+
 class FileChangeUtils {
   // base
-
   async convertFilesToBase64Str(file, fileType) {
     try {
       const { hasError, base64Str } = await this.generateBase64Str({
@@ -21,6 +22,8 @@ class FileChangeUtils {
   }
 
   convertBase64StrToFile({ base64Str }) {
+    if (!customValidators.isValidBase64ImageStr.validator(base64Str)) return;
+
     const base64 = base64Str.split(";base64,")[1];
     const mimeType = base64Str
       .slice(base64Str.indexOf("data:"), base64Str.indexOf(";base64,"))

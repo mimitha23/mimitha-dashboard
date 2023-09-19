@@ -41,6 +41,12 @@ export default function useRegisterProductQuery() {
     defaultValues: formDefaults,
   });
 
+  const {
+    onSelect,
+    onBase64FileChange: onFileChangeEvent,
+    onMultipleSelect: multipleSelect,
+  } = useReactHookForm(form);
+
   const styleField = useFieldArray({
     control: form.control,
     name: "productStyles",
@@ -60,12 +66,6 @@ export default function useRegisterProductQuery() {
     control: form.control,
     name: "warnings",
   });
-
-  const {
-    onSelect,
-    onBase64FileChange: onFileChangeEvent,
-    onMultipleSelect: multipleSelect,
-  } = useReactHookForm(form);
 
   const onFileChange = onFileChangeEvent({ formPropertyName: "thumbnail" });
 
