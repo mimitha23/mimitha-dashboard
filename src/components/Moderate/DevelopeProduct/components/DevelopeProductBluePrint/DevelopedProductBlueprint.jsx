@@ -8,7 +8,6 @@ import { Controller } from "react-hook-form";
 import { useDevelopeProductProvider } from "providers/DevelopeProductFormProvider";
 
 import MediaBox from "./MediaBox";
-import MediaDualBox from "./MediaDualBox";
 import MediaDualBoxContainer from "./MediaDualBoxContainer";
 import * as Styled from "./DevelopedProductBlueprint.styled";
 
@@ -40,14 +39,16 @@ export default function DevelopedProductBlueprint() {
   // }, [form.sizes]);
   const {
     form,
-    onThumbnailChange,
+    onFrontThumbnailChange,
+    onBackThumbnailChange,
     onMannequinChange,
     onModelVideoChange,
     onPlacingVideoChange,
     onPickUpVideoChange,
   } = useDevelopeProductProvider();
 
-  const existingThumbnails = form.getValues("thumbnails");
+  const existingFrontThumbnail = form.getValues("front_thumbnail");
+  const existingBackThumbnail = form.getValues("back_thumbnail");
   const existingMannequin = form.getValues("mannequin");
   const existingModelVideo = form.getValues("modelVideo");
   const existingPlacingVideo = form.getValues("placingVideo");
@@ -57,39 +58,47 @@ export default function DevelopedProductBlueprint() {
     <Styled.DevelopedProductBlueprint>
       <ImageFilesReview />
 
-      <Controller
-        name="new_thumbnails"
-        control={form.control}
-        render={({ field, fieldState: { error } }) => (
-          <MediaDualBox
-            title="პროდუქტის ხატულები"
-            error={error ? true : false}
-            message={error?.message}
-            firstChild={{
-              src: field.value[0] || existingThumbnails[0],
-              type: "image",
-              label: "პროდუქტის წინა მხარე",
-              id: "product-thumbnail--front",
-              onChange: (e) =>
-                onThumbnailChange({
-                  index: 0,
-                  reactEvent: e,
-                }),
-            }}
-            secondChild={{
-              src: field.value[1] || existingThumbnails[1],
-              type: "image",
-              label: "პროდუქტის უკანა მხარე",
-              id: "product-thumbnail--back",
-              onChange: (e) =>
-                onThumbnailChange({
-                  index: 1,
-                  reactEvent: e,
-                }),
-            }}
-          />
-        )}
-      />
+      <MediaDualBoxContainer title="პროდუქტის მანეკენი და მოდელი">
+        <Controller
+          name="new_front_thumbnail"
+          control={form.control}
+          render={({
+            field: { value, onChange, ...field },
+            fieldState: { error },
+          }) => (
+            <MediaBox
+              id="front_thumbnail"
+              type="image"
+              label="პროდუქტის წინა მხარე"
+              src={value || existingFrontThumbnail}
+              fieldProps={field}
+              message={error?.message}
+              error={error ? true : false}
+              onChange={(e) => onFrontThumbnailChange(e, onChange)}
+            />
+          )}
+        />
+
+        <Controller
+          name="new_back_thumbnail"
+          control={form.control}
+          render={({
+            field: { value, onChange, ...field },
+            fieldState: { error },
+          }) => (
+            <MediaBox
+              id="back_thumbnail"
+              type="image"
+              label="პროდუქტის უკანა მხარე"
+              src={value || existingBackThumbnail}
+              fieldProps={field}
+              message={error?.message}
+              error={error ? true : false}
+              onChange={(e) => onBackThumbnailChange(e, onChange)}
+            />
+          )}
+        />
+      </MediaDualBoxContainer>
 
       <MediaDualBoxContainer title="პროდუქტის მანეკენი და მოდელი">
         <Controller

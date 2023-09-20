@@ -21,6 +21,8 @@ const selectedDevelopeProductForm = ({ developeProduct }) => ({
   // MULTIMEDIA
   assets: developeProduct.form.assets,
   thumbnails: developeProduct.form.thumbnails,
+  front_thumbnail: developeProduct.form.front_thumbnail,
+  back_thumbnail: developeProduct.form.back_thumbnail,
   mannequin: developeProduct.form.mannequin,
   modelVideo: developeProduct.form.modelVideo,
   placingVideo: developeProduct.form.placingVideo,

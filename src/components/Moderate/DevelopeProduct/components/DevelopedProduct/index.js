@@ -5,3 +5,5 @@ export { default as VariantDetails } from "./VariantDetails";
 export { default as TextureDetails } from "./TextureDetails";
 export { default as WarningDetails } from "./WarningDetails";
 export { default as DevelopedProductActions } from "./DevelopedProductActions";
+export { default as MultimediaBox } from "./MultimediaBox";
+export { default as MultimediaDualBoxContainer } from "./MultimediaDualBoxContainer";

@@ -30,7 +30,9 @@ const initialState = {
       },
     ],
     assets: [],
-    thumbnails: ["", ""],
+    thumbnails: [],
+    front_thumbnail: "",
+    back_thumbnail: "",
     mannequin: "",
     modelVideo: "",
     placingVideo: "",
@@ -97,6 +99,8 @@ const developeProductSlice = createSlice({
         is_featured: payload.isFeatured,
         assets: payload.assets,
         thumbnails: payload.thumbnails,
+        front_thumbnail: payload.thumbnails?.[0] || "",
+        back_thumbnail: payload.thumbnails?.[1] || "",
         mannequin: payload.mannequin,
         modelVideo: payload.modelVideo,
         placingVideo: payload.placingVideo,
@@ -217,7 +221,7 @@ const developeProductSlice = createSlice({
         })),
         variants: payload.variants.map((variant) => ({
           ...variant,
-          caption: variant.ka,
+          caption: variant.label_ka,
         })),
         description_ka: payload.description.ka,
         description_en: payload.description.en,
@@ -352,14 +356,15 @@ function prepareDataForDB({
       credentials.data.assetsToDelete = data.assets_to_delete;
   }
 
-  if (data.new_thumbnails.map((src) => src !== undefined && src !== "")[0]) {
-    credentials.data.new_thumbnails = data.new_thumbnails
-      .filter((src) => src !== undefined && src !== "")
-      .map((base64Str) => FileChange.convertBase64StrToFile({ base64Str }));
+  if (data.new_front_thumbnail)
+    credentials.data.new_front_thumbnail = FileChange.convertBase64StrToFile({
+      base64Str: data.new_front_thumbnail,
+    });
 
-    if (updatingDevelopedProductId && data.thumbnails_to_delete[0])
-      credentials.data.thumbnailsToDelete = data.thumbnails_to_delete;
-  }
+  if (data.new_back_thumbnail)
+    credentials.data.new_back_thumbnail = FileChange.convertBase64StrToFile({
+      base64Str: data.new_back_thumbnail,
+    });
 
   if (data.new_mannequin)
     credentials.data.new_mannequin = FileChange.convertBase64StrToFile({

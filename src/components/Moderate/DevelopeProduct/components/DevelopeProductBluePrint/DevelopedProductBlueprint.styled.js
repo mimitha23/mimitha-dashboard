@@ -162,20 +162,6 @@ export const ImageFilesReview = styled.div`
   }
 `;
 
-export const MediaDualBox = styled.div`
-  [data-dual-box-container].product__thumbnails {
-    display: grid;
-    grid-template-columns: repeat(2, 20rem);
-    grid-template-rows: repeat(2, max-content);
-
-    .dual-box__err-msg {
-      grid-row: 2;
-      grid-column: span 2;
-      ${errMessageStyles};
-    }
-  }
-`;
-
 export const MediaDualBoxContainer = styled.div`
   display: flex;
   flex-direction: column;

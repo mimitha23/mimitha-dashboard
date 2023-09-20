@@ -1,24 +1,13 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 
-import {
-  selectDevelopedProduct,
-  selectSingleDevelopeProductStatus,
-} from "store/selectors/moderate/developeProductSelectors";
 import { developeProductActions } from "store/reducers/moderate/developeProductReducer";
+import * as developeProductSelectors from "store/selectors/moderate/developeProductSelectors";
 
 import { Spinner } from "components/layouts";
-import {
-  VariantDetails,
-  TextureDetails,
-  WarningDetails,
-  DevelopedProductSlider,
-  DevelopedProductActions,
-  CloseDevelopedProductButton,
-  DevelopedProductCardDetailBlock,
-} from "./components/DevelopedProduct";
+import * as UI from "./components/DevelopedProduct";
 import * as Styled from "./styles/DevelopedProduct.styled";
 
 export default function DevelopedProduct() {
@@ -26,8 +15,12 @@ export default function DevelopedProduct() {
 
   const { registeredProductId, developedProductId } = useParams();
 
-  const status = useSelector(selectSingleDevelopeProductStatus);
-  const product = useSelector(selectDevelopedProduct);
+  const product = useSelector(developeProductSelectors.selectDevelopedProduct);
+  const status = useSelector(
+    developeProductSelectors.selectSingleDevelopeProductStatus
+  );
+
+  console.log(product);
 
   useEffect(() => {
     if (!registeredProductId || !developedProductId) return;
@@ -46,39 +39,54 @@ export default function DevelopedProduct() {
 
   return (
     <Styled.DevelopedProduct>
-      <CloseDevelopedProductButton />
+      <UI.CloseDevelopedProductButton />
 
       {!status.loading && product && (
         <main className="developed-product__main">
-          <DevelopedProductSlider assets={product.assets} />
+          <UI.DevelopedProductSlider assets={product.assets} />
+
+          <UI.MultimediaDualBoxContainer title="პროდუქტის ხატულები">
+            <UI.MultimediaBox type="image" src={product.thumbnails[0]} />
+            <UI.MultimediaBox type="image" src={product.thumbnails[1]} />
+          </UI.MultimediaDualBoxContainer>
+
+          <UI.MultimediaDualBoxContainer title="პროდუქტის მანეკენი და მოდელი">
+            <UI.MultimediaBox type="image" src={product.mannequin} />
+            <UI.MultimediaBox type="video" src={product.modelVideo} />
+          </UI.MultimediaDualBoxContainer>
+
+          <UI.MultimediaDualBoxContainer title="პროდუქტის აღება/დადების ვიდეოები">
+            <UI.MultimediaBox type="video" src={product.placingVideo} />
+            <UI.MultimediaBox type="video" src={product.pickUpVideo} />
+          </UI.MultimediaDualBoxContainer>
 
           <div className="developed-product__details">
-            <DevelopedProductCardDetailBlock
+            <UI.DevelopedProductCardDetailBlock
               label="რედაქტირებადი"
               value={product.product.isEditable ? "კი" : "არა"}
             />
 
-            <DevelopedProductCardDetailBlock
+            <UI.DevelopedProductCardDetailBlock
               label="საჯარო"
               value={product.isPublic ? "კი" : "არა"}
             />
 
-            <DevelopedProductCardDetailBlock
+            <UI.DevelopedProductCardDetailBlock
               label="რეიტინგი"
               value={product.rating}
             />
 
-            <DevelopedProductCardDetailBlock
+            <UI.DevelopedProductCardDetailBlock
               label="გაყიდულია"
               value={product.soldOut}
             />
 
-            <DevelopedProductCardDetailBlock
+            <UI.DevelopedProductCardDetailBlock
               label="მარაგშია"
               value={product.inStock}
             />
 
-            <DevelopedProductCardDetailBlock
+            <UI.DevelopedProductCardDetailBlock
               label="ზომები"
               value={product.size
                 .map((size) =>
@@ -87,62 +95,62 @@ export default function DevelopedProduct() {
                 .join(" / ")}
             />
 
-            <DevelopedProductCardDetailBlock
+            <UI.DevelopedProductCardDetailBlock
               label="ფასდაკლება"
               value={product.sale ? "კი" : "არა"}
             />
 
-            <DevelopedProductCardDetailBlock
+            <UI.DevelopedProductCardDetailBlock
               label="ფასი"
               value={`${product.price}₾`}
             />
 
-            <DevelopedProductCardDetailBlock
+            <UI.DevelopedProductCardDetailBlock
               label="სახელი"
               value={product.title.ka}
             />
 
-            <DevelopedProductCardDetailBlock
+            <UI.DevelopedProductCardDetailBlock
               label="პროდუქტის ტიპი"
               value={product.product.productType.ka}
             />
 
-            <DevelopedProductCardDetailBlock
+            <UI.DevelopedProductCardDetailBlock
               label="სტილი"
               value={product.product.styles
                 .map((style) => style.ka)
                 .join(" / ")}
             />
 
-            <DevelopedProductCardDetailBlock
+            <UI.DevelopedProductCardDetailBlock
               label="სეზონი"
               value={product.product.seasons
                 .map((season) => season.ka)
                 .join(" / ")}
             />
 
-            <DevelopedProductCardDetailBlock
+            <UI.DevelopedProductCardDetailBlock
               label="სქესი"
               value={product.product.gender.ka}
             />
 
-            <DevelopedProductCardDetailBlock
+            <UI.DevelopedProductCardDetailBlock
               label="ფერი"
               value={product.color.ka}
             />
 
-            <DevelopedProductCardDetailBlock
+            <UI.DevelopedProductCardDetailBlock
               label="აღწერა"
               value={product.description.ka}
             />
 
-            <VariantDetails variants={product.variants} />
+            <UI.VariantDetails variants={product.variants} />
 
-            <TextureDetails textures={product.product.textures} />
+            <UI.TextureDetails textures={product.product.textures} />
 
-            <WarningDetails warnings={product.product.warnings} />
+            <UI.WarningDetails warnings={product.product.warnings} />
 
-            <DevelopedProductActions
+            <UI.DevelopedProductActions
               registeredProductId={registeredProductId}
               developedProductId={developedProductId}
               product={product}

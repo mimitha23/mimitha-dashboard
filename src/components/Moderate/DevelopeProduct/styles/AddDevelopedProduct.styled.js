@@ -59,4 +59,8 @@ export const AddDevelopedProduct = styled.div`
       }
     }
   }
+
+  [data-multiple-select-input]:has(input[name="variants"]) .selected-fields {
+    grid-template-columns: repeat(auto-fit, minmax(10rem, max-content));
+  }
 `;

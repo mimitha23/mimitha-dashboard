@@ -127,26 +127,49 @@ const developeProductValidation = z
           .optional()
       )
       .max(2),
-    new_thumbnails: z
-      .array(
-        z
-          .string()
-          .refine(
-            (value) =>
-              value === "" || customValidators.isValidBase64ImageStr.validator,
-            customValidators.isValidBase64ImageStr.message("პროდუქტის ხატულა")
-          )
-          .optional()
+
+    front_thumbnail: z
+      .string()
+      .refine(
+        customValidators.isOptionalURL.validator,
+        customValidators.isOptionalURL.message("არსებული პროდუქტის წინა ხატულა")
       )
-      .max(2),
-    thumbnails_to_delete: z.array(z.string().url().optional()),
+      .optional(),
+    new_front_thumbnail: z
+      .string()
+      .refine(
+        (value) =>
+          value === "" || customValidators.isValidBase64ImageStr.validator,
+        customValidators.isValidBase64ImageStr.message("პროდუქტის წინა ხატულა")
+      )
+      .optional(),
+
+    back_thumbnail: z
+      .string()
+      .refine(
+        customValidators.isOptionalURL.validator,
+        customValidators.isOptionalURL.message(
+          "არსებული პროდუქტის უკანა ხატულა"
+        )
+      )
+      .optional(),
+    new_back_thumbnail: z
+      .string()
+      .refine(
+        (value) =>
+          value === "" || customValidators.isValidBase64ImageStr.validator,
+        customValidators.isValidBase64ImageStr.message("პროდუქტის უკანა ხატულა")
+      )
+      .optional(),
 
     // 3. mannequin
     mannequin: z
       .string()
       .refine(
         customValidators.isOptionalURL.validator,
-        customValidators.isOptionalURL.message("პროდუქტის მანეკენის ხატულა")
+        customValidators.isOptionalURL.message(
+          "არსებული პროდუქტის მანეკენის ხატულა"
+        )
       )
       .optional(),
     new_mannequin: z
@@ -165,7 +188,9 @@ const developeProductValidation = z
       .string()
       .refine(
         customValidators.isOptionalURL.validator,
-        customValidators.isOptionalURL.message("პროდუქტის მოდელის ვიდეო")
+        customValidators.isOptionalURL.message(
+          "არსებული პროდუქტის მოდელის ვიდეო"
+        )
       )
       .optional(),
     new_model_video: z
@@ -182,7 +207,7 @@ const developeProductValidation = z
       .refine(
         customValidators.isOptionalURL.validator,
         customValidators.isOptionalURL.message(
-          "ედითორის პროდუქტის დადების ვიდეო"
+          "არსებული ედითორის პროდუქტის დადების ვიდეო"
         )
       )
       .optional(),
@@ -200,7 +225,7 @@ const developeProductValidation = z
       .refine(
         customValidators.isOptionalURL.validator,
         customValidators.isOptionalURL.message(
-          "ედითორის პროდუქტის აღების ვიდეო"
+          "არსებული ედითორის პროდუქტის აღების ვიდეო"
         )
       )
       .optional(),
@@ -221,14 +246,23 @@ const developeProductValidation = z
   )
   .refine(
     (data) => {
-      if (
-        data.thumbnails.some((src) => src === "") &&
-        data.new_thumbnails.some((src) => src === "")
-      )
-        return false;
+      if (!data.front_thumbnail && !data.new_front_thumbnail) return false;
       else return true;
     },
-    { message: "გთხოვთ მიუთითოთ პროდუქტის ხატულები", path: ["new_thumbnails"] }
+    {
+      message: "გთხოვთ მიუთითოთ პროდუქტის წინა ხატულა",
+      path: ["new_front_thumbnail"],
+    }
+  )
+  .refine(
+    (data) => {
+      if (!data.back_thumbnail && !data.new_back_thumbnail) return false;
+      else return true;
+    },
+    {
+      message: "გთხოვთ მიუთითოთ პროდუქტის უკანა ხატულა",
+      path: ["new_back_thumbnail"],
+    }
   )
   .refine(
     (data) => {

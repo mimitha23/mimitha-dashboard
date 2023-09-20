@@ -44,7 +44,8 @@ export const DevelopedProduct = styled.div`
       display: grid;
       grid-template-columns: max-content 1fr;
       gap: 1rem;
-      align-items: center;
+      align-items: start;
+      justify-content: space-between;
 
       button {
         line-height: 1;
@@ -56,6 +57,7 @@ export const DevelopedProduct = styled.div`
 
       & > :last-child {
         justify-self: flex-end;
+        text-align: end;
       }
     }
   }

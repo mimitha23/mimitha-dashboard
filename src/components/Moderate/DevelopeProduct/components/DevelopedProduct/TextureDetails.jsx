@@ -38,7 +38,7 @@ export default function TextureDetails({ textures }) {
               </div>
               <div className="texture-details__list-item--percentage">
                 <span>პროცენტულობა:</span>
-                <span>{texture.percentage}</span>
+                <span>{texture.percentage}%</span>
               </div>
               <EditAndDeleteButtons onEdit={() => onEdit(texture)} />
             </li>

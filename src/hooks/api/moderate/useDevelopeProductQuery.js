@@ -8,7 +8,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, useFieldArray } from "react-hook-form";
 import { developeProductValidation } from "utils/zod/moderate";
 
-import { FileChange } from "utils";
 import { customValidators } from "utils/zod/helpers/customValidators";
 
 import { REQUEST_STATUS_STAGE } from "store/reducers/helpers/controlStatus";
@@ -46,8 +45,10 @@ export default function useDevelopeProductQuery() {
     assets_to_delete: [],
     // // 2. thumbnails
     thumbnails: developeProductFormDefaults.thumbnails,
-    new_thumbnails: ["", ""],
-    thumbnails_to_delete: [],
+    front_thumbnail: developeProductFormDefaults.front_thumbnail,
+    new_front_thumbnail: "",
+    back_thumbnail: developeProductFormDefaults.back_thumbnail,
+    new_back_thumbnail: "",
     // // 3. mannequin
     mannequin: developeProductFormDefaults.mannequin,
     new_mannequin: "",
@@ -102,43 +103,13 @@ export default function useDevelopeProductQuery() {
     }
   };
 
-  const onThumbnailChange = async ({ index, reactEvent }) => {
-    try {
-      const file = reactEvent.target.files[0];
+  const onFrontThumbnailChange = onBase64FileChange({
+    formPropertyName: "new_front_thumbnail",
+  });
 
-      const { hasError, base64Str } = await FileChange.generateBase64Str({
-        file,
-        fileType: "image/",
-      });
-
-      if (hasError) {
-        throw new Error(
-          "თქვენს მიერ მითითებული მედია ფაილები არ არის ვალიდური"
-        );
-      }
-
-      const existingNewThumbnails = form.getValues("new_thumbnails");
-      const existingThumbnails = form.getValues("thumbnails");
-      const existingThumbnailsToDelete = form.getValues("thumbnails_to_delete");
-
-      form.setValue(
-        "new_thumbnails",
-        index === 0
-          ? [base64Str, existingNewThumbnails[1]]
-          : index === 1
-          ? [existingNewThumbnails[0], base64Str]
-          : existingNewThumbnails
-      );
-
-      if (customValidators.isURL.validator(existingThumbnails[index]))
-        form.setValue("thumbnails_to_delete", [
-          ...existingThumbnailsToDelete,
-          existingThumbnails[index],
-        ]);
-    } catch (error) {
-      form.setError("new_thumbnails", error.message);
-    }
-  };
+  const onBackThumbnailChange = onBase64FileChange({
+    formPropertyName: "new_back_thumbnail",
+  });
 
   const onMannequinChange = onBase64FileChange({
     formPropertyName: "new_mannequin",
@@ -182,24 +153,25 @@ export default function useDevelopeProductQuery() {
           developeProductActions.updateDevelopedProduct({
             data: values,
             registeredProductId,
+            updatingDevelopedProductId:
+              developeProductFormDefaults.updatingDevelopedProductId,
           })
         )
       : dispatch(
           developeProductActions.attachDevelopedProduct({
             data: values,
             registeredProductId,
-            updatingDevelopedProductId:
-              developeProductFormDefaults.updatingDevelopedProductId,
           })
         );
   }
 
-  // useEffect(() => {
-  //   if (status.stage === REQUEST_STATUS_STAGE.SUCCESS) {
-  //     form.reset(formDefaults);
-  //     dispatch(developeProductActions.setStatusSuccess());
-  //   }
-  // }, [status]);
+  useEffect(() => {
+    if (status.stage === REQUEST_STATUS_STAGE.SUCCESS) {
+      form.reset(formDefaults);
+      dispatch(developeProductActions.resetFormState());
+      dispatch(developeProductActions.setStatusSuccess());
+    }
+  }, [status]);
 
   useEffect(() => {
     dispatch(developeProductActions.getDevelopeProductFormSuggestions());
@@ -216,7 +188,8 @@ export default function useDevelopeProductQuery() {
     onMultipleSelect,
     onAssetsChange,
     onRemoveAsset,
-    onThumbnailChange,
+    onFrontThumbnailChange,
+    onBackThumbnailChange,
     onMannequinChange,
     onModelVideoChange,
     onPlacingVideoChange,

@@ -6,8 +6,7 @@ import { developeProductActions } from "store/reducers/moderate/developeProductR
 
 export function* attachDevelopedProduct({ payload }) {
   try {
-    console.log(payload);
-    // yield call(developeProductAPI.attachDevelopedProductQuery, payload);
+    yield call(developeProductAPI.attachDevelopedProductQuery, payload);
     yield put(
       developeProductActions.setStatusSuccess(REQUEST_STATUS_STAGE.SUCCESS)
     );
@@ -60,9 +59,7 @@ export function* copyDevelopedProductConfig({ payload }) {
 
 export function* updateDevelopedProduct({ payload }) {
   try {
-    console.log(payload);
-    // yield call(developeProductAPI.updateDevelopedProductQuery, payload);
-    // yield put(developeProductActions.resetFormState());
+    yield call(developeProductAPI.updateDevelopedProductQuery, payload);
     yield put(
       developeProductActions.setStatusSuccess(REQUEST_STATUS_STAGE.SUCCESS)
     );
