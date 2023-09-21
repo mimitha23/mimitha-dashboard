@@ -1,5 +1,5 @@
 import { createContext, useContext } from "react";
-import { useDevelopeProductQuery } from "hooks/api/moderate";
+import { useDevelopeProductMutationQuery } from "hooks/api/moderate/developeProduct";
 
 const DevelopeProductFormContext = createContext({
   isUpdating: false,
@@ -51,7 +51,7 @@ export default function DevelopeProductFormProvider({ children }) {
     onPickUpVideoChange,
     onSubmit,
     status,
-  } = useDevelopeProductQuery();
+  } = useDevelopeProductMutationQuery();
 
   return (
     <DevelopeProductFormContext.Provider

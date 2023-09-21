@@ -1,10 +1,9 @@
 import { useSelector } from "react-redux";
-
-import { useRegisterProductQuery } from "hooks/api/moderate";
-import * as registerProductSelectors from "store/selectors/moderate/registerProductSelectors";
+import { Controller } from "react-hook-form";
 
 import { PATHS } from "config/routes";
-import { Controller } from "react-hook-form";
+import { useRegisterProductMutationQuery } from "hooks/api/moderate/registerProduct";
+import * as registerProductSelectors from "store/selectors/moderate/registerProductSelectors";
 
 import * as Layouts from "components/layouts";
 import * as Form from "components/layouts/Form";
@@ -12,7 +11,7 @@ import * as Styled from "./styles/RegisterProduct.styled";
 import { TextureField, WarningField } from "./components";
 
 export default function RegisterProduct() {
-  const form = useRegisterProductQuery();
+  const form = useRegisterProductMutationQuery();
 
   const formDefaults = useSelector(
     registerProductSelectors.selectRegisterProductFormSuggestions

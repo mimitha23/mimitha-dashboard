@@ -14,7 +14,7 @@ import { REQUEST_STATUS_STAGE } from "store/reducers/helpers/controlStatus";
 import { developeProductActions } from "store/reducers/moderate/developeProductReducer";
 import * as developeProductSelectors from "store/selectors/moderate/developeProductSelectors";
 
-export default function useDevelopeProductQuery() {
+export default function useDevelopeProductMutationQuery() {
   const dispatch = useDispatch();
 
   const { registeredProductId } = useParams();

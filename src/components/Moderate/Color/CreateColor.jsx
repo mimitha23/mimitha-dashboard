@@ -1,10 +1,8 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import { useColorMutationQuery } from "hooks/api/moderate";
+import { Controller } from "react-hook-form";
 
 import { PATHS } from "config/routes";
 import { isValidHexColor } from "functions";
-
-import { Controller } from "react-hook-form";
+import { useColorMutationQuery } from "hooks/api/moderate/colors";
 
 import * as Layouts from "components/layouts";
 import * as Form from "components/layouts/Form";

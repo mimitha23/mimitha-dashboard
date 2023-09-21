@@ -1,52 +1,48 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 
 import {
-  selectAllProductTypes,
-  selectProductTypeStatus,
-} from "store/selectors/moderate/productTypeSelectors";
-import { productTypeActions } from "store/reducers/moderate/productTypeReducer";
+  useProductTypeDeleteQuery,
+  useProductTypesGetQuery,
+} from "hooks/api/moderate/productTypes";
 import { useDebounceOnSearch } from "hooks/utils";
 
-import { DeletionPopup, LoadingSpinner, Search } from "components/layouts";
 import TypesList from "./components/TypesList";
 import * as Styled from "./styles/ProductTypes.styled";
+import { DeletionPopup, LoadingSpinner, Search } from "components/layouts";
 
 export default function ProductTypes() {
-  const dispatch = useDispatch();
-
-  const allProductTypes = useSelector(selectAllProductTypes);
-  const status = useSelector(selectProductTypeStatus);
-
   const [search, setSearch] = useState("");
 
-  const [activeDeletion, setActiveDeletion] = useState("");
+  const { activeDeletion, setActiveDeletion, onProductTypeDeleteQuery } =
+    useProductTypeDeleteQuery();
+
+  const {
+    status,
+    productTypes,
+    getAllProductTypesQuery,
+    resetAllProductTypes,
+  } = useProductTypesGetQuery();
 
   const { filteredArray: filteredProductTypes, setDefaultArray } =
     useDebounceOnSearch({
       search,
-      array: allProductTypes,
+      array: productTypes,
       filterHandler: (type) =>
         type.ka.includes(search) || type.en.includes(search),
     });
 
-  function onDelete() {
-    dispatch(productTypeActions.deleteProductType(activeDeletion));
-    setActiveDeletion("");
-  }
-
-  useEffect(() => {
-    dispatch(productTypeActions.getAllProductTypes());
-
-    return () => {
-      dispatch(productTypeActions.resetAllProductTypes());
-    };
-  }, []);
-
   useEffect(() => {
     !status.loading && setDefaultArray();
-  }, [status.loading, allProductTypes]);
+  }, [status.loading, productTypes]);
+
+  useEffect(() => {
+    getAllProductTypesQuery();
+
+    return () => {
+      resetAllProductTypes();
+    };
+  }, []);
 
   return (
     <Styled.ProductTypes>
@@ -71,7 +67,7 @@ export default function ProductTypes() {
         <DeletionPopup
           targetName="პროდუქტის ტიპი"
           onClose={() => setActiveDeletion("")}
-          onConfirm={() => onDelete()}
+          onConfirm={onProductTypeDeleteQuery}
         />
       )}
     </Styled.ProductTypes>

@@ -1,10 +1,9 @@
 import { useSelector } from "react-redux";
-
-import { useDevelopeProductProvider } from "providers/DevelopeProductFormProvider";
-import * as developeProductSelectors from "store/selectors/moderate/developeProductSelectors";
+import { Controller } from "react-hook-form";
 
 import { PATHS } from "config/routes";
-import { Controller } from "react-hook-form";
+import { useDevelopeProductProvider } from "providers/DevelopeProductFormProvider";
+import * as developeProductSelectors from "store/selectors/moderate/developeProductSelectors";
 
 import * as UI from "./components";
 import * as Layouts from "components/layouts";

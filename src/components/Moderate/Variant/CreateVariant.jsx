@@ -1,31 +1,29 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-
-import { useVariantMutationQuery } from "hooks/api/moderate";
-import { variantActions } from "store/reducers/moderate/variantReducer";
-import * as variantSelectors from "store/selectors/moderate/variantSelectors";
-
-import { PATHS } from "config/routes";
 import { Controller } from "react-hook-form";
+
+import {
+  useVariantMutationQuery,
+  useVariantsGetQuery,
+} from "hooks/api/moderate/variants";
+import { PATHS } from "config/routes";
 
 import * as Layouts from "components/layouts";
 import * as Form from "components/layouts/Form";
 import * as Styled from "./styles/CreateVariant.styled";
 
 export default function CreateVariant() {
-  const dispatch = useDispatch();
-
-  const variants = useSelector(variantSelectors.selectExistingVariantTypes);
+  const { getExistingVariantsQuery, existingVariants, resetVariantsState } =
+    useVariantsGetQuery();
 
   const { form, onFileChange, onSelectVariant, onSubmit, isUpdating, status } =
     useVariantMutationQuery();
 
   useEffect(() => {
-    dispatch(variantActions.getExistingVariantTypes());
+    getExistingVariantsQuery();
 
     return () => {
-      dispatch(variantActions.resetState());
+      resetVariantsState();
     };
   }, []);
 
@@ -48,7 +46,7 @@ export default function CreateVariant() {
               placeholder="pocket"
               anotation="აირჩიე არსებული ვარიანტის ტიპი ან შექმენი ახალი"
               strictSelection={false}
-              list={variants}
+              list={existingVariants}
               selectValue={(variant) => onSelectVariant(variant)}
               error={error ? true : false}
               message={error?.message}

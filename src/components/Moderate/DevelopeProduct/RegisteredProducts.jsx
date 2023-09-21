@@ -1,40 +1,27 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
 
 import {
-  selectAllRegisteredProducts,
-  selectRegisterProductStatus,
-} from "store/selectors/moderate/registerProductSelectors";
-import { PATHS } from "config/routes";
-import { registerProductActions } from "store/reducers/moderate/registerProductReducer";
+  useRegisterProductGetQuery,
+  useRegisterProductDeleteQuery,
+} from "hooks/api/moderate/registerProduct";
+import { useRegisterProductUtils } from "hooks/utils/moderate/registerProduct";
 
+import * as Styled from "./styles/RegisteredProducts.styled";
 import { Filter, LoadingSpinner, DeletionPopup } from "components/layouts";
 import RegisteredProductCard from "./components/RegisteredProducts/RegisteredProductCard";
-import * as Styled from "./styles/RegisteredProducts.styled";
 
 export default function RegisteredProducts() {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const { status, registeredProducts, getAllRegisteredProductsQuery } =
+    useRegisterProductGetQuery();
 
-  const allRegisteredProducts = useSelector(selectAllRegisteredProducts);
-  const status = useSelector(selectRegisterProductStatus);
+  const { activeDeletion, setActiveDeletion, onRegisteredProductDeleteQuery } =
+    useRegisterProductDeleteQuery();
 
-  function onEdit(product) {
-    dispatch(registerProductActions.setRegisteredProductDefaults(product));
-    navigate(PATHS.moderate_sidebar.registerProductPage.absolutePath);
-  }
-
-  const [productToDeleteId, setProductToDeleteId] = useState("");
-
-  function onDelete() {
-    dispatch(registerProductActions.deleteRegisteredProduct(productToDeleteId));
-    setProductToDeleteId("");
-  }
+  const { onStartEdit } = useRegisterProductUtils();
 
   useEffect(() => {
-    dispatch(registerProductActions.getAllRegisteredProducts());
+    getAllRegisteredProductsQuery();
   }, []);
 
   return (
@@ -50,22 +37,22 @@ export default function RegisteredProducts() {
           </div>
 
           <div className="registered-products__list">
-            {allRegisteredProducts.map((product) => (
+            {registeredProducts.map((product) => (
               <RegisteredProductCard
                 key={product._id}
                 product={product}
-                onEdit={() => onEdit(product)}
-                onDelete={() => setProductToDeleteId(product._id)}
+                onEdit={() => onStartEdit(product)}
+                onDelete={() => setActiveDeletion(product._id)}
               />
             ))}
           </div>
         </>
       )}
 
-      {productToDeleteId && (
+      {activeDeletion && (
         <DeletionPopup
-          onClose={() => setProductToDeleteId("")}
-          onConfirm={() => onDelete()}
+          onClose={() => setActiveDeletion("")}
+          onConfirm={onRegisteredProductDeleteQuery}
           targetName="პროდუქტი"
         />
       )}

@@ -1,7 +1,7 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import { PATHS } from "config/routes";
 import { Controller } from "react-hook-form";
-import { useProductTypeMutationQuery } from "hooks/api/moderate";
+
+import { PATHS } from "config/routes";
+import { useProductTypeMutationQuery } from "hooks/api/moderate/productTypes";
 
 import * as Layouts from "components/layouts";
 import * as Form from "components/layouts/Form";

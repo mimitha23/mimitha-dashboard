@@ -12,7 +12,7 @@ import { REQUEST_STATUS_STAGE } from "store/reducers/helpers/controlStatus";
 import { registerProductActions } from "store/reducers/moderate/registerProductReducer";
 import * as registerProductSelectors from "store/selectors/moderate/registerProductSelectors";
 
-export default function useRegisterProductQuery() {
+export default function useRegisterProductMutationQuery() {
   const dispatch = useDispatch();
 
   const status = useSelector(

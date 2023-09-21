@@ -1,52 +1,44 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 
 import {
-  selectAllTextures,
-  selectTextureStatus,
-} from "store/selectors/moderate/textureSelectors";
-import { textureActions } from "store/reducers/moderate/textureReducer";
+  useTextureDeleteQuery,
+  useTextureGetQuery,
+} from "hooks/api/moderate/textures";
 import { useDebounceOnSearch } from "hooks/utils";
 
-import { LoadingSpinner, DeletionPopup, Search } from "components/layouts";
 import TexturesList from "./components/TexturesList";
 import * as Styled from "./styles/Textures.styled";
+import { LoadingSpinner, DeletionPopup, Search } from "components/layouts";
 
 export default function Textures() {
-  const dispatch = useDispatch();
+  const { activeDeletion, setActiveDeletion, onTextureDeleteQuery } =
+    useTextureDeleteQuery();
 
-  const allTextures = useSelector(selectAllTextures);
-  const status = useSelector(selectTextureStatus);
+  const { status, textures, getAllTexturesQuery, resetAllTextures } =
+    useTextureGetQuery();
 
   const [search, setSearch] = useState("");
-
-  const [activeDeletion, setActiveDeletion] = useState("");
 
   const { filteredArray: filteredTextures, setDefaultArray } =
     useDebounceOnSearch({
       search,
-      array: allTextures,
+      array: textures,
       filterHandler: (texture) =>
         texture.ka.includes(search) || texture.en.includes(search),
     });
 
-  function onDelete() {
-    dispatch(textureActions.deleteTexture(activeDeletion));
-    setActiveDeletion("");
-  }
-
-  useEffect(() => {
-    dispatch(textureActions.getAllTextures());
-
-    return () => {
-      dispatch(textureActions.resetAllTextures());
-    };
-  }, []);
-
   useEffect(() => {
     !status.loading && setDefaultArray();
-  }, [status.loading, allTextures]);
+  }, [status.loading, textures]);
+
+  useEffect(() => {
+    getAllTexturesQuery();
+
+    return () => {
+      resetAllTextures();
+    };
+  }, []);
 
   return (
     <Styled.Textures>
@@ -71,7 +63,7 @@ export default function Textures() {
         <DeletionPopup
           targetName="ტექსტურა"
           onClose={() => setActiveDeletion("")}
-          onConfirm={() => onDelete()}
+          onConfirm={onTextureDeleteQuery}
         />
       )}
     </Styled.Textures>

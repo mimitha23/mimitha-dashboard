@@ -1,27 +1,28 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 
 import {
-  selectAllVariants,
-  selectVariantStatus,
-} from "store/selectors/moderate/variantSelectors";
-import { variantActions } from "store/reducers/moderate/variantReducer";
+  useVariantDeleteQuery,
+  useVariantsGetQuery,
+} from "hooks/api/moderate/variants";
 import { useDebounceOnSearch } from "hooks/utils";
 
-import { DeletionPopup, LoadingSpinner, Search } from "components/layouts";
 import VariantsList from "./components/VariantsList";
 import * as Styled from "./styles/Variants.styled";
+import { DeletionPopup, LoadingSpinner, Search } from "components/layouts";
 
 export default function Variants() {
-  const dispatch = useDispatch();
+  const {
+    status,
+    variants: allVariants,
+    getAllVariantsQuery,
+    resetAllVariants,
+  } = useVariantsGetQuery();
 
-  const allVariants = useSelector(selectAllVariants);
-  const status = useSelector(selectVariantStatus);
+  const { activeDeletion, setActiveDeletion, onVariantDeleteQuery } =
+    useVariantDeleteQuery();
 
   const [search, setSearch] = useState("");
-
-  const [activeDeletion, setActiveDeletion] = useState("");
 
   const { filteredArray: filteredVariants, setDefaultArray } =
     useDebounceOnSearch({
@@ -35,22 +36,17 @@ export default function Variants() {
         variant.description_en.includes(search),
     });
 
-  function onDelete() {
-    dispatch(variantActions.deleteVariant(activeDeletion));
-    setActiveDeletion("");
-  }
-
-  useEffect(() => {
-    dispatch(variantActions.getAllVariants());
-
-    return () => {
-      dispatch(variantActions.resetAllVariants());
-    };
-  }, []);
-
   useEffect(() => {
     !status.loading && setDefaultArray();
   }, [status.loading, allVariants]);
+
+  useEffect(() => {
+    getAllVariantsQuery();
+
+    return () => {
+      resetAllVariants();
+    };
+  }, []);
 
   return (
     <Styled.Variants>
@@ -75,7 +71,7 @@ export default function Variants() {
         <DeletionPopup
           targetName="ვარიანტი"
           onClose={() => setActiveDeletion("")}
-          onConfirm={() => onDelete()}
+          onConfirm={onVariantDeleteQuery}
         />
       )}
     </Styled.Variants>

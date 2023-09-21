@@ -1,6 +1,7 @@
-import { PATHS } from "config/routes";
 import { Controller } from "react-hook-form";
-import { useTextureMutationQuery } from "hooks/api/moderate";
+
+import { PATHS } from "config/routes";
+import { useTextureMutationQuery } from "hooks/api/moderate/textures";
 
 import * as Layouts from "components/layouts";
 import * as Form from "components/layouts/Form";
