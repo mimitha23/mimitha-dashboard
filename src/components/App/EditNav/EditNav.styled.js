@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const EditNav = styled.div`
+export const EditNav = styled.form`
   .edit-nav__list {
     display: flex;
     flex-direction: column;

@@ -1,10 +1,5 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-
-import { selectNavStatus, selectNav } from "store/selectors/app/navSelectors";
-import { navActions } from "store/reducers/app/navigation/navReducer";
-import { productTypeActions } from "store/reducers/moderate/productTypeReducer";
+import { Controller } from "react-hook-form";
+import { useCreateNavRouteQuery } from "hooks/api/app";
 
 import { LoadingSpinner } from "components/layouts";
 import { Button } from "components/layouts/Form";
@@ -15,97 +10,93 @@ import NavListItem from "./components/NavListItem";
 import * as Styled from "./EditNav.styled";
 
 export default function EditNav() {
-  const dispatch = useDispatch();
+  const {
+    form,
+    onAddSubCategory,
+    onRemoveSubCategory,
+    onAddRoute,
+    onRemoveRoute,
+    saveNavRouteQuery,
+    status,
+  } = useCreateNavRouteQuery();
 
-  const status = useSelector(selectNavStatus);
-  const nav = useSelector(selectNav);
-
-  function onAddCategory({ categoryId, placeAfterIndex }) {
-    dispatch(
-      navActions.addNavSubCategory({
-        categoryId,
-        placeAfterIndex: placeAfterIndex || 0,
-      })
-    );
-  }
-
-  function onRemoveCategory({ categoryId, subCategoryId }) {
-    dispatch(
-      navActions.removeNavSubCategory({
-        categoryId,
-        subCategoryId,
-      })
-    );
-  }
-
-  useEffect(() => {
-    dispatch(navActions.getNav());
-    dispatch(productTypeActions.getAllProductTypes());
-
-    return () => {
-      dispatch(navActions.resetState());
-      dispatch(productTypeActions.resetAllProductTypes());
-    };
-  }, []);
+  const navBaseBlocks = Object.keys(form.getValues());
 
   return (
-    <Styled.EditNav>
+    <Styled.EditNav onSubmit={form.handleSubmit(saveNavRouteQuery)}>
       <ul className="edit-nav__list">
-        {nav.map((navCategory) => (
-          <NavListItem title={navCategory.category} key={navCategory._id}>
-            {navCategory.blocks[0] && (
-              <ul className="edit-nav__blocks-list">
-                {navCategory.blocks.map((subCategory, subCategoryIndex) => (
-                  <SubCategoryListItem
-                    key={subCategory._id}
-                    categoryId={navCategory._id}
-                    subCategoryId={subCategory._id}
-                    onRemoveCategory={() =>
-                      onRemoveCategory({
-                        categoryId: navCategory._id,
-                        subCategoryId: subCategory._id,
-                      })
-                    }
-                    onAddCategory={() =>
-                      onAddCategory({
-                        categoryId: navCategory._id,
-                        placeAfterIndex: subCategoryIndex + 1,
-                      })
-                    }
-                  >
-                    {subCategory.routes[0] && (
-                      <ul className="routes-box__list">
-                        {subCategory.routes.map((route, routeIndex) => (
-                          <RoutesListItem
-                            key={route._id}
-                            route={route}
-                            categoryId={navCategory._id}
-                            subCategoryId={subCategory._id}
-                            routeIndex={routeIndex}
-                          />
-                        ))}
-                      </ul>
-                    )}
-                  </SubCategoryListItem>
-                ))}
-              </ul>
-            )}
+        {navBaseBlocks.map((key) => (
+          <Controller
+            key={`base-nav-blocks__${key}`}
+            control={form.control}
+            name={key}
+            render={({ field, fieldState: { error } }) => (
+              <NavListItem title={field.value.category}>
+                {field.value.blocks[0] && (
+                  <ul className="edit-nav__blocks-list">
+                    {field.value.blocks.map((subCategory, subCategoryIndex) => (
+                      <SubCategoryListItem
+                        key={subCategory._id}
+                        form={{
+                          control: form.control,
+                          name: `${key}.blocks.${subCategoryIndex}.title`,
+                        }}
+                        onAddCategory={(e) => {
+                          e.preventDefault();
+                          onAddSubCategory(key, subCategoryIndex);
+                        }}
+                        onRemoveCategory={(e) => {
+                          e.preventDefault();
+                          onRemoveSubCategory(key, subCategoryIndex);
+                        }}
+                      >
+                        {subCategory.routes[0] && (
+                          <ul className="routes-box__list">
+                            {subCategory.routes.map((route, routeIndex) => (
+                              <RoutesListItem
+                                key={route._id}
+                                form={{
+                                  control: form.control,
+                                  name: `${key}.blocks.${subCategoryIndex}.routes.${routeIndex}`,
+                                }}
+                                onAddRoute={(e) => {
+                                  e.preventDefault();
+                                  onAddRoute(key, subCategoryIndex, routeIndex);
+                                }}
+                                onRemoveRoute={(e) => {
+                                  e.preventDefault();
+                                  onRemoveRoute(
+                                    key,
+                                    subCategoryIndex,
+                                    routeIndex
+                                  );
+                                }}
+                              />
+                            ))}
+                          </ul>
+                        )}
+                      </SubCategoryListItem>
+                    ))}
+                  </ul>
+                )}
 
-            {!navCategory.blocks[0] && (
-              <AddSubCategoryButton
-                onClick={() => onAddCategory({ categoryId: navCategory._id })}
-              />
+                {!field.value.blocks[0] && (
+                  <AddSubCategoryButton
+                    onClick={(e) => {
+                      e.preventDefault();
+                      onAddSubCategory(key, 0);
+                    }}
+                  />
+                )}
+              </NavListItem>
             )}
-          </NavListItem>
+          />
         ))}
       </ul>
 
       {status.loading && <LoadingSpinner />}
 
-      <Button
-        caption="შეინახე ნავიგაცია"
-        onClick={() => dispatch(navActions.saveNav(nav))}
-      />
+      <Button caption="შეინახე ნავიგაცია" type="submit" />
     </Styled.EditNav>
   );
 }

@@ -1,8 +1,29 @@
-import { createSlice, nanoid } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 import { controlStatus as status } from "store/reducers/helpers";
 
 const initialState = {
-  nav: [],
+  nav: {
+    men: {
+      _id: "",
+      category: "men",
+      blocks: [],
+    },
+    women: {
+      _id: "",
+      category: "women",
+      blocks: [],
+    },
+    adult: {
+      _id: "",
+      category: "adult",
+      blocks: [],
+    },
+    family: {
+      _id: "",
+      category: "family",
+      blocks: [],
+    },
+  },
 
   status: {
     loading: false,
@@ -15,160 +36,6 @@ const navReducer = createSlice({
   name: "mimitha-nav",
   initialState,
   reducers: {
-    addNavSubCategory(state, { payload: { categoryId, placeAfterIndex } }) {
-      const { categoryIndex } = findBlockIndex({ state, categoryId });
-
-      if (isNaN(categoryIndex)) return;
-
-      const newSubCategoryBlock = {
-        _id: nanoid(),
-        title: {
-          ka: "",
-          en: "",
-        },
-        routes: [
-          {
-            ka: "",
-            en: "",
-            query: "",
-            caption: "",
-            _id: nanoid(),
-          },
-        ],
-      };
-
-      state.nav[categoryIndex].blocks.splice(
-        placeAfterIndex,
-        0,
-        newSubCategoryBlock
-      );
-    },
-
-    removeNavSubCategory(state, { payload: { categoryId, subCategoryId } }) {
-      const { categoryIndex } = findBlockIndex({ state, categoryId });
-
-      if (isNaN(categoryIndex)) return;
-
-      state.nav[categoryIndex].blocks = state.nav[categoryIndex].blocks.filter(
-        (subCategory) => subCategory._id !== subCategoryId
-      );
-    },
-
-    setRoute(
-      state,
-      { payload: { categoryId, subCategoryId, routeId, value } }
-    ) {
-      const { categoryIndex, routeIndex, subCategoryIndex } = findBlockIndex({
-        state,
-        categoryId,
-        subCategoryId,
-        routeId,
-      });
-
-      if (isNaN(categoryIndex) || isNaN(subCategoryIndex) || isNaN(routeIndex))
-        return;
-
-      state.nav[categoryIndex].blocks[subCategoryIndex].routes[
-        routeIndex
-      ].caption = value;
-    },
-
-    selectRoute(
-      state,
-      { payload: { categoryId, subCategoryId, routeId, value } }
-    ) {
-      const { categoryIndex, routeIndex, subCategoryIndex } = findBlockIndex({
-        state,
-        categoryId,
-        subCategoryId,
-        routeId,
-      });
-
-      if (isNaN(categoryIndex) || isNaN(subCategoryIndex) || isNaN(routeIndex))
-        return;
-
-      if (value === null) {
-        state.nav[categoryIndex].blocks[subCategoryIndex].routes[routeIndex] = {
-          ka: "",
-          en: "",
-          query: "",
-          caption: "",
-          _id: nanoid(),
-        };
-
-        return;
-      }
-
-      const isSelectedValue = state.nav[categoryIndex].blocks[
-        subCategoryIndex
-      ].routes.some((route) => route._id === value._id);
-
-      if (isSelectedValue) return;
-
-      state.nav[categoryIndex].blocks[subCategoryIndex].routes[routeIndex] =
-        value;
-    },
-
-    addRoute(
-      state,
-      { payload: { categoryId, subCategoryId, placeAfterIndex } }
-    ) {
-      const { categoryIndex, subCategoryIndex } = findBlockIndex({
-        state,
-        categoryId,
-        subCategoryId,
-      });
-
-      if (isNaN(categoryIndex) || isNaN(subCategoryIndex)) return;
-
-      const newRoute = {
-        ka: "",
-        en: "",
-        query: "",
-        caption: "",
-        _id: nanoid(),
-      };
-
-      state.nav[categoryIndex].blocks[subCategoryIndex].routes.splice(
-        placeAfterIndex,
-        0,
-        newRoute
-      );
-    },
-
-    removeRoute(state, { payload: { categoryId, subCategoryId, routeId } }) {
-      const { categoryIndex, subCategoryIndex } = findBlockIndex({
-        state,
-        categoryId,
-        subCategoryId,
-      });
-
-      if (
-        isNaN(categoryIndex) ||
-        isNaN(subCategoryIndex) ||
-        state.nav[categoryIndex].blocks[subCategoryIndex].routes.length === 1
-      )
-        return;
-
-      state.nav[categoryIndex].blocks[subCategoryIndex].routes = state.nav[
-        categoryIndex
-      ].blocks[subCategoryIndex].routes.filter(
-        (route) => route._id !== routeId
-      );
-    },
-
-    setTitle(state, { payload: { categoryId, subCategoryId, key, value } }) {
-      const { categoryIndex, subCategoryIndex } = findBlockIndex({
-        state,
-        categoryId,
-        subCategoryId,
-      });
-
-      if (isNaN(categoryIndex) || isNaN(subCategoryIndex)) return;
-
-      state.nav[categoryIndex].blocks[subCategoryIndex].title[key] = value;
-    },
-
     // API
     getNav: {
       reducer(state) {
@@ -177,16 +44,21 @@ const navReducer = createSlice({
     },
 
     setNav(state, { payload: nav }) {
-      state.nav = nav.map((navCategory) => ({
-        ...navCategory,
-        blocks: navCategory.blocks.map((block) => ({
-          ...block,
-          routes: block.routes.map((route) => ({
-            ...route,
-            caption: route.ka,
+      Object.keys(state.nav).forEach((key) => {
+        const block = nav.find((block) => block.category === key);
+
+        state.nav[key] = {
+          _id: block._id,
+          category: block.category,
+          blocks: block.blocks.map((block) => ({
+            ...block,
+            routes: block.routes.map((route) => ({
+              ...route,
+              caption: route.ka,
+            })),
           })),
-        })),
-      }));
+        };
+      });
     },
 
     saveNav: {
@@ -221,28 +93,6 @@ const navReducer = createSlice({
 
 export default navReducer.reducer;
 export const navActions = navReducer.actions;
-
-function findBlockIndex({ state, categoryId, subCategoryId, routeId }) {
-  const categoryIndex = state.nav.findIndex(
-    (category) => category._id === categoryId
-  );
-
-  const subCategoryIndex =
-    subCategoryId && categoryIndex >= 0
-      ? state.nav[categoryIndex].blocks.findIndex(
-          (subCategory) => subCategory._id === subCategoryId
-        )
-      : NaN;
-
-  const routeIndex =
-    routeId && categoryIndex >= 0 && subCategoryIndex >= 0
-      ? state.nav[categoryIndex].blocks[subCategoryIndex].routes.findIndex(
-          (route) => route._id === routeId
-        )
-      : NaN;
-
-  return { categoryIndex, subCategoryIndex, routeIndex };
-}
 
 function prepareDataForDB(payload) {
   const men = payload.find((nav) => nav.category === "men");
