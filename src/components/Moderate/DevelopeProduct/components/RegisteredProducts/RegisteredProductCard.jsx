@@ -2,8 +2,8 @@ import { Link } from "react-router-dom";
 
 import { PATHS } from "config/routes";
 
-import { EditAndDeleteButtons } from "components/layouts";
 import CardDetailBlock from "./CardDetailBlock";
+import { EditAndDeleteButtons } from "components/layouts";
 import * as Styled from "./RegisteredProductCard.styled";
 
 export default function RegisteredProductCard({ product, onEdit, onDelete }) {

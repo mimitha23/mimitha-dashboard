@@ -1,42 +1,29 @@
-import { useDispatch } from "react-redux";
-import { useParams } from "react-router-dom";
-import { developeProductActions } from "store/reducers/moderate/developeProductReducer";
+import { useDevelopeProductGetQuery } from "hooks/api/moderate/developeProduct";
 
 import * as Styled from "./CopyDevelopedProductConfig.styled";
 
 export default function CopyDevelopedProductConfig() {
-  const dispatch = useDispatch();
-
-  const { registeredProductId } = useParams();
-
-  function getConfigCopy(key) {
-    dispatch(
-      developeProductActions.copyDevelopedProductConfig({
-        registeredProductId,
-        params: `${key}=-1`,
-      })
-    );
-  }
-
-  function resetForm() {
-    dispatch(developeProductActions.resetFormState());
-  }
+  const { getConfigCopyQuery, resetDevelopeProductFormState } =
+    useDevelopeProductGetQuery();
 
   return (
     <Styled.CopyDevelopedProductConfig>
       <button
         className="copy-config__choose-btn"
-        onClick={() => getConfigCopy("createdAt")}
+        onClick={() => getConfigCopyQuery("createdAt")}
       >
         აიღე ბოლოს დამატებული პროდუქტის ასლი
       </button>
       <button
         className="copy-config__choose-btn"
-        onClick={() => getConfigCopy("updatedAt")}
+        onClick={() => getConfigCopyQuery("updatedAt")}
       >
         აიღე ბოლოს რედაქტირებული პროდუქტის ასლი
       </button>
-      <button className="copy-config__choose-btn reset" onClick={resetForm}>
+      <button
+        className="copy-config__choose-btn reset"
+        onClick={resetDevelopeProductFormState}
+      >
         ანულირება
       </button>
     </Styled.CopyDevelopedProductConfig>

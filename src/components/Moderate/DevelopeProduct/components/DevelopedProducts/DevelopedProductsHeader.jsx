@@ -1,7 +1,9 @@
 import { Link } from "react-router-dom";
-import { PlusIcon } from "components/layouts/Icons";
-import * as Styled from "./styles/DevelopedProductsHeader.styledd";
+
 import { PATHS } from "config/routes";
+
+import { PlusIcon } from "components/layouts/Icons";
+import * as Styled from "./styles/DevelopedProductsHeader.styled";
 
 export default function DevelopedProductsHeader() {
   return (

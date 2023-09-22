@@ -1,20 +1,10 @@
-import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-
-import { textureActions } from "store/reducers/moderate/textureReducer";
-import { PATHS } from "config/routes";
+import { useTextureUtils } from "hooks/utils/moderate/textures";
 
 import { EditAndDeleteButtons } from "components/layouts";
 import * as Styled from "./TexturesList.styled";
 
 export default function TexturesList({ filteredTextures, setActiveDeletion }) {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-
-  function onEdit(texture) {
-    dispatch(textureActions.setTextureDefaults(texture));
-    navigate(PATHS.moderate_sidebar.createTexturePage.absolutePath);
-  }
+  const { onStartEdit } = useTextureUtils();
 
   return (
     <Styled.TexturesList>
@@ -35,7 +25,7 @@ export default function TexturesList({ filteredTextures, setActiveDeletion }) {
           </div>
 
           <EditAndDeleteButtons
-            onEdit={() => onEdit(texture)}
+            onEdit={() => onStartEdit(texture)}
             onDelete={() => setActiveDeletion(texture._id)}
           />
         </div>

@@ -1,39 +1,29 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect } from "react";
-import { useParams } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
 
-import { developeProductActions } from "store/reducers/moderate/developeProductReducer";
-import * as developeProductSelectors from "store/selectors/moderate/developeProductSelectors";
+import { useDevelopeProductGetQuery } from "hooks/api/moderate/developeProduct";
 
 import { Spinner } from "components/layouts";
 import * as UI from "./components/DevelopedProduct";
 import * as Styled from "./styles/DevelopedProduct.styled";
 
 export default function DevelopedProduct() {
-  const dispatch = useDispatch();
-
-  const { registeredProductId, developedProductId } = useParams();
-
-  const product = useSelector(developeProductSelectors.selectDevelopedProduct);
-  const status = useSelector(
-    developeProductSelectors.selectSingleDevelopeProductStatus
-  );
-
-  console.log(product);
+  const {
+    registeredProductId,
+    developedProductId,
+    activeProductStatus: status,
+    getActiveDevelopedProductQuery,
+    activeProduct: product,
+    resetActiveProduct,
+  } = useDevelopeProductGetQuery();
 
   useEffect(() => {
     if (!registeredProductId || !developedProductId) return;
 
-    dispatch(
-      developeProductActions.getDevelopedProduct({
-        registeredProductId,
-        developedProductId,
-      })
-    );
+    getActiveDevelopedProductQuery();
 
     return () => {
-      dispatch(developeProductActions.resetDevelopedProduct());
+      resetActiveProduct();
     };
   }, [registeredProductId, developedProductId]);
 
@@ -153,7 +143,6 @@ export default function DevelopedProduct() {
             <UI.DevelopedProductActions
               registeredProductId={registeredProductId}
               developedProductId={developedProductId}
-              product={product}
             />
           </div>
         </main>

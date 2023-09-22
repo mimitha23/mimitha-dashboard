@@ -157,7 +157,11 @@ export default function RegisterProduct() {
           )}
         />
 
-        <TextureField textureField={form.textureField} form={form.form} />
+        <TextureField
+          textureField={form.textureField}
+          form={form.form}
+          suggestions={formDefaults.textures}
+        />
 
         <WarningField warningField={form.warningField} form={form.form} />
 

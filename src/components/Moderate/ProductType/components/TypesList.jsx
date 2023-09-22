@@ -1,20 +1,10 @@
-import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useProductTypeUtils } from "hooks/utils/moderate/productTypes";
 
-import { productTypeActions } from "store/reducers/moderate/productTypeReducer";
-import { PATHS } from "config/routes";
-
-import { EditAndDeleteButtons } from "components/layouts";
 import * as Styled from "./TypesList.styled";
+import { EditAndDeleteButtons } from "components/layouts";
 
 export default function TypesList({ filteredProductTypes, setActiveDeletion }) {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-
-  function onEdit(type) {
-    dispatch(productTypeActions.setProductTypeDefaults(type));
-    navigate(PATHS.moderate_sidebar.createProductTypePage.absolutePath);
-  }
+  const { onStartEdit } = useProductTypeUtils();
 
   return (
     <Styled.TypesList>
@@ -34,7 +24,7 @@ export default function TypesList({ filteredProductTypes, setActiveDeletion }) {
           </div>
 
           <EditAndDeleteButtons
-            onEdit={() => onEdit(type)}
+            onEdit={() => onStartEdit(type)}
             onDelete={() => setActiveDeletion(type._id)}
           />
         </li>

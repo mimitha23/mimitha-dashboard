@@ -3,8 +3,8 @@ import { Controller } from "react-hook-form";
 
 import { useDevelopeProductProvider } from "providers/DevelopeProductFormProvider";
 
-import { PlusIcon, CloseXIcon } from "components/layouts/Icons";
 import * as Styled from "./DevelopedProductBlueprint.styled";
+import { PlusIcon, CloseXIcon } from "components/layouts/Icons";
 
 export default function ImageFilesReview() {
   const { form, onAssetsChange, onRemoveAsset } = useDevelopeProductProvider();

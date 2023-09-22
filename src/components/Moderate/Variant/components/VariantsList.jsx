@@ -1,8 +1,4 @@
-import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-
-import { variantActions } from "store/reducers/moderate/variantReducer";
-import { PATHS } from "config/routes";
+import { useVariantUtils } from "hooks/utils/moderate/variants";
 
 import {
   EditAndDeleteButtons,
@@ -10,13 +6,7 @@ import {
 } from "components/layouts";
 
 export default function VariantsList({ filteredVariants, setActiveDeletion }) {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-
-  function onEdit(variant) {
-    dispatch(variantActions.setVariantDefaults(variant));
-    navigate(PATHS.moderate_sidebar.createVariantPage.absolutePath);
-  }
+  const { onStartEdit } = useVariantUtils();
 
   return (
     <ul className="all-variants__list">
@@ -51,7 +41,7 @@ export default function VariantsList({ filteredVariants, setActiveDeletion }) {
             <LineClampedDescription clamp={2} text={variant.description_ka} />
 
             <EditAndDeleteButtons
-              onEdit={() => onEdit(variant)}
+              onEdit={() => onStartEdit(variant)}
               onDelete={() => setActiveDeletion(variant._id)}
             />
           </div>

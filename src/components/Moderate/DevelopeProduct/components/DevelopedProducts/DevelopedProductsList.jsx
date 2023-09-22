@@ -13,6 +13,7 @@ export default function DevelopedProductsList({ onDelete, onEdit, status }) {
   const allDevelopedProducts = useSelector(selectAllDevelopedProducts);
 
   const [search, setSearch] = useState("");
+
   const { filteredArray: filteredProducts, setDefaultArray } =
     useDebounceOnSearch({
       search,
@@ -44,7 +45,7 @@ export default function DevelopedProductsList({ onDelete, onEdit, status }) {
             key={product._id}
             product={product}
             onDelete={() => onDelete(product._id)}
-            onEdit={() => onEdit(product)}
+            onEdit={() => onEdit(product._id)}
           />
         ))}
       </ul>

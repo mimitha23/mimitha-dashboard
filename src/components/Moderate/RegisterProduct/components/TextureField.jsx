@@ -1,17 +1,9 @@
-import { useSelector } from "react-redux";
-
-import * as registerProductSelectors from "store/selectors/moderate/registerProductSelectors";
-
 import { Controller } from "react-hook-form";
 
-import * as Styled from "./styles/TextureField.styled";
 import * as Form from "components/layouts/Form";
+import * as Styled from "./styles/TextureField.styled";
 
-export default function TextureField({ textureField, form }) {
-  const { textures: textureSuggestions } = useSelector(
-    registerProductSelectors.selectRegisterProductFormSuggestions
-  );
-
+export default function TextureField({ textureField, form, suggestions }) {
   return (
     <Styled.TextureField>
       <Form.DynamicFieldHeader
@@ -48,7 +40,7 @@ export default function TextureField({ textureField, form }) {
                       <Form.InputFilterableSelect
                         id={`texture-${index}`}
                         placeholder="აირჩიეთ ტექსტურა"
-                        list={textureSuggestions}
+                        list={suggestions}
                         selectValue={(texture) => childField.onChange(texture)}
                         error={childError ? true : false}
                         message={childError?.message}

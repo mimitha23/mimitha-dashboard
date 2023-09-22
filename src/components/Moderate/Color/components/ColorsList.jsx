@@ -1,20 +1,10 @@
-import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useColorUtils } from "hooks/utils/moderate/colors";
 
-import { colorActions } from "store/reducers/moderate/colorReducer";
-import { PATHS } from "config/routes";
-
-import { EditAndDeleteButtons } from "components/layouts";
 import * as Styled from "./ColorsList.styled";
+import { EditAndDeleteButtons } from "components/layouts";
 
 export default function ColorsList({ filteredColors, setActiveDeletion }) {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-
-  function onEdit(color) {
-    dispatch(colorActions.setColorDefaults(color));
-    navigate(PATHS.moderate_sidebar.createColorPage.absolutePath);
-  }
+  const { onStartEdit } = useColorUtils();
 
   return (
     <Styled.ColorsList>
@@ -37,7 +27,7 @@ export default function ColorsList({ filteredColors, setActiveDeletion }) {
             </div>
 
             <EditAndDeleteButtons
-              onEdit={() => onEdit(color)}
+              onEdit={() => onStartEdit(color)}
               onDelete={() => setActiveDeletion(color._id)}
             />
           </div>

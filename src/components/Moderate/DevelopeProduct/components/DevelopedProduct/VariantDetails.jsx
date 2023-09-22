@@ -1,24 +1,15 @@
 import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
 
-import { PATHS } from "config/routes";
-import { variantActions } from "store/reducers/moderate/variantReducer";
+import { useVariantUtils } from "hooks/utils/moderate/variants";
 
 import { EditAndDeleteButtons } from "components/layouts";
 import ToggleDetailsHeader from "./ToggleDetailsHeader";
 import * as Styled from "./styles/VariantDetails.styled";
 
 export default function VariantDetails({ variants }) {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-
   const [showDetails, setShowDetails] = useState(false);
 
-  function onEdit(variant) {
-    dispatch(variantActions.setVariantDefaults(variant));
-    navigate(PATHS.moderate_sidebar.createVariantPage.absolutePath);
-  }
+  const { onStartEdit } = useVariantUtils();
 
   return (
     <Styled.VariantDetails>
@@ -48,7 +39,7 @@ export default function VariantDetails({ variants }) {
               <p className="variant-details__list-item--description">
                 {variant.description_ka}
               </p>
-              <EditAndDeleteButtons onEdit={() => onEdit(variant)} />
+              <EditAndDeleteButtons onEdit={() => onStartEdit(variant)} />
             </li>
           ))}
         </ul>

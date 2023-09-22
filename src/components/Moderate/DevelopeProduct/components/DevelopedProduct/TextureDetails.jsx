@@ -1,24 +1,15 @@
 import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
 
-import { PATHS } from "config/routes";
-import { textureActions } from "store/reducers/moderate/textureReducer";
+import { useTextureUtils } from "hooks/utils/moderate/textures";
 
 import { EditAndDeleteButtons } from "components/layouts";
 import ToggleDetailsHeader from "./ToggleDetailsHeader";
 import * as Styled from "./styles/TextureDetails.styled";
 
 export default function TextureDetails({ textures }) {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-
   const [showDetails, setShowDetails] = useState(false);
 
-  function onEdit(texture) {
-    dispatch(textureActions.setTextureDefaults(texture));
-    navigate(PATHS.moderate_sidebar.createTexturePage.absolutePath);
-  }
+  const { onStartEdit } = useTextureUtils();
 
   return (
     <Styled.TextureDetails>
@@ -40,7 +31,7 @@ export default function TextureDetails({ textures }) {
                 <span>პროცენტულობა:</span>
                 <span>{texture.percentage}%</span>
               </div>
-              <EditAndDeleteButtons onEdit={() => onEdit(texture)} />
+              <EditAndDeleteButtons onEdit={() => onStartEdit(texture)} />
             </li>
           ))}
         </ul>

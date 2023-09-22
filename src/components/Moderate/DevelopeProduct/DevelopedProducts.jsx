@@ -1,72 +1,32 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
 
-import { PATHS } from "config/routes";
+import {
+  useDevelopeProductGetQuery,
+  useDevelopeProductDeleteQuery,
+} from "hooks/api/moderate/developeProduct";
+import { useDevelopeProductUtils } from "hooks/utils/moderate/developeProduct";
 
-import { developeProductActions } from "store/reducers/moderate/developeProductReducer";
-import { selectDevelopeProductStatus } from "store/selectors/moderate/developeProductSelectors";
-
-import { LoadingSpinner, DeletionPopup } from "components/layouts";
-import DevelopedProductsHeader from "./components/DevelopedProducts/DevelopedProductsHeader";
-import DevelopedProductsList from "./components/DevelopedProducts/DevelopedProductsList";
 import * as Styled from "./styles/DevelopedProducts.styled";
+import { LoadingSpinner, DeletionPopup } from "components/layouts";
+import DevelopedProductsList from "./components/DevelopedProducts/DevelopedProductsList";
+import DevelopedProductsHeader from "./components/DevelopedProducts/DevelopedProductsHeader";
 
 export default function DevelopedProducts({ children }) {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const {
+    status,
+    registeredProductId,
+    developedProductId,
+    getAllDevelopedProductsQuery,
+  } = useDevelopeProductGetQuery();
 
-  const { registeredProductId, developedProductId } = useParams();
+  const { activeDeletion, setActiveDeletion, onDevelopedProductDeleteQuery } =
+    useDevelopeProductDeleteQuery();
 
-  const status = useSelector(selectDevelopeProductStatus);
-
-  const [productToDeleteId, setProductToDeleteId] = useState("");
-
-  function onDelete() {
-    dispatch(
-      developeProductActions.deleteDevelopedProduct({
-        registeredProductId,
-        developedProductId: productToDeleteId,
-      })
-    );
-
-    if (developedProductId) {
-      navigate(
-        PATHS.moderate_nested_routes.developedProductsPage.absolutePath({
-          registeredProductId,
-        })
-      );
-
-      dispatch(developeProductActions.resetDevelopedProduct());
-    }
-
-    setProductToDeleteId("");
-  }
-
-  function onEdit(product) {
-    dispatch(
-      developeProductActions.getDevelopedProduct({
-        registeredProductId,
-        developedProductId: product._id,
-        getDefaults: true,
-      })
-    );
-
-    navigate(
-      PATHS.moderate_nested_routes.addDevelopedProductPage.absolutePath({
-        registeredProductId,
-      })
-    );
-
-    developedProductId &&
-      dispatch(developeProductActions.resetDevelopedProduct());
-  }
+  const { onStartEdit } = useDevelopeProductUtils();
 
   useEffect(() => {
-    dispatch(
-      developeProductActions.getAllDevelopedProducts({ registeredProductId })
-    );
+    getAllDevelopedProductsQuery();
   }, []);
 
   return (
@@ -76,8 +36,14 @@ export default function DevelopedProducts({ children }) {
       {!status.loading && (
         <main className="developed-products__container">
           <DevelopedProductsList
-            onDelete={(id) => setProductToDeleteId(id)}
-            onEdit={onEdit}
+            onDelete={(id) => setActiveDeletion(id)}
+            onEdit={(productId) =>
+              onStartEdit({
+                registeredProductId,
+                developedProductId: productId,
+                resetActive: developedProductId ? true : false,
+              })
+            }
             status={status}
           />
 
@@ -87,10 +53,15 @@ export default function DevelopedProducts({ children }) {
         </main>
       )}
 
-      {productToDeleteId && (
+      {activeDeletion && (
         <DeletionPopup
-          onClose={() => setProductToDeleteId("")}
-          onConfirm={() => onDelete()}
+          onClose={() => setActiveDeletion("")}
+          onConfirm={() =>
+            onDevelopedProductDeleteQuery({
+              registeredProductId,
+              developedProductId,
+            })
+          }
           targetName="პროდუქტი"
         />
       )}

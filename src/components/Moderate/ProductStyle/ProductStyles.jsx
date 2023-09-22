@@ -65,7 +65,7 @@ export default function ProductStyles() {
 
       {activeDeletion && (
         <DeletionPopup
-          targetName="პროდუქტის ტიპი"
+          targetName="პროდუქტის სტილი"
           onClose={() => setActiveDeletion("")}
           onConfirm={onProductStyleDeleteQuery}
         />

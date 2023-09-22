@@ -1,6 +1,6 @@
 import { Controller } from "react-hook-form";
-import * as Styled from "./styles/WarningField.styled";
 import * as Form from "components/layouts/Form";
+import * as Styled from "./styles/WarningField.styled";
 
 export default function WarningField({ warningField, form }) {
   return (

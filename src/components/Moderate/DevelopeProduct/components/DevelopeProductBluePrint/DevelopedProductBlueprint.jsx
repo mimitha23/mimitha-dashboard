@@ -3,11 +3,12 @@
 // import DetailsBlock from "./DetailsBlock";
 // import { selectDevelopeProductForm } from "store/selectors/moderate/developeProductSelectors";
 
-import ImageFilesReview from "./ImageFilesReview";
 import { Controller } from "react-hook-form";
+
 import { useDevelopeProductProvider } from "providers/DevelopeProductFormProvider";
 
 import MediaBox from "./MediaBox";
+import ImageFilesReview from "./ImageFilesReview";
 import MediaDualBoxContainer from "./MediaDualBoxContainer";
 import * as Styled from "./DevelopedProductBlueprint.styled";
 
