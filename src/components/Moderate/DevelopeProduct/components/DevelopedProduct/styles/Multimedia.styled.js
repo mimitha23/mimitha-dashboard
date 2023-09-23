@@ -21,13 +21,14 @@ export const MultimediaDualBoxContainer = styled.div`
 
 export const MultimediaBox = styled.figure`
   width: 100%;
-  max-width: 20rem;
+  width: 20rem;
   height: 20rem;
   overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
   box-shadow: ${({ theme }) => theme.shadow.radial_sm_dark};
+  background: ${({ theme }) => theme.colors.white};
 
   video,
   img {

@@ -1,31 +1,10 @@
 import z from "zod";
-import { customValidators } from "utils/zod/helpers/customValidators";
+import * as validations from "utils/zod/helpers/validations";
 
 const createColorValidation = z.object({
-  color_ka: z
-    .string()
-    .nonempty()
-    .refine(customValidators.isGeorgianLetters.validator, {
-      message: customValidators.isGeorgianLetters.message("ფერი (ka)"),
-    })
-    .refine(customValidators.hasWhiteSpaceInSequence.validator, {
-      message: customValidators.hasWhiteSpaceInSequence.message("ფერი (ka)"),
-    }),
-  color_en: z
-    .string()
-    .nonempty()
-    .refine(customValidators.isLatinLetters.validator, {
-      message: customValidators.isLatinLetters.message("ფერი (en)"),
-    })
-    .refine(customValidators.hasWhiteSpaceInSequence.validator, {
-      message: customValidators.hasWhiteSpaceInSequence.message("ფერი (en)"),
-    }),
-  color_hex: z
-    .string()
-    .nonempty()
-    .refine(customValidators.isValidHexColor.validator, {
-      message: customValidators.isValidHexColor.message("ფერი (en)"),
-    }),
+  color_ka: validations.isGeorgianLetters("ფერი (ka)"),
+  color_en: validations.isLatinLetters("ფერი (en)"),
+  color_hex: validations.isValidHexColor("ფერი hex ფორმატში"),
 });
 
 export default createColorValidation;

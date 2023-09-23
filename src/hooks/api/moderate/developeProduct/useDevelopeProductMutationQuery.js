@@ -68,6 +68,7 @@ export default function useDevelopeProductMutationQuery() {
   });
 
   useEffect(() => {
+    if (status.loading) return;
     form.reset(formDefaults);
   }, [developeProductFormDefaults]);
 

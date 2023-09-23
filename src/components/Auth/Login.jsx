@@ -47,7 +47,7 @@ export default function Login() {
           )}
         />
 
-        {status.error && <p>{status.message}</p>}
+        {status.error && <p className="auth-msg">{status.message}</p>}
 
         <Form.Button caption="ავტორიზაცია" type="submit" />
       </Form.Form>

@@ -59,7 +59,7 @@ export default function DevelopedProductBlueprint() {
     <Styled.DevelopedProductBlueprint>
       <ImageFilesReview />
 
-      <MediaDualBoxContainer title="პროდუქტის მანეკენი და მოდელი">
+      <MediaDualBoxContainer title="პროდუქტის ხატულები">
         <Controller
           name="new_front_thumbnail"
           control={form.control}

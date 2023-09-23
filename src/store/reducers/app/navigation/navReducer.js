@@ -95,11 +95,6 @@ export default navReducer.reducer;
 export const navActions = navReducer.actions;
 
 function prepareDataForDB(payload) {
-  const men = payload.find((nav) => nav.category === "men");
-  const women = payload.find((nav) => nav.category === "women");
-  const family = payload.find((nav) => nav.category === "family");
-  const adult = payload.find((nav) => nav.category === "adult");
-
   function configureData(data) {
     return {
       ...data,
@@ -111,10 +106,10 @@ function prepareDataForDB(payload) {
   }
 
   const credentials = {
-    men: configureData(men),
-    women: configureData(women),
-    family: configureData(family),
-    adult: configureData(adult),
+    men: configureData(payload.men),
+    women: configureData(payload.women),
+    family: configureData(payload.family),
+    adult: configureData(payload.adult),
   };
 
   return credentials;

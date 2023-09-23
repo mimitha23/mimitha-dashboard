@@ -1,99 +1,43 @@
 import z from "zod";
-import { customValidators } from "../helpers/customValidators";
+import * as validations from "utils/zod/helpers/validations";
 
 const developeProductValidation = z
   .object({
-    title_ka: z
-      .string()
-      .nonempty()
-      .refine(customValidators.isGeorgianLetters.validator, {
-        message: customValidators.isGeorgianLetters.message("სათაური (ka)"),
-      }),
-    title_en: z
-      .string()
-      .nonempty()
-      .refine(customValidators.isLatinLetters.validator, {
-        message: customValidators.isLatinLetters.message("სათაური (en)"),
-      }),
+    title_ka: validations.isGeorgianLetters("სათაური (ka)"),
+    title_en: validations.isLatinLetters("სათაური (en)"),
     price: z.number().min(1),
     color: z.object({
-      ka: z
-        .string()
-        .nonempty()
-        .refine(customValidators.isGeorgianLetters.validator, {
-          message: customValidators.isGeorgianLetters.message("ფერი (ka)"),
-        }),
-      en: z
-        .string()
-        .nonempty()
-        .refine(customValidators.isLatinLetters.validator, {
-          message: customValidators.isLatinLetters.message("ფერი (en)"),
-        }),
-      hex: z
-        .string()
-        .nonempty()
-        .refine(customValidators.isValidHexColor.validator, {
-          message:
-            customValidators.isValidHexColor.message("ფერი hex ფორმატში"),
-        }),
-      caption: z
-        .string()
-        .nonempty()
-        .refine(customValidators.isGeorgianLetters.validator, {
-          message: customValidators.isGeorgianLetters.message("ფერი"),
-        }),
+      ka: validations.isGeorgianLetters("ფერი (ka)"),
+      en: validations.isLatinLetters("ფერი (en)"),
+      hex: validations.isValidHexColor("ფერი hex ფორმატში"),
+      caption: validations.isGeorgianLetters("ფერი"),
       _id: z.string().nonempty(),
     }),
     sizes: z.array(
       z.object({
         amount: z.number().min(1),
         size: z.object({
-          ka: z
-            .string()
-            .nonempty()
-            .refine(customValidators.isLatinLetters.validator, {
-              message: customValidators.isLatinLetters.message("ზომა (ka)"),
-            }),
-          en: z
-            .string()
-            .nonempty()
-            .refine(customValidators.isLatinLetters.validator, {
-              message: customValidators.isLatinLetters.message("ზომა (en)"),
-            }),
-          caption: z
-            .string()
-            .nonempty()
-            .refine(customValidators.isLatinLetters.validator, {
-              message: customValidators.isLatinLetters.message("ზომის სათაური"),
-            }),
+          ka: validations.isLatinLetters("ზომა (ka)"),
+          en: validations.isLatinLetters("ზომა (en)"),
+          caption: validations.isLatinLetters("ზომის სათაური"),
           _id: z.string().nonempty(),
         }),
       })
     ),
     variants: z.array(
       z.object({
-        _id: z.string(),
-        type: z.string(),
-        label_ka: z.string(),
-        label_en: z.string(),
-        description_ka: z.string(),
-        description_en: z.string(),
-        icon: z.string(),
-        caption: z.string(),
+        _id: z.string().nonempty(),
+        type: validations.isLatinLetters("ვარიანტის ტიპი"),
+        label_ka: validations.isGeorgianLetters("ვარიანტის იარლიყი (ka)"),
+        label_en: validations.isLatinLetters("ვარიანტის იარლიყი (en)"),
+        description_ka: validations.isGeorgianLetters("ვარიანტის აღწერა (ka)"),
+        description_en: validations.isLatinLetters("ვარიანტის აღწერა (en)"),
+        caption: validations.isGeorgianLetters("ვარიანტის სათაური"),
+        icon: z.string().url(),
       })
     ),
-    description_ka: z
-      .string()
-      .nonempty()
-      .refine(customValidators.isGeorgianLetters.validator, {
-        message: customValidators.isGeorgianLetters.message("აღწერა (ka)"),
-      }),
-    description_en: z
-      .string()
-      .nonempty()
-      .refine(customValidators.isLatinLetters.validator, {
-        message: customValidators.isLatinLetters.message("აღწერა (en)"),
-      }),
+    description_ka: validations.isGeorgianLetters("აღწერა (ka)"),
+    description_en: validations.isLatinLetters("აღწერა (en)"),
     is_public: z.boolean(),
     is_featured: z.boolean(),
 
@@ -104,138 +48,48 @@ const developeProductValidation = z
     // 1. assets
     assets: z.array(z.string().url().optional()),
     new_assets: z.array(
-      z
-        .string()
-        .refine(
-          customValidators.isValidBase64ImageStr.validator,
-          customValidators.isValidBase64ImageStr.message(
-            "პროდუქტის მედია ფაილები"
-          )
-        )
-        .optional()
+      validations.isValidBase64ImageStr("პროდუქტის მედია ფაილები").optional()
     ),
-    assets_to_delete: z.array(z.string().url().optional()),
+
+    assets_to_delete: validations.optionalUrlsArray(),
 
     // 2. thumbnails
-    thumbnails: z
-      .array(
-        z
-          .string()
-          .refine(customValidators.isOptionalURL.validator, {
-            message: customValidators.isOptionalURL.message("პროდუქტის ხატულა"),
-          })
-          .optional()
-      )
-      .max(2),
+    thumbnails: z.array(validations.isOptionalUrl("პროდუქტის ხატულა")).max(2),
 
-    front_thumbnail: z
-      .string()
-      .refine(
-        customValidators.isOptionalURL.validator,
-        customValidators.isOptionalURL.message("არსებული პროდუქტის წინა ხატულა")
-      )
-      .optional(),
-    new_front_thumbnail: z
-      .string()
-      .refine(
-        (value) =>
-          value === "" || customValidators.isValidBase64ImageStr.validator,
-        customValidators.isValidBase64ImageStr.message("პროდუქტის წინა ხატულა")
-      )
-      .optional(),
+    front_thumbnail: validations.isOptionalUrl(
+      "არსებული პროდუქტის წინა ხატულა"
+    ),
+    new_front_thumbnail: validations.optionalBase64ImageStr(
+      "პროდუქტის წინა ხატულა"
+    ),
 
-    back_thumbnail: z
-      .string()
-      .refine(
-        customValidators.isOptionalURL.validator,
-        customValidators.isOptionalURL.message(
-          "არსებული პროდუქტის უკანა ხატულა"
-        )
-      )
-      .optional(),
-    new_back_thumbnail: z
-      .string()
-      .refine(
-        (value) =>
-          value === "" || customValidators.isValidBase64ImageStr.validator,
-        customValidators.isValidBase64ImageStr.message("პროდუქტის უკანა ხატულა")
-      )
-      .optional(),
+    back_thumbnail: validations.isOptionalUrl(
+      "არსებული პროდუქტის უკანა ხატულა"
+    ),
+    new_back_thumbnail: validations.optionalBase64ImageStr(
+      "პროდუქტის უკანა ხატულა"
+    ),
 
     // 3. mannequin
-    mannequin: z
-      .string()
-      .refine(
-        customValidators.isOptionalURL.validator,
-        customValidators.isOptionalURL.message(
-          "არსებული პროდუქტის მანეკენის ხატულა"
-        )
-      )
-      .optional(),
-    new_mannequin: z
-      .string()
-      .refine(
-        (value) =>
-          value === "" || customValidators.isValidBase64ImageStr.validator,
-        customValidators.isValidBase64ImageStr.message(
-          "პროდუქტის მანეკენის მედია ფაილი"
-        )
-      )
-      .optional(),
+    mannequin: validations.isOptionalUrl("არსებული პროდუქტის მანეკენის ხატულა"),
+    new_mannequin: validations.optionalBase64ImageStr(
+      "პროდუქტის მანეკენის მედია ფაილი"
+    ),
 
     // 4. model
-    modelVideo: z
-      .string()
-      .refine(
-        customValidators.isOptionalURL.validator,
-        customValidators.isOptionalURL.message(
-          "არსებული პროდუქტის მოდელის ვიდეო"
-        )
-      )
-      .optional(),
-    new_model_video: z
-      .any()
-      .refine(
-        (value) => value === "" || customValidators.isVideoFile.validator,
-        customValidators.isVideoFile.message("პროდუქტის მოდელის ვიდეო")
-      )
-      .optional(),
+    modelVideo: validations.isOptionalUrl("არსებული პროდუქტის მოდელის ვიდეო"),
+    new_model_video: validations.isOptionalVideoFile("პროდუქტის მოდელის ვიდეო"),
 
     // 5. simulation video placing
-    placingVideo: z
-      .string()
-      .refine(
-        customValidators.isOptionalURL.validator,
-        customValidators.isOptionalURL.message(
-          "არსებული ედითორის პროდუქტის დადების ვიდეო"
-        )
-      )
-      .optional(),
-    new_simulation_video_placing: z
-      .any()
-      .refine(
-        (value) => value === "" || customValidators.isVideoFile.validator,
-        customValidators.isVideoFile.message("პროდუქტის მოდელის ვიდეო")
-      )
-      .optional(),
-
+    placingVideo: validations.isOptionalUrl("არსებული პროდუქტის დადების ვიდეო"),
+    new_simulation_video_placing: validations.isOptionalVideoFile(
+      "პროდუქტის დადების ვიდეო"
+    ),
     // 6. simulation video pick-up
-    pickUpVideo: z
-      .string()
-      .refine(
-        customValidators.isOptionalURL.validator,
-        customValidators.isOptionalURL.message(
-          "არსებული ედითორის პროდუქტის აღების ვიდეო"
-        )
-      )
-      .optional(),
-    new_simulation_video_pick_up: z
-      .any()
-      .refine(
-        (value) => value === "" || customValidators.isVideoFile.validator,
-        customValidators.isVideoFile.message("პროდუქტის მოდელის ვიდეო")
-      )
-      .optional(),
+    pickUpVideo: validations.isOptionalUrl("არსებული პროდუქტის აღების ვიდეო"),
+    new_simulation_video_pick_up: validations.isOptionalVideoFile(
+      "პროდუქტის აღების ვიდეო"
+    ),
   })
   .refine(
     (data) => {

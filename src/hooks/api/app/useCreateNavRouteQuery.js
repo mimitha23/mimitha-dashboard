@@ -112,10 +112,7 @@ export default function useCreateNavRouteQuery() {
   // console.log(form.watch());
 
   function saveNavRouteQuery(values) {
-    console.log(values);
-    // credentials.isUpdating
-    //   ? dispatch(navRoutesActions.updateNavRoute(checkedData))
-    //   : dispatch(navRoutesActions.createNavRoute(checkedData));
+    dispatch(navActions.saveNav(values));
   }
 
   useEffect(() => {

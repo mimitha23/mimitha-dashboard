@@ -1,4 +1,5 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
+import { errMessageStyles } from "styles/helpers/Form.styled";
 
 export const Login = styled.div`
   width: 100%;
@@ -21,6 +22,19 @@ export const Login = styled.div`
     padding-right: 0.5rem;
     border-radius: 0.5rem;
     background: ${({ theme }) => theme.colors.white};
+    ${({ theme }) =>
+      theme.mode === "DARK"
+        ? ""
+        : css`
+            border: 1px solid ${theme.colors.gray_shade};
+          `};
+
+    &:has(input:active),
+    &:has(input:focus) {
+      outline: 1px solid ${({ theme }) => theme.colors.blue};
+      outline-offset: 1px;
+      border: 1px solid ${({ theme }) => theme.colors.green};
+    }
 
     input {
       outline: none;
@@ -30,6 +44,12 @@ export const Login = styled.div`
     button {
       font-size: 2rem;
       color: ${({ theme }) => theme.colors.dark_gray};
+      display: flex;
+      align-items: center;
     }
+  }
+
+  .auth-msg {
+    ${errMessageStyles}
   }
 `;

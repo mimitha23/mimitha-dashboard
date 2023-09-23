@@ -74,15 +74,16 @@ export const EditNav = styled.form`
             theme.mode === "DARK"
               ? theme.colors.gray_tint
               : theme.colors.dark_gray};
-        padding-bottom: 0.25rem;
-        transform: translateY(0.15rem);
+        transform: translateY(0.1rem);
         outline: none;
         background: transparent;
         color: ${({ theme }) => theme.colors.text};
+        padding: 1rem 1rem 0.75rem 0.5rem;
 
         &::placeholder {
           opacity: 0.3;
           color: ${({ theme }) => theme.colors.text};
+          font-size: ${({ theme }) => theme.fontSize.md};
         }
       }
     }
@@ -131,7 +132,6 @@ export const EditNav = styled.form`
         background: transparent;
         outline: none;
         color: ${({ theme }) => theme.colors.text};
-        transform: translateY(-0.2rem);
       }
     }
   }
